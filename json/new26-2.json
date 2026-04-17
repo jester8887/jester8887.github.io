@@ -748,7 +748,7 @@
       "artist",
       "hiphop"
     ],
-    "featured": false,
+    "featured": true,
     "length": "2m41s",
     "songs": "HUMBLE. (Kendrick Lamar), Not Like Us (Kendrick Lamar), DNA. (Kendrick Lamar), Alright (Kendrick Lamar), King Kunta (Kendrick Lamar)"
   },
@@ -770,7 +770,7 @@
       "hiphop",
       "artist"
     ],
-    "featured": true,
+    "featured": false,
     "length": "2m48s",
     "songs": "HUMBLE. (Kendrick Lamar), DNA. (Kendrick Lamar), Alright (Kendrick Lamar), King Kunta (Kendrick Lamar)"
   },
