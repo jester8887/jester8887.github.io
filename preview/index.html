@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MB DanceCuts Preview</title>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CG99TYH350"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-CG99TYH350');
+  </script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/wavesurfer.js@7/dist/wavesurfer.min.js"></script>
+  <script src="https://unpkg.com/wavesurfer.js@7/dist/plugins/timeline.min.js"></script>
+
+  <style>
+    :root {
+      --page-bg: #e9e9e9;
+      --card-bg: #ffffff;
+      --text: #000000;
+      --muted: #3f3f46;
+      --border: #d4d4d8;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--page-bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid #d4d4d8;
+      background: rgba(255,255,255,0.94);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    }
+
+    .topbar-inner {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .brand,
+    .menu-link {
+      font-family: Arial Black, Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: -0.03em;
+      text-decoration: none;
+      color: #000;
+      line-height: 1;
+    }
+
+    .brand {
+      font-size: 1.15rem;
+      margin-right: 8px;
+      white-space: nowrap;
+    }
+
+    .menu {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .menu-link {
+      font-size: 0.88rem;
+      opacity: 0.8;
+    }
+
+    .preview-menu .menu-link {
+      color: #9ca3af;
+      font-style: italic;
+      pointer-events: none;
+      opacity: 0.78;
+    }
+
+    .preview-cta {
+      border-top: 1px solid #d4d4d8;
+      text-align: center;
+      padding: 9px 16px 11px;
+      font-size: 0.92rem;
+      font-style: italic;
+    }
+
+    .preview-cta a {
+      color: #000;
+      text-decoration: underline;
+    }
+
+    .preview-cta a:hover {
+      opacity: 0.7;
+    }
+
+    .page-wrap {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 28px 20px 150px;
+    }
+
+    .mega-headline,
+    .section-title,
+    .email-callout {
+      font-family: Arial Black, Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 0.9;
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    .top-hero {
+      padding: 10px 0 28px;
+    }
+
+    .mega-headline {
+      font-size: clamp(4rem, 8vw, 7.6rem);
+      max-width: 1240px;
+      text-wrap: balance;
+    }
+
+    .hero-subtitle {
+      margin: 18px 0 0;
+      font-size: clamp(1rem, 1.2vw, 1.18rem);
+      line-height: 1.3;
+      max-width: 760px;
+      color: #222;
+    }
+
+    .mixes-section {
+      margin-top: 10px;
+      margin-bottom: 46px;
+    }
+
+    .section-title {
+      font-size: clamp(3.1rem, 5.2vw, 5.15rem);
+      margin-bottom: 10px;
+    }
+
+    .section-subtitle {
+      margin: 0 0 18px;
+      font-size: clamp(1rem, 1.15vw, 1.18rem);
+      color: #222;
+      max-width: 760px;
+      line-height: 1.3;
+    }
+
+    .results-note {
+      margin: 0 0 22px;
+      font-size: 0.95rem;
+      color: #555;
+      min-height: 1.2em;
+    }
+
+    .player-shell {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .mix-card {
+      background: var(--card-bg);
+      border: 1px solid #f1f1f1;
+      border-radius: 24px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+      padding: 24px;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+
+    .mix-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.07);
+      border-color: #e8e8e8;
+    }
+
+    .mix-header {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    .mix-title {
+      margin: 0;
+      font-size: 1.3rem;
+      font-weight: 700;
+      line-height: 1.2;
+      max-width: 44rem;
+      letter-spacing: -0.01em;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.55rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      border: 1px solid #d4d4d8;
+      background: #fff;
+      color: #111;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+      min-width: 84px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    }
+
+    .btn:hover { background: #f5f5f5; }
+    .btn:active { transform: translateY(1px); }
+    .btn[disabled] { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
+    .btn-primary { background: #000; color: #fff; border-color: #000; }
+    .btn-primary:hover { background: #111; box-shadow: 0 4px 10px rgba(0,0,0,0.14); }
+
+    .wave {
+      height: 74px;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .timeline {
+      height: 20px;
+      font-size: 10px;
+      color: #71717a;
+      margin-top: 2px;
+    }
+
+    .mix-status {
+      margin-top: 14px;
+      display: flex;
+      justify-content: flex-end;
+      font-size: 0.84rem;
+      color: #666;
+      letter-spacing: 0.01em;
+    }
+
+    .email-wrap {
+      margin-top: 48px;
+    }
+
+    .email-callout {
+      font-size: clamp(2.3rem, 4.2vw, 4.7rem);
+      max-width: 1200px;
+    }
+
+    .email-callout a {
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 3px solid #000;
+    }
+
+    .sticky-player {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-top: 1px solid #d4d4d8;
+      background: rgba(255,255,255,0.94);
+      backdrop-filter: blur(8px);
+      z-index: 999;
+      box-shadow: 0 -3px 14px rgba(0,0,0,0.06);
+    }
+
+    .sticky-inner {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .sticky-title {
+      font-weight: 700;
+      font-size: 1rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .sticky-main {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .sticky-time {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: #52525b;
+      margin-top: 2px;
+    }
+
+    .sticky-range {
+      width: 100%;
+    }
+
+    .sr-only-focusable {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      border: 0;
+    }
+
+    .sr-only-focusable:focus {
+      position: static;
+      width: auto;
+      height: auto;
+      margin: 0;
+      overflow: visible;
+      clip: auto;
+    }
+
+    @media (max-width: 720px) {
+      .page-wrap { padding: 18px 14px 160px; }
+      .mix-card { padding: 20px; }
+      .mix-header {
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+      .mix-title {
+        font-size: 1.15rem;
+        max-width: 100%;
+      }
+      .sticky-inner {
+        flex-wrap: wrap;
+        align-items: stretch;
+      }
+      .sticky-main {
+        width: 100%;
+        order: 3;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main" class="sr-only-focusable">Skip to content</a>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a href="/preview/" class="brand">MBDANCECUTS</a>
+      <nav class="menu preview-menu" aria-label="Preview navigation">
+        <span class="menu-link">Home</span>
+        <span class="menu-link">Themed</span>
+        <span class="menu-link">Artist</span>
+        <span class="menu-link">Hip-Hop</span>
+        <span class="menu-link">Production</span>
+        <span class="menu-link">Inquiries</span>
+      </nav>
+    </div>
+    <div class="preview-cta">
+      <a href="../new26form.html">click here to request access to the full mix site</a>
+    </div>
+  </header>
+
+  <main id="main" class="page-wrap">
+    <section class="top-hero" aria-label="Preview hero">
+      <h1 class="mega-headline">
+        MB DanceCuts:<br>
+        Featured Mixes<br>
+        Preview
+      </h1>
+      <p class="hero-subtitle">
+        A public preview of selected featured mixes. For access to the full catalog and additional private samples, use the link above to get in touch.
+      </p>
+    </section>
+
+    <section class="mixes-section" aria-label="Featured preview mixes">
+      <h2 class="section-title">Featured Mixes</h2>
+      <p class="section-subtitle">A curated public preview from the MB DanceCuts catalog.</p>
+      <p id="resultsNote" class="results-note"></p>
+      <div id="featuredList" class="player-shell"></div>
+    </section>
+
+    <section class="email-wrap" aria-label="Contact information">
+      <p class="email-callout">
+        To receive the full mix site or ask about custom edits, email
+        <a href="mailto:mbdancecuts@gmail.com?subject=Full%20Mix%20Site%20Request">mbdancecuts@gmail.com</a>
+      </p>
+    </section>
+  </main>
+
+  <div id="nowPlaying" class="sticky-player" aria-label="Now playing bar">
+    <div class="sticky-inner">
+      <button id="npPlay" class="btn btn-primary" aria-label="Play or pause" disabled>Play</button>
+      <div class="sticky-main">
+        <div id="npTitle" class="sticky-title">Nothing playing</div>
+        <input id="npSeek" class="sticky-range" type="range" min="0" max="100" value="0" aria-label="Seek" disabled />
+        <div class="sticky-time">
+          <span id="npTime">0:00</span>
+          <span id="npDur">0:00</span>
+        </div>
+      </div>
+      <button id="npStop" class="btn" aria-label="Stop" disabled>Stop</button>
+    </div>
+  </div>
+
+  <script>
+    const DATA_URL = '../json/new26-2.json';
+
+    function toDirect(url) {
+      if (!url) return '';
+      if (url.includes('dl=0')) return url.replace('dl=0', 'raw=1');
+      if (!url.includes('raw=1') && url.includes('dropbox.com')) {
+        return url + (url.includes('?') ? '&' : '?') + 'raw=1';
+      }
+      return url;
+    }
+
+    function slugify(str) {
+      return String(str || '')
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)/g, '');
+    }
+
+    const el = (tag, props = {}, children = []) => {
+      const node = document.createElement(tag);
+      Object.assign(node, props);
+      for (const child of children) node.append(child);
+      return node;
+    };
+
+    const featuredList = document.getElementById('featuredList');
+    const resultsNote = document.getElementById('resultsNote');
+    const observers = new Map();
+    const surfers = new Map();
+    const audios = new Map();
+
+    let current = { ws: null, audio: null, title: '', anchor: '' };
+    let featuredMixes = [];
+
+    const npTitle = document.getElementById('npTitle');
+    const npPlay = document.getElementById('npPlay');
+    const npStop = document.getElementById('npStop');
+    const npSeek = document.getElementById('npSeek');
+    const npTime = document.getElementById('npTime');
+    const npDur = document.getElementById('npDur');
+
+    function formatTime(seconds) {
+      const m = Math.floor(seconds / 60) || 0;
+      const s = Math.floor(seconds % 60) || 0;
+      return `${m}:${String(s).padStart(2, '0')}`;
+    }
+
+    function setNowPlaying(title, ws, audio, anchor) {
+      current = { ws, audio, title, anchor };
+      npTitle.textContent = title;
+      npPlay.disabled = false;
+      npStop.disabled = false;
+      npSeek.disabled = false;
+      npPlay.textContent = audio.paused ? 'Play' : 'Pause';
+      npDur.textContent = formatTime(audio.duration || (ws && ws.getDuration && ws.getDuration()) || 0);
+
+      const updateSeek = () => {
+        const dur = audio.duration || 0;
+        const cur = audio.currentTime || 0;
+        npSeek.value = dur ? Math.floor((cur / dur) * 100) : 0;
+        npTime.textContent = formatTime(cur);
+      };
+
+      audio.addEventListener('timeupdate', updateSeek);
+      audio.addEventListener('loadedmetadata', updateSeek);
+
+      npSeek.oninput = (e) => {
+        const pct = Number(e.target.value) / 100;
+        const dur = audio.duration || 0;
+        if (dur) audio.currentTime = pct * dur;
+      };
+
+      npPlay.onclick = () => togglePlay(ws, audio, title, anchor);
+      npStop.onclick = () => {
+        audio.pause();
+        audio.currentTime = 0;
+        npPlay.textContent = 'Play';
+      };
+
+      history.replaceState(null, '', anchor);
+    }
+
+    function togglePlay(ws, audio, title, anchor) {
+      audios.forEach((a) => { if (a !== audio) a.pause(); });
+      surfers.forEach((other) => { if (other !== ws && other.pause) other.pause(); });
+
+      if (audio.paused) {
+        audio.play();
+      } else {
+        audio.pause();
+      }
+
+      setNowPlaying(title, ws, audio, anchor);
+    }
+
+    function buildDisplayTitle(title, length, songs, displayTitle) {
+      if (displayTitle) return displayTitle;
+      const safeLength = length ? ` (${length})` : '';
+      const safeSongs = songs ? ` — ${songs}` : '';
+      return `${title || 'Untitled Mix'}${safeLength}${safeSongs}`;
+    }
+
+    function isTruthyFeatured(value) {
+      if (typeof value === 'boolean') return value;
+      if (typeof value === 'number') return value === 1;
+      if (typeof value === 'string') {
+        const normalized = value.trim().toLowerCase();
+        return ['true', 'yes', 'y', '1', 'featured', 'new'].includes(normalized);
+      }
+      return false;
+    }
+
+    function isFeaturedMix(mix) {
+      return isTruthyFeatured(mix.featured)
+        || isTruthyFeatured(mix.isFeatured)
+        || isTruthyFeatured(mix.newFeatured)
+        || isTruthyFeatured(mix.new)
+        || isTruthyFeatured(mix.marcFeatured)
+        || isTruthyFeatured(mix.showOnFront)
+        || (Array.isArray(mix.categories) && mix.categories.some(cat =>
+          ['new', 'featured'].includes(String(cat).toLowerCase())
+        ));
+    }
+
+    function uniqueKey(mix) {
+      return `${mix.title || ''}||${mix.audio || mix.url || ''}`;
+    }
+
+    function makeCard(mix, sectionKey = 'featured') {
+      const display = buildDisplayTitle(mix.title, mix.length, mix.songs, mix.displayTitle);
+      const audioUrl = mix.audio || mix.url;
+      const anchor = slugify(`${sectionKey}-${display}`);
+      const cardId = `card-${anchor}`;
+
+      const card = el('article', { className: 'mix-card', id: cardId });
+      const header = el('div', { className: 'mix-header' });
+      const titleWrap = el('div');
+      const titleEl = el('h3', { className: 'mix-title', innerText: display });
+      titleWrap.append(titleEl);
+
+      const controls = el('div', { className: 'flex gap-2 flex-wrap' });
+      const playBtn = el('button', { className: 'btn btn-primary', innerText: 'Play', disabled: true });
+      controls.append(playBtn);
+      header.append(titleWrap, controls);
+
+      const waveWrap = el('div');
+      const wave = el('div', { className: 'wave', id: `wave-${anchor}` });
+      const timeline = el('div', { className: 'timeline', id: `timeline-${anchor}` });
+      waveWrap.append(wave, timeline);
+
+      const audio = el('audio', { src: toDirect(audioUrl), preload: 'none' });
+      audio.style.display = 'none';
+
+      const footer = el('div', { className: 'mix-status' }, [
+        el('span', { innerText: 'Idle' })
+      ]);
+
+      card.prepend(el('a', { id: anchor }));
+      card.append(header, waveWrap, audio, footer);
+
+      const obs = new IntersectionObserver((entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          obs.disconnect();
+
+          try {
+            const ws = WaveSurfer.create({
+              container: wave,
+              height: 74,
+              waveColor: '#d4d4d8',
+              progressColor: '#111111',
+              cursorColor: '#52525b',
+              interact: true,
+              dragToSeek: true,
+              minPxPerSec: 50,
+              media: audio,
+            });
+
+            ws.registerPlugin(WaveSurfer.Timeline.create({ container: timeline }));
+            surfers.set(cardId, ws);
+            audios.set(cardId, audio);
+            playBtn.disabled = false;
+
+            const onReady = () => {
+              const d = audio.duration || ws.getDuration?.() || 0;
+              footer.lastChild.textContent = d ? `Loaded • ${formatTime(d)}` : 'Loaded';
+            };
+
+            audio.addEventListener('loadedmetadata', onReady, { once: true });
+            ws.on('ready', onReady);
+
+            setTimeout(() => {
+              const hasCanvas = wave.querySelector('canvas, svg');
+              if (!hasCanvas) {
+                try { ws.destroy(); } catch (error) {}
+                const bar = document.createElement('div');
+                bar.className = 'mt-2 h-2.5 w-full bg-zinc-200 rounded-full';
+                const fill = document.createElement('div');
+                fill.className = 'h-2.5 bg-black rounded-full';
+                fill.style.width = '0%';
+                bar.appendChild(fill);
+                wave.replaceWith(bar);
+                timeline.remove();
+
+                const updateBar = () => {
+                  const dur = audio.duration || 0;
+                  const cur = audio.currentTime || 0;
+                  fill.style.width = (dur ? (cur / dur) * 100 : 0) + '%';
+                };
+
+                audio.addEventListener('timeupdate', updateBar);
+                audio.addEventListener('loadedmetadata', updateBar);
+              }
+            }, 1200);
+
+            ws.on('play', () => {
+              playBtn.textContent = 'Pause';
+              footer.lastChild.textContent = 'Playing';
+              setNowPlaying(display, ws, audio, `#${anchor}`);
+            });
+
+            ws.on('pause', () => {
+              playBtn.textContent = 'Play';
+              footer.lastChild.textContent = 'Paused';
+            });
+
+            ws.on('finish', () => {
+              playBtn.textContent = 'Play';
+              footer.lastChild.textContent = 'Finished';
+              if (current.ws === ws) npPlay.textContent = 'Play';
+            });
+
+            playBtn.addEventListener('click', () => togglePlay(ws, audio, display, `#${anchor}`));
+
+            if (location.hash === `#${anchor}`) {
+              setTimeout(() => {
+                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                togglePlay(ws, audio, display, `#${anchor}`);
+              }, 250);
+            }
+          } catch (error) {
+            waveWrap.remove();
+            audio.style.display = '';
+            audio.controls = true;
+            playBtn.remove();
+            footer.lastChild.textContent = 'Ready';
+          }
+        }
+      }, { rootMargin: '200px' });
+
+      obs.observe(card);
+      observers.set(cardId, obs);
+      return card;
+    }
+
+    function renderMixes(target, list, sectionKey) {
+      target.innerHTML = '';
+      list.forEach((mix, index) => {
+        target.append(makeCard(mix, `${sectionKey}-${index}`));
+      });
+    }
+
+    (async function loadAndRender() {
+      try {
+        const cacheBust = new Date().toISOString().slice(0, 10);
+        const res = await fetch(`${DATA_URL}?v=${cacheBust}`);
+        if (!res.ok) throw new Error(`Failed to load ${DATA_URL}: ${res.status}`);
+
+        const raw = await res.json();
+        const allMixes = Array.isArray(raw) ? raw : (Array.isArray(raw.mixes) ? raw.mixes : []);
+
+        const uniqueMixes = Array.from(
+          new Map(allMixes.map(mix => [uniqueKey(mix), mix])).values()
+        );
+
+        featuredMixes = uniqueMixes.filter(isFeaturedMix);
+
+        renderMixes(featuredList, featuredMixes, 'featured');
+        resultsNote.textContent = `${featuredMixes.length} featured mix${featuredMixes.length === 1 ? '' : 'es'}`;
+      } catch (error) {
+        console.error(error);
+        const msg = document.createElement('p');
+        msg.className = 'text-sm text-red-700';
+        msg.textContent = 'Could not load ../json/new26-2.json. Make sure the file exists and contains valid JSON.';
+        featuredList.appendChild(msg);
+      }
+    })();
+
+    if (location.hash) {
+      const target = document.querySelector(location.hash);
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  </script>
+
+  <script>
+    (function () {
+      const TRACKING_URL = "https://script.google.com/macros/s/AKfycbxOwwx7FqgVnSVxURDnuKKeUjEmMqkbogSR5bKaoP-7htQ2oMzxuC-fplcT2ChMiO9J-w/exec";
+
+      const payload = {
+        page: window.location.pathname,
+        fullUrl: window.location.href,
+        title: document.title,
+        referrer: document.referrer || "direct",
+        userAgent: navigator.userAgent,
+        screen: `${window.screen.width}x${window.screen.height}`,
+        language: navigator.language,
+        timestamp: new Date().toISOString()
+      };
+
+      try {
+        fetch(TRACKING_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: {
+            "Content-Type": "text/plain"
+          },
+          body: JSON.stringify(payload)
+        });
+      } catch (err) {
+        console.error("Traffic tracking failed:", err);
+      }
+    })();
+  </script>
+</body>
+</html>
