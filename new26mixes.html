@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MB Dance Cuts: Precision Mixes for Professional Choreography</title>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CG99TYH350"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-CG99TYH350');
+  </script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/wavesurfer.js@7/dist/wavesurfer.min.js"></script>
+  <script src="https://unpkg.com/wavesurfer.js@7/dist/plugins/timeline.min.js"></script>
+
+  <style>
+    :root {
+      --page-bg: #e9e9e9;
+      --card-bg: #ffffff;
+      --text: #000000;
+      --muted: #3f3f46;
+      --border: #d4d4d8;
+    }
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 1px solid #d4d4d8;
+  background: rgba(255,255,255,0.94);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+}
+
+.topbar-inner {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.brand,
+.menu-link {
+  font-family: Arial Black, Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+  text-decoration: none;
+  color: #000;
+  line-height: 1;
+}
+
+.brand {
+  font-size: 1.15rem;
+  margin-right: 8px;
+  white-space: nowrap;
+}
+
+.menu {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.menu-link {
+  font-size: 0.88rem;
+  opacity: 0.8;
+  transition: opacity 0.15s ease;
+}
+
+.menu-link:hover,
+.menu-link.active {
+  opacity: 1;
+}
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--page-bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    .page-wrap {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 28px 20px 150px;
+    }
+
+    .mega-headline,
+    .section-title,
+    .category-title,
+    .email-callout {
+      font-family: Arial Black, Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 0.9;
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    .mega-headline {
+      font-size: clamp(4.1rem, 8.4vw, 7.9rem);
+      max-width: 1240px;
+      text-wrap: balance;
+    }
+
+    .top-hero {
+      padding: 10px 0 44px;
+    }
+
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 34px;
+      margin: 8px 0 64px;
+      align-items: start;
+    }
+
+    .category-card {
+      display: block;
+      color: inherit;
+      text-decoration: none;
+      transition: transform 0.18s ease, opacity 0.18s ease;
+    }
+
+    .category-card:hover {
+      transform: translateY(-4px);
+      opacity: 0.98;
+    }
+
+    .category-card:hover .category-image img {
+      transform: scale(1.02);
+    }
+
+    .category-card:focus-visible {
+      outline: 3px solid #111;
+      outline-offset: 4px;
+    }
+
+    .category-image {
+      aspect-ratio: 1 / 1;
+      width: 100%;
+      overflow: hidden;
+      background: #d4d4d4;
+      border-radius: 8px;
+    }
+
+    .category-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.35s ease;
+    }
+
+    .category-copy {
+      padding-top: 12px;
+    }
+
+    .category-title {
+      font-size: clamp(2rem, 3vw, 3.35rem);
+      margin-bottom: 10px;
+    }
+
+    .category-desc {
+      font-size: clamp(1rem, 1.12vw, 1.14rem);
+      line-height: 1.22;
+      color: #222;
+      margin: 0;
+      max-width: 92%;
+    }
+
+    .search-wrap {
+      margin: 10px 0 34px;
+    }
+
+    .search-input {
+      width: 100%;
+      max-width: 620px;
+      padding: 15px 18px;
+      font-size: 1rem;
+      border-radius: 999px;
+      border: 1px solid #ddd;
+      outline: none;
+      background: #fff;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+
+    .search-input:focus {
+      border-color: #000;
+    }
+
+    .mixes-section {
+      margin-top: 10px;
+      margin-bottom: 46px;
+    }
+
+    .section-title {
+      font-size: clamp(3.1rem, 5.2vw, 5.15rem);
+      margin-bottom: 10px;
+    }
+
+    .section-subtitle {
+      margin: 0 0 16px;
+      font-size: clamp(1rem, 1.15vw, 1.18rem);
+      color: #222;
+      max-width: 760px;
+      line-height: 1.3;
+    }
+
+    .results-note {
+      margin: 0 0 22px;
+      font-size: 0.95rem;
+      color: #555;
+      min-height: 1.2em;
+    }
+
+    .player-shell {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .mix-card {
+      background: var(--card-bg);
+      border: 1px solid #f1f1f1;
+      border-radius: 24px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+      padding: 24px;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+
+    .mix-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.07);
+      border-color: #e8e8e8;
+    }
+
+    .mix-header {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    .mix-title {
+      margin: 0;
+      font-size: 1.3rem;
+      font-weight: 700;
+      line-height: 1.2;
+      max-width: 44rem;
+      letter-spacing: -0.01em;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.55rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      border: 1px solid #d4d4d8;
+      background: #fff;
+      color: #111;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+      min-width: 84px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    }
+
+    .btn:hover { background: #f5f5f5; }
+    .btn:active { transform: translateY(1px); }
+    .btn[disabled] { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
+    .btn-primary { background: #000; color: #fff; border-color: #000; }
+    .btn-primary:hover { background: #111; box-shadow: 0 4px 10px rgba(0,0,0,0.14); }
+
+    .wave {
+      height: 74px;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .timeline {
+      height: 20px;
+      font-size: 10px;
+      color: #71717a;
+      margin-top: 2px;
+    }
+
+    .mix-status {
+      margin-top: 14px;
+      display: flex;
+      justify-content: flex-end;
+      font-size: 0.84rem;
+      color: #666;
+      letter-spacing: 0.01em;
+    }
+
+    .email-wrap {
+      margin-top: 48px;
+    }
+
+    .email-callout {
+      font-size: clamp(2.3rem, 4.2vw, 4.7rem);
+      max-width: 1200px;
+    }
+
+    .email-callout a {
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 3px solid #000;
+    }
+
+    .sticky-player {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-top: 1px solid #d4d4d8;
+      background: rgba(255,255,255,0.94);
+      backdrop-filter: blur(8px);
+      z-index: 999;
+      box-shadow: 0 -3px 14px rgba(0,0,0,0.06);
+    }
+
+    .sticky-inner {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .sticky-title {
+      font-weight: 700;
+      font-size: 1rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .sticky-main {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .sticky-time {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: #52525b;
+      margin-top: 2px;
+    }
+
+    .sticky-range {
+      width: 100%;
+    }
+
+    .sr-only-focusable {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      border: 0;
+    }
+
+    .sr-only-focusable:focus {
+      position: static;
+      width: auto;
+      height: auto;
+      margin: 0;
+      overflow: visible;
+      clip: auto;
+    }
+
+    @media (max-width: 1100px) {
+      .category-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 720px) {
+      .page-wrap { padding: 18px 14px 160px; }
+      .category-grid { grid-template-columns: 1fr; gap: 26px; margin-bottom: 52px; }
+      .mix-card { padding: 20px; }
+      .mix-header {
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+      .mix-title {
+        font-size: 1.15rem;
+        max-width: 100%;
+      }
+      .sticky-inner {
+        flex-wrap: wrap;
+        align-items: stretch;
+      }
+      .sticky-main {
+        width: 100%;
+        order: 3;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main" class="sr-only-focusable">Skip to content</a>
+
+  <header class="topbar">
+  <div class="topbar-inner">
+    <a href="new26mixes.html" class="brand">MBDANCECUTS</a>
+    <nav class="menu">
+      <a href="new26mixes.html" class="menu-link active">Home</a>
+      <a href="new26themed.html" class="menu-link">Themed</a>
+      <a href="new26artist.html" class="menu-link">Artist</a>
+      <a href="new26hiphop.html" class="menu-link">Hip-Hop</a>
+      <a href="new26production.html" class="menu-link">Production</a>
+      <a href="new26form.html" class="menu-link">Inquiries</a>
+    </nav>
+  </div>
+</header>
+  <main id="main" class="page-wrap">
+    <section class="top-hero" aria-label="Hero banner">
+      <h1 class="mega-headline">
+        MB DanceCuts:<br>
+        Precision Mixes<br>
+        For<br>
+        Professional<br>
+        Choreography
+      </h1>
+    </section>
+
+    <section class="category-grid" aria-label="Mix categories">
+      <a class="category-card" href="https://jester8887.github.io/MBDanceCuts/new26themed.html">
+        <div class="category-image">
+          <img src="images/themed.jpg" alt="Themed mixes category" />
+        </div>
+        <div class="category-copy">
+          <h2 class="category-title">Themed</h2>
+          <p class="category-desc">Built on themes, eras, ideas, concepts.</p>
+        </div>
+      </a>
+
+      <a class="category-card" href="https://jester8887.github.io/MBDanceCuts/new26artist.html">
+        <div class="category-image">
+          <img src="images/artist.jpg" alt="Artist mixes category" />
+        </div>
+        <div class="category-copy">
+          <h2 class="category-title">Artist</h2>
+          <p class="category-desc">Highlighting a single artist or band's body of work</p>
+        </div>
+      </a>
+
+      <a class="category-card" href="https://jester8887.github.io/MBDanceCuts/new26hiphop.html">
+        <div class="category-image">
+          <img src="images/hiphop.jpg" alt="Hip hop mixes category" />
+        </div>
+        <div class="category-copy">
+          <h2 class="category-title">Hip Hop</h2>
+          <p class="category-desc">Afro-influenced urban beats, high-energy</p>
+        </div>
+      </a>
+
+      <a class="category-card" href="https://jester8887.github.io/MBDanceCuts/new26production.html">
+        <div class="category-image">
+          <img src="images/production.jpg" alt="Production mixes category" />
+        </div>
+        <div class="category-copy">
+          <h2 class="category-title">Production</h2>
+          <p class="category-desc">Longer mixes, often with sound effects and storytelling</p>
+        </div>
+      </a>
+    </section>
+
+    <section class="mixes-section" aria-label="Marc's new and featured mixes">
+      <h2 class="section-title">MB New/Featured</h2>
+      <p class="section-subtitle">These are trending or new mixes!</p>
+      <div id="featuredList" class="player-shell"></div>
+    </section>
+
+    <div class="search-wrap">
+      <input
+        id="searchInput"
+        type="text"
+        placeholder="Search mixes, artists, songs..."
+        class="search-input"
+      />
+    </div>
+
+    <section class="mixes-section" aria-label="Mixes of the day">
+      <h2 class="section-title">Mixes of the Day / Search Results</h2>
+      <p class="section-subtitle">Today's Daily Mixes. Check back daily for new featured mixes. NOTE: When search bar is used above, search results replace this feed.</p>
+      <p id="resultsNote" class="results-note"></p>
+      <div id="dailyList" class="player-shell"></div>
+    </section>
+
+    <section class="email-wrap" aria-label="Contact information">
+      <p class="email-callout">
+        For questions, orders, or inquiries about custom mixes in any style, email
+        <a href="mailto:mbdancecuts@gmail.com?subject=Custom%20Mix%20Inquiry">mbdancecuts@gmail.com</a>
+      </p>
+    </section>
+  </main>
+
+  <div id="nowPlaying" class="sticky-player" aria-label="Now playing bar">
+    <div class="sticky-inner">
+      <button id="npPlay" class="btn btn-primary" aria-label="Play or pause" disabled>Play</button>
+      <div class="sticky-main">
+        <div id="npTitle" class="sticky-title">Nothing playing</div>
+        <input id="npSeek" class="sticky-range" type="range" min="0" max="100" value="0" aria-label="Seek" disabled />
+        <div class="sticky-time">
+          <span id="npTime">0:00</span>
+          <span id="npDur">0:00</span>
+        </div>
+      </div>
+      <button id="npStop" class="btn" aria-label="Stop" disabled>Stop</button>
+    </div>
+  </div>
+
+  <script>
+    const DATA_URL = 'json/new26-2.json';
+
+    function toDirect(url) {
+      if (url.includes('dl=0')) return url.replace('dl=0', 'raw=1');
+      if (!url.includes('raw=1') && url.includes('dropbox.com')) return url + (url.includes('?') ? '&' : '?') + 'raw=1';
+      return url;
+    }
+
+    function slugify(str) {
+      return String(str || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    }
+
+    const el = (tag, props = {}, children = []) => {
+      const node = document.createElement(tag);
+      Object.assign(node, props);
+      for (const child of children) node.append(child);
+      return node;
+    };
+
+    const featuredList = document.getElementById('featuredList');
+    const dailyList = document.getElementById('dailyList');
+    const searchInput = document.getElementById('searchInput');
+    const resultsNote = document.getElementById('resultsNote');
+    const observers = new Map();
+    const surfers = new Map();
+    const audios = new Map();
+
+    let current = { ws: null, audio: null, title: '', anchor: '' };
+    let allMixes = [];
+    let uniqueMixes = [];
+    let featuredMixes = [];
+    let dailyPool = [];
+    let dailyMixes = [];
+
+    const npTitle = document.getElementById('npTitle');
+    const npPlay = document.getElementById('npPlay');
+    const npStop = document.getElementById('npStop');
+    const npSeek = document.getElementById('npSeek');
+    const npTime = document.getElementById('npTime');
+    const npDur = document.getElementById('npDur');
+
+    function formatTime(seconds) {
+      const m = Math.floor(seconds / 60) || 0;
+      const s = Math.floor(seconds % 60) || 0;
+      return `${m}:${String(s).padStart(2, '0')}`;
+    }
+
+    function setNowPlaying(title, ws, audio, anchor) {
+      current = { ws, audio, title, anchor };
+      npTitle.textContent = title;
+      npPlay.disabled = false;
+      npStop.disabled = false;
+      npSeek.disabled = false;
+      npPlay.textContent = audio.paused ? 'Play' : 'Pause';
+      npDur.textContent = formatTime(audio.duration || (ws && ws.getDuration && ws.getDuration()) || 0);
+
+      const updateSeek = () => {
+        const dur = audio.duration || 0;
+        const cur = audio.currentTime || 0;
+        npSeek.value = dur ? Math.floor((cur / dur) * 100) : 0;
+        npTime.textContent = formatTime(cur);
+      };
+
+      audio.addEventListener('timeupdate', updateSeek);
+      audio.addEventListener('loadedmetadata', updateSeek);
+
+      npSeek.oninput = (e) => {
+        const pct = Number(e.target.value) / 100;
+        const dur = audio.duration || 0;
+        if (dur) audio.currentTime = pct * dur;
+      };
+
+      npPlay.onclick = () => togglePlay(ws, audio, title, anchor);
+      npStop.onclick = () => {
+        audio.pause();
+        audio.currentTime = 0;
+        npPlay.textContent = 'Play';
+      };
+
+      history.replaceState(null, '', anchor);
+    }
+
+    function togglePlay(ws, audio, title, anchor) {
+      audios.forEach((a) => { if (a !== audio) a.pause(); });
+      surfers.forEach((other) => { if (other !== ws && other.pause) other.pause(); });
+
+      if (audio.paused) {
+        audio.play();
+      } else {
+        audio.pause();
+      }
+
+      setNowPlaying(title, ws, audio, anchor);
+    }
+
+    function buildDisplayTitle(title, length, songs, displayTitle) {
+      if (displayTitle) return displayTitle;
+      const safeLength = length ? ` (${length})` : '';
+      const safeSongs = songs ? ` — ${songs}` : '';
+      return `${title || 'Untitled Mix'}${safeLength}${safeSongs}`;
+    }
+
+    function makeCard(mix, sectionKey = 'mix') {
+      const display = buildDisplayTitle(mix.title, mix.length, mix.songs, mix.displayTitle);
+      const audioUrl = mix.audio || mix.url;
+
+      const anchor = slugify(`${sectionKey}-${display}`);
+      const cardId = `card-${anchor}`;
+
+      const card = el('article', { className: 'mix-card', id: cardId });
+      const header = el('div', { className: 'mix-header' });
+      const titleWrap = el('div');
+      const titleEl = el('h3', { className: 'mix-title', innerText: display });
+      titleWrap.append(titleEl);
+
+      const controls = el('div', { className: 'flex gap-2 flex-wrap' });
+      const playBtn = el('button', { className: 'btn btn-primary', innerText: 'Play', disabled: true });
+      controls.append(playBtn);
+      header.append(titleWrap, controls);
+
+      const waveWrap = el('div');
+      const wave = el('div', { className: 'wave', id: `wave-${anchor}` });
+      const timeline = el('div', { className: 'timeline', id: `timeline-${anchor}` });
+      waveWrap.append(wave, timeline);
+
+      const audio = el('audio', { src: toDirect(audioUrl), preload: 'none' });
+      audio.style.display = 'none';
+
+      const footer = el('div', { className: 'mix-status' }, [
+        el('span', { innerText: 'Idle' })
+      ]);
+
+      card.prepend(el('a', { id: anchor }));
+      card.append(header, waveWrap, audio, footer);
+
+      const obs = new IntersectionObserver((entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          obs.disconnect();
+
+          try {
+            const ws = WaveSurfer.create({
+              container: wave,
+              height: 74,
+              waveColor: '#d4d4d8',
+              progressColor: '#111111',
+              cursorColor: '#52525b',
+              interact: true,
+              dragToSeek: true,
+              minPxPerSec: 50,
+              media: audio,
+            });
+
+            ws.registerPlugin(WaveSurfer.Timeline.create({ container: timeline }));
+            surfers.set(cardId, ws);
+            audios.set(cardId, audio);
+            playBtn.disabled = false;
+
+            const onReady = () => {
+              const d = audio.duration || ws.getDuration?.() || 0;
+              footer.lastChild.textContent = d ? `Loaded • ${formatTime(d)}` : 'Loaded';
+            };
+
+            audio.addEventListener('loadedmetadata', onReady, { once: true });
+            ws.on('ready', onReady);
+
+            setTimeout(() => {
+              const hasCanvas = wave.querySelector('canvas, svg');
+              if (!hasCanvas) {
+                try { ws.destroy(); } catch (error) {}
+                const bar = document.createElement('div');
+                bar.className = 'mt-2 h-2.5 w-full bg-zinc-200 rounded-full';
+                const fill = document.createElement('div');
+                fill.className = 'h-2.5 bg-black rounded-full';
+                fill.style.width = '0%';
+                bar.appendChild(fill);
+                wave.replaceWith(bar);
+                timeline.remove();
+
+                const updateBar = () => {
+                  const dur = audio.duration || 0;
+                  const cur = audio.currentTime || 0;
+                  fill.style.width = (dur ? (cur / dur) * 100 : 0) + '%';
+                };
+
+                audio.addEventListener('timeupdate', updateBar);
+                audio.addEventListener('loadedmetadata', updateBar);
+              }
+            }, 1200);
+
+            ws.on('play', () => {
+              playBtn.textContent = 'Pause';
+              footer.lastChild.textContent = 'Playing';
+              setNowPlaying(display, ws, audio, `#${anchor}`);
+            });
+
+            ws.on('pause', () => {
+              playBtn.textContent = 'Play';
+              footer.lastChild.textContent = 'Paused';
+            });
+
+            ws.on('finish', () => {
+              playBtn.textContent = 'Play';
+              footer.lastChild.textContent = 'Finished';
+              if (current.ws === ws) npPlay.textContent = 'Play';
+            });
+
+            playBtn.addEventListener('click', () => togglePlay(ws, audio, display, `#${anchor}`));
+
+            if (location.hash === `#${anchor}`) {
+              setTimeout(() => {
+                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                togglePlay(ws, audio, display, `#${anchor}`);
+              }, 250);
+            }
+          } catch (error) {
+            waveWrap.remove();
+            audio.style.display = '';
+            audio.controls = true;
+            playBtn.remove();
+            footer.lastChild.textContent = 'Ready';
+          }
+        }
+      }, { rootMargin: '200px' });
+
+      obs.observe(card);
+      observers.set(cardId, obs);
+      return card;
+    }
+
+    function renderMixes(target, list, sectionKey) {
+      target.innerHTML = '';
+      list.forEach((mix, index) => {
+        target.append(makeCard(mix, `${sectionKey}-${index}`));
+      });
+    }
+
+    function isTruthyFeatured(value) {
+      if (typeof value === 'boolean') return value;
+      if (typeof value === 'number') return value === 1;
+      if (typeof value === 'string') {
+        const normalized = value.trim().toLowerCase();
+        return ['true', 'yes', 'y', '1', 'featured', 'new'].includes(normalized);
+      }
+      return false;
+    }
+
+    function isFeaturedMix(mix) {
+      return isTruthyFeatured(mix.featured)
+        || isTruthyFeatured(mix.isFeatured)
+        || isTruthyFeatured(mix.newFeatured)
+        || isTruthyFeatured(mix.new)
+        || isTruthyFeatured(mix.marcFeatured)
+        || isTruthyFeatured(mix.showOnFront)
+        || (Array.isArray(mix.categories) && mix.categories.some(cat => ['new', 'featured'].includes(String(cat).toLowerCase())));
+    }
+
+    function uniqueKey(mix) {
+      return `${mix.title || ''}||${mix.audio || mix.url || ''}`;
+    }
+
+    function seededShuffle(items, seedString) {
+      let seed = 0;
+      for (let i = 0; i < seedString.length; i++) {
+        seed = (seed * 31 + seedString.charCodeAt(i)) >>> 0;
+      }
+
+      function seededRandom() {
+        seed = (seed * 1664525 + 1013904223) >>> 0;
+        return seed / 4294967296;
+      }
+
+      const copy = [...items];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(seededRandom() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    (async function loadAndRender() {
+      try {
+        const cacheBust = new Date().toISOString().slice(0, 10);
+        const res = await fetch(`${DATA_URL}?v=${cacheBust}`);
+        if (!res.ok) throw new Error(`Failed to load ${DATA_URL}: ${res.status}`);
+
+        const raw = await res.json();
+        allMixes = Array.isArray(raw) ? raw : (Array.isArray(raw.mixes) ? raw.mixes : []);
+
+        uniqueMixes = Array.from(
+          new Map(allMixes.map(mix => [uniqueKey(mix), mix])).values()
+        );
+
+        featuredMixes = uniqueMixes.filter(isFeaturedMix);
+
+        const featuredSet = new Set(featuredMixes.map(uniqueKey));
+        dailyPool = uniqueMixes.filter(mix => !featuredSet.has(uniqueKey(mix)));
+
+        const today = new Date().toISOString().slice(0, 10);
+        dailyMixes = seededShuffle(dailyPool, today).slice(0, 3);
+
+        renderMixes(featuredList, featuredMixes, 'featured');
+        renderMixes(dailyList, dailyMixes, 'daily');
+        resultsNote.textContent = '';
+      } catch (error) {
+        console.error(error);
+        const msg1 = document.createElement('p');
+        msg1.className = 'text-sm text-red-700';
+        msg1.textContent = 'Could not load json/new26-2.json. Make sure the file exists and contains valid JSON.';
+        featuredList.appendChild(msg1.cloneNode(true));
+        dailyList.appendChild(msg1);
+      }
+    })();
+
+    searchInput.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase().trim();
+
+      if (!query) {
+        resultsNote.textContent = '';
+        renderMixes(dailyList, dailyMixes, 'daily');
+        return;
+      }
+
+      const words = query.split(/\s+/).filter(Boolean);
+
+      const results = dailyPool.filter(mix => {
+        const text = [
+          mix.title || '',
+          mix.songs || '',
+          mix.displayTitle || '',
+          mix.length || '',
+          mix.format || '',
+          ...(Array.isArray(mix.categories) ? mix.categories : [])
+        ].join(' ').toLowerCase();
+
+        return words.every(word => text.includes(word));
+      });
+
+      resultsNote.textContent = `${results.length} result${results.length === 1 ? '' : 's'} found`;
+      renderMixes(dailyList, results, 'daily-search');
+    });
+
+    if (location.hash) {
+      const target = document.querySelector(location.hash);
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  </script>
+  <script>
+(function () {
+  const TRACKING_URL = "https://script.google.com/macros/s/AKfycbxOwwx7FqgVnSVxURDnuKKeUjEmMqkbogSR5bKaoP-7htQ2oMzxuC-fplcT2ChMiO9J-w/exec";
+
+  const payload = {
+    page: window.location.pathname,
+    fullUrl: window.location.href,
+    title: document.title,
+    referrer: document.referrer || "direct",
+    userAgent: navigator.userAgent,
+    screen: `${window.screen.width}x${window.screen.height}`,
+    language: navigator.language,
+    timestamp: new Date().toISOString()
+  };
+
+  try {
+    fetch(TRACKING_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "text/plain"
+      },
+      body: JSON.stringify(payload)
+    });
+  } catch (err) {
+    console.error("Traffic tracking failed:", err);
+  }
+})();
+</script>
+</body>
+</html>
