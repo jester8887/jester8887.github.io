@@ -339,7 +339,7 @@
     "categories": [
       "hiphop"
     ],
-    "featured": false,
+    "featured": true,
     "length": "1m57s",
     "songs": "Work It (Missy Elliott), Go DJ (Lil Wayne), Let Me Clear My Throat (DJ Kool), DJ Turn It Up (Yellow Claw)"
   },
@@ -770,7 +770,7 @@
       "hiphop",
       "artist"
     ],
-    "featured": false,
+    "featured": true,
     "length": "2m48s",
     "songs": "HUMBLE. (Kendrick Lamar), DNA. (Kendrick Lamar), Alright (Kendrick Lamar), King Kunta (Kendrick Lamar)"
   },
@@ -1025,7 +1025,7 @@
     "categories": [
       "themed"
     ],
-    "featured": true,
+    "featured": false,
     "length": "2m22s",
     "songs": "Pon de Replay (Rihanna), Bang Bang (Jessie J), Physical (Dua Lipa), A Little Party Never Killed Nobody (Fergie), Shake Señora (Pitbull)"
   },
@@ -1067,7 +1067,7 @@
       "themed",
       "artist"
     ],
-    "featured": false,
+    "featured": true,
     "length": "2m00s",
     "songs": "Roxanne (Moulin Rouge), Dangerous (Michael Jackson)"
   },
@@ -1233,7 +1233,7 @@
       "hiphop",
       "artist"
     ],
-    "featured": true,
+    "featured": false,
     "length": "2m03s",
     "songs": "Miss Possessive (Tate McRae), Make Me (Just Keep Watching) (Tate McRae)"
   },
@@ -1305,7 +1305,7 @@
     "categories": [
       "themed"
     ],
-    "featured": true,
+    "featured": false,
     "length": "2m23s",
     "songs": "Mario Kart World (Remix), Super Sonic (Remix), Derezzed (Daft Punk), Video Games (Lana Del Rey), Zelda Song of Storms (Remix), We Have Explosive (The Future Sound of London), Mike Tyson’s Punch-Out (Remix)"
   },
