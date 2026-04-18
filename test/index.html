@@ -1,205 +1,380 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="noindex, nofollow">
-  <title>Private Mix Library</title>
-
-  <script>
-    const params = new URLSearchParams(window.location.search);
-    const accessParam = params.get("access");
-    const destination = "./new26mixes.html";
-
-    if (accessParam === "dance") {
-      localStorage.setItem("mb_access", "true");
-      window.location.replace(destination);
-    }
-
-    if (localStorage.getItem("mb_access") === "true") {
-      window.location.replace(destination);
-    }
-  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>MB Dance Cuts</title>
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-      background: #0f0f0f;
-      color: white;
-
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      text-align: center;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 420px;
-      padding: 24px;
-      box-sizing: border-box;
-    }
-
-    h1 {
-      font-size: 30px;
-      margin-bottom: 10px;
-    }
-
-    p {
-      opacity: 0.8;
-      margin-bottom: 14px;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #111;
+      color: #fff;
       line-height: 1.5;
-      font-size: 15px;
     }
 
-    .actions {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      margin-top: 10px;
-    }
-
-    /* PRIMARY BUTTON */
-    .cta-primary {
-      width: 100%;
-      padding: 16px;
-      background: #f5f5f0;
-      color: #000;
+    a {
+      color: inherit;
       text-decoration: none;
-      border-radius: 10px;
-      font-weight: 600;
-      font-size: 16px;
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px 60px;
+    }
+
+    .hero {
       text-align: center;
-      box-shadow: 0 4px 14px rgba(255,255,255,0.06);
-      transition: all 0.15s ease;
+      padding: 48px 20px 28px;
+      border-bottom: 1px solid rgba(255,255,255,0.18);
+      margin-bottom: 34px;
     }
 
-    .cta-primary:hover {
-      transform: translateY(-1px);
-      background: #ffffff;
-    }
-
-    .divider {
-      font-size: 11px;
-      opacity: 0.4;
-      letter-spacing: 1.5px;
-      margin: 6px 0;
-    }
-
-    /* FORM */
-    .subtle-form {
-      width: 100%;
-    }
-
-    .subtle-form input {
-      width: 100%;
-      padding: 12px;
-      border-radius: 8px;
-      border: none;
+    .hero-topline {
       font-size: 14px;
-      box-sizing: border-box;
-      text-align: center;
-      background: #1a1a1a;
-      color: white;
-      outline: none;
-      margin-bottom: 8px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.72);
+      margin-bottom: 12px;
     }
 
-    .subtle-form input:focus {
-      background: #222;
-      box-shadow: 0 0 0 1px #666;
+    .hero h1 {
+      margin: 0 0 14px;
+      font-size: clamp(32px, 5vw, 58px);
+      font-weight: 800;
+      letter-spacing: 0.03em;
     }
 
-    .subtle-form input::placeholder {
-      color: #aaa;
+    .hero p {
+      margin: 0 auto 18px;
+      max-width: 760px;
+      font-size: 18px;
+      color: rgba(255,255,255,0.84);
     }
 
-    .subtle-form button {
-      width: 100%;
-      padding: 12px;
-      border-radius: 8px;
-      border: none;
-      background: #555;
-      color: white;
-      font-size: 13px;
-      cursor: pointer;
-      transition: background 0.15s ease;
-    }
-
-    .subtle-form button:hover {
-      background: #666;
-    }
-
-    .micro-text {
-      font-size: 11px;
-      opacity: 0.45;
+    .hero-note {
+      font-size: 16px;
+      font-style: italic;
+      color: rgba(255,255,255,0.85);
       margin-top: 6px;
+    }
+
+    .section {
+      margin-top: 42px;
+    }
+
+    .section h2 {
+      text-align: center;
+      font-size: 28px;
+      margin: 0 0 8px;
+    }
+
+    .section-subtext {
+      text-align: center;
+      color: rgba(255,255,255,0.72);
+      margin: 0 0 24px;
+      font-size: 16px;
+    }
+
+    .mix-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 22px;
+    }
+
+    .mix-card {
+      background: #1b1b1b;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 6px 22px rgba(0,0,0,0.25);
+    }
+
+    .mix-title {
+      font-size: 21px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      text-align: center;
+    }
+
+    .mix-meta {
+      text-align: center;
+      color: rgba(255,255,255,0.7);
+      font-size: 14px;
+      margin-bottom: 14px;
+    }
+
+    .mix-songs {
+      color: rgba(255,255,255,0.85);
+      font-size: 14px;
+      text-align: center;
+      margin-bottom: 14px;
+      min-height: 42px;
+    }
+
+    audio {
+      width: 100%;
+      margin-top: 6px;
+    }
+
+    .cta-wrap {
+      text-align: center;
+      margin-top: 46px;
+      padding: 34px 20px 0;
+      border-top: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .cta-wrap h3 {
+      font-size: 30px;
+      margin: 0 0 10px;
+    }
+
+    .cta-wrap p {
+      max-width: 760px;
+      margin: 0 auto 20px;
+      color: rgba(255,255,255,0.8);
+      font-size: 17px;
+    }
+
+    .main-button {
+      display: inline-block;
+      background: #fff;
+      color: #111;
+      font-weight: 700;
+      font-size: 18px;
+      padding: 14px 28px;
+      border-radius: 999px;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+      margin-bottom: 20px;
+    }
+
+    .main-button:hover {
+      opacity: 0.92;
+      transform: translateY(-1px);
+    }
+
+    .contact-line {
+      font-size: 16px;
+      color: rgba(255,255,255,0.82);
+    }
+
+    .contact-line a {
+      text-decoration: underline;
+      font-weight: 700;
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.55);
+    }
+
+    .loading,
+    .error {
+      text-align: center;
+      font-size: 18px;
+      padding: 30px 0;
+      color: rgba(255,255,255,0.8);
+    }
+
+    @media (max-width: 640px) {
+      .hero {
+        padding-top: 34px;
+      }
+
+      .hero p {
+        font-size: 16px;
+      }
+
+      .section h2 {
+        font-size: 24px;
+      }
+
+      .cta-wrap h3 {
+        font-size: 26px;
+      }
     }
   </style>
 </head>
-
 <body>
-  <div class="container">
-    <h1>Private Mix Library</h1>
+  <div class="page">
+    <header class="hero">
+      <div class="hero-topline">MB Dance Cuts</div>
+      <h1>Featured Mixes + Daily Picks</h1>
+      <p>
+        High-impact competition and recital cuts, ready to use. Hear featured mixes first,
+        then explore a fresh set of daily picks from the larger collection.
+      </p>
+      <div class="hero-note">
+        Full library access and custom mixes available below.
+      </div>
+    </header>
 
-    <p>
-      This collection isn’t publicly listed.
-      If you're looking for mixes for your dancers, I’ve got you covered.
-    </p>
+    <main>
+      <section class="section">
+        <h2>Featured Mixes</h2>
+        <p class="section-subtext">Your three core showcase mixes.</p>
+        <div id="featuredMixes" class="mix-grid">
+          <div class="loading">Loading featured mixes...</div>
+        </div>
+      </section>
 
-    <p>
-      Message me and I’ll send you access right away.
-    </p>
+      <section class="section">
+        <h2>Today’s Picks</h2>
+        <p class="section-subtext">Six more mixes that rotate once per day.</p>
+        <div id="dailyMixes" class="mix-grid">
+          <div class="loading">Loading daily picks...</div>
+        </div>
+      </section>
 
-    <div class="actions">
-      <a class="cta-primary" href="https://www.facebook.com/marcbeth" target="_blank" rel="noopener noreferrer">
-        Message Me on Facebook (Preferred)
-      </a>
+      <section class="cta-wrap">
+        <h3>Want the Full Mix Library?</h3>
+        <p>
+          Browse the complete collection and hear more. If you need a custom cut, you can also reach out directly.
+        </p>
 
-      <div class="divider">OR</div>
+        <a class="main-button" href="./new26mixes.html">Enter Full Mix Library</a>
 
-      <form action="https://formspree.io/f/mjgjwlnq" method="POST" class="subtle-form">
-        <input
-          type="email"
-          name="email"
-          placeholder="Prefer email instead?"
-          required
-        >
+        <div class="contact-line">
+          For access to the full mix site or ask about custom mixes,
+          <a href="https://www.facebook.com/marcbeth" target="_blank" rel="noopener noreferrer">click here</a>
+          or email
+          <a href="mailto:mbdancecuts@gmail.com">mbdancecuts@gmail.com</a>
+        </div>
 
-        <input type="hidden" name="source" value="root-index-access-page">
-
-        <button type="submit">Request Access</button>
-
-        <div class="micro-text">No spam. Just access.</div>
-      </form>
-    </div>
+        <div class="footer-note">
+          New mixes rotate daily on this page.
+        </div>
+      </section>
+    </main>
   </div>
 
-  <!-- GoatCounter -->
   <script>
-    window.goatcounter = {
-      path: function () {
-        return location.pathname;
+    const JSON_PATH = "./json/new26-2.json";
+
+    function slugify(text = "") {
+      return text
+        .toString()
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, "-")
+        .replace(/[^\w\-]+/g, "")
+        .replace(/\-\-+/g, "-");
+    }
+
+    function hashString(str) {
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) {
+        hash = ((hash << 5) - hash) + str.charCodeAt(i);
+        hash |= 0;
       }
-    };
-  </script>
+      return Math.abs(hash);
+    }
 
-  <script data-goatcounter="https://jester8887.goatcounter.com/count"
-          async src="//gc.zgo.at/count.js"></script>
+    function seededShuffle(array, seedString) {
+      const arr = [...array];
+      let seed = hashString(seedString);
 
-  <!-- Track email submissions -->
-  <script>
-    document.querySelector('form').addEventListener('submit', function() {
-      if (window.goatcounter && window.goatcounter.count) {
-        window.goatcounter.count({
-          path: 'email_submit',
-          event: true
+      function random() {
+        seed = (seed * 1664525 + 1013904223) % 4294967296;
+        return seed / 4294967296;
+      }
+
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+
+      return arr;
+    }
+
+    function renderMixCard(mix) {
+      const card = document.createElement("div");
+      card.className = "mix-card";
+
+      const title = document.createElement("div");
+      title.className = "mix-title";
+      title.textContent = mix.title || "Untitled Mix";
+
+      const meta = document.createElement("div");
+      meta.className = "mix-meta";
+      const categories = Array.isArray(mix.categories) ? mix.categories.join(" • ") : "";
+      meta.textContent = [mix.length, categories].filter(Boolean).join(" • ");
+
+      const songs = document.createElement("div");
+      songs.className = "mix-songs";
+      songs.textContent = mix.songs || "";
+
+      const audio = document.createElement("audio");
+      audio.controls = true;
+      audio.preload = "none";
+      audio.src = mix.audio || "";
+
+      card.appendChild(title);
+      card.appendChild(meta);
+      card.appendChild(songs);
+      card.appendChild(audio);
+
+      return card;
+    }
+
+    async function loadMixes() {
+      const featuredContainer = document.getElementById("featuredMixes");
+      const dailyContainer = document.getElementById("dailyMixes");
+
+      try {
+        const response = await fetch(JSON_PATH);
+        if (!response.ok) {
+          throw new Error("Could not load " + JSON_PATH);
+        }
+
+        const mixes = await response.json();
+
+        const featured = mixes.filter(mix => mix.featured === true).slice(0, 3);
+
+        const featuredKeys = new Set(
+          featured.map(mix => `${slugify(mix.title || "")}|${mix.length || ""}`)
+        );
+
+        const nonFeatured = mixes.filter(mix => {
+          const key = `${slugify(mix.title || "")}|${mix.length || ""}`;
+          return !featuredKeys.has(key);
         });
+
+        const today = new Date();
+        const seed = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+        const dailyPicks = seededShuffle(nonFeatured, seed).slice(0, 6);
+
+        featuredContainer.innerHTML = "";
+        dailyContainer.innerHTML = "";
+
+        if (featured.length === 0) {
+          featuredContainer.innerHTML = '<div class="error">No featured mixes found in the JSON.</div>';
+        } else {
+          featured.forEach(mix => featuredContainer.appendChild(renderMixCard(mix)));
+        }
+
+        if (dailyPicks.length === 0) {
+          dailyContainer.innerHTML = '<div class="error">No daily picks available.</div>';
+        } else {
+          dailyPicks.forEach(mix => dailyContainer.appendChild(renderMixCard(mix)));
+        }
+
+      } catch (error) {
+        featuredContainer.innerHTML = '<div class="error">Could not load mixes. Make sure the JSON path is correct and valid.</div>';
+        dailyContainer.innerHTML = '<div class="error">Could not load daily picks.</div>';
+        console.error(error);
       }
-    });
+    }
+
+    loadMixes();
   </script>
 </body>
 </html>
