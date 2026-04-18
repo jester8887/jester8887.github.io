@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <title>Welcome</title>
+  <title>Private Mix Library</title>
 
   <script>
     const params = new URLSearchParams(window.location.search);
@@ -24,43 +24,119 @@
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
       background: #0f0f0f;
       color: white;
+
       display: flex;
-      align-items: center;
       justify-content: center;
-      height: 100vh;
+      align-items: center;
+      min-height: 100vh;
       text-align: center;
     }
 
     .container {
-      max-width: 500px;
-      padding: 20px;
+      width: 100%;
+      max-width: 420px;
+      padding: 24px;
+      box-sizing: border-box;
     }
 
     h1 {
-      font-size: 28px;
+      font-size: 30px;
       margin-bottom: 10px;
     }
 
     p {
       opacity: 0.8;
-      margin-bottom: 20px;
+      margin-bottom: 14px;
+      line-height: 1.5;
+      font-size: 15px;
     }
 
-    .cta {
-      display: inline-block;
-      padding: 12px 20px;
-      background: #ffffff;
+    .actions {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    /* PRIMARY BUTTON */
+    .cta-primary {
+      width: 100%;
+      padding: 16px;
+      background: #f5f5f0;
       color: #000;
       text-decoration: none;
-      border-radius: 6px;
-      font-weight: bold;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 16px;
+      text-align: center;
+      box-shadow: 0 4px 14px rgba(255,255,255,0.06);
+      transition: all 0.15s ease;
     }
 
-    .cta:hover {
-      opacity: 0.85;
+    .cta-primary:hover {
+      transform: translateY(-1px);
+      background: #ffffff;
+    }
+
+    .divider {
+      font-size: 11px;
+      opacity: 0.4;
+      letter-spacing: 1.5px;
+      margin: 6px 0;
+    }
+
+    /* FORM */
+    .subtle-form {
+      width: 100%;
+    }
+
+    .subtle-form input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      font-size: 14px;
+      box-sizing: border-box;
+      text-align: center;
+      background: #1a1a1a;
+      color: white;
+      outline: none;
+      margin-bottom: 8px;
+    }
+
+    .subtle-form input:focus {
+      background: #222;
+      box-shadow: 0 0 0 1px #666;
+    }
+
+    .subtle-form input::placeholder {
+      color: #aaa;
+    }
+
+    .subtle-form button {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      background: #555;
+      color: white;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    .subtle-form button:hover {
+      background: #666;
+    }
+
+    .micro-text {
+      font-size: 11px;
+      opacity: 0.45;
+      margin-top: 6px;
     }
   </style>
 </head>
@@ -68,28 +144,62 @@
 <body>
   <div class="container">
     <h1>Private Mix Library</h1>
+
     <p>
       This collection isn’t publicly listed.
       If you're looking for mixes for your dancers, I’ve got you covered.
     </p>
 
     <p>
-      Send me a quick message and I’ll get you access.
+      Message me and I’ll send you access right away.
     </p>
 
-    <a class="cta" href="https://www.facebook.com/marcbeth" target="_blank">
-      Message Me for Access
-    </a>
-  </div>
-<script>
-  window.goatcounter = {
-    path: function () {
-      return location.pathname;
-    }
-  };
-</script>
+    <div class="actions">
+      <a class="cta-primary" href="https://www.facebook.com/marcbeth" target="_blank" rel="noopener noreferrer">
+        Message Me on Facebook (Preferred)
+      </a>
 
-<script data-goatcounter="https://jester8887.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
+      <div class="divider">OR</div>
+
+      <form action="https://formspree.io/f/mjgjwlnq" method="POST" class="subtle-form">
+        <input
+          type="email"
+          name="email"
+          placeholder="Prefer email instead?"
+          required
+        >
+
+        <input type="hidden" name="source" value="root-index-access-page">
+
+        <button type="submit">Request Access</button>
+
+        <div class="micro-text">No spam. Just access.</div>
+      </form>
+    </div>
+  </div>
+
+  <!-- GoatCounter -->
+  <script>
+    window.goatcounter = {
+      path: function () {
+        return location.pathname;
+      }
+    };
+  </script>
+
+  <script data-goatcounter="https://jester8887.goatcounter.com/count"
+          async src="//gc.zgo.at/count.js"></script>
+
+  <!-- Track email submissions -->
+  <script>
+    document.querySelector('form').addEventListener('submit', function() {
+      if (window.goatcounter && window.goatcounter.count) {
+        window.goatcounter.count({
+          path: 'email_submit',
+          event: true
+        });
+      }
+    });
+  </script>
 </body>
 </html>
