@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <title>Welcome</title>
+  <title>Private Mix Library</title>
 
   <script>
     const params = new URLSearchParams(window.location.search);
@@ -48,50 +48,61 @@
 
     p {
       opacity: 0.8;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
       line-height: 1.5;
     }
 
-    form {
-      margin-top: 20px;
-    }
-
-    .email-input {
-      width: 100%;
-      padding: 12px 14px;
-      margin-bottom: 12px;
-      border: none;
-      border-radius: 6px;
-      box-sizing: border-box;
-      font-size: 16px;
-    }
-
-    .cta {
+    /* PRIMARY BUTTON */
+    .cta-primary {
       display: inline-block;
       width: 100%;
-      padding: 12px 20px;
+      padding: 14px 20px;
       background: #ffffff;
       color: #000;
       text-decoration: none;
       border-radius: 6px;
       font-weight: bold;
       font-size: 16px;
+      margin-top: 10px;
+    }
+
+    .cta-primary:hover {
+      opacity: 0.85;
+    }
+
+    /* DIVIDER */
+    .divider {
+      margin: 18px 0 10px;
+      font-size: 12px;
+      opacity: 0.5;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* SUBTLE FORM */
+    .subtle-form input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 6px;
+      border-radius: 6px;
       border: none;
-      cursor: pointer;
-      box-sizing: border-box;
-    }
-
-    .cta:hover {
-      opacity: 0.85;
-    }
-
-    .secondary-link {
-      display: inline-block;
-      margin-top: 16px;
-      color: white;
-      opacity: 0.85;
-      text-decoration: underline;
       font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .subtle-form button {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      background: #666;
+      color: white;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .subtle-form button:hover {
+      opacity: 0.85;
     }
   </style>
 </head>
@@ -106,28 +117,32 @@
     </p>
 
     <p>
-      Enter your email and I’ll send you access.
+      The fastest way to get access is to message me directly.
     </p>
 
-    <form action="https://formspree.io/f/mjgjwlnq" method="POST">
+    <!-- 🔥 PRIMARY CTA -->
+    <a class="cta-primary" href="https://www.facebook.com/marcbeth" target="_blank" rel="noopener noreferrer">
+      Message Me on Facebook
+    </a>
+
+    <!-- 👇 SECONDARY OPTION -->
+    <div class="divider">or</div>
+
+    <form action="https://formspree.io/f/mjgjwlnq" method="POST" class="subtle-form">
       <input
-        class="email-input"
         type="email"
         name="email"
-        placeholder="Enter your email"
+        placeholder="Prefer email instead?"
         required
       >
 
       <input type="hidden" name="source" value="root-index-access-page">
 
-      <button class="cta" type="submit">Get Access</button>
+      <button type="submit">Request Access</button>
     </form>
-
-    <a class="secondary-link" href="https://www.facebook.com/marcbeth" target="_blank" rel="noopener noreferrer">
-      Prefer Facebook? Message me here.
-    </a>
   </div>
 
+  <!-- GoatCounter -->
   <script>
     window.goatcounter = {
       path: function () {
@@ -139,6 +154,7 @@
   <script data-goatcounter="https://jester8887.goatcounter.com/count"
           async src="//gc.zgo.at/count.js"></script>
 
+  <!-- Track email submissions -->
   <script>
     document.querySelector('form').addEventListener('submit', function() {
       if (window.goatcounter && window.goatcounter.count) {
