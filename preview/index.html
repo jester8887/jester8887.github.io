@@ -93,23 +93,60 @@
       pointer-events: none;
       opacity: 0.78;
     }
+.preview-cta {
+  display: block;
+  cursor: pointer;
 
-    .preview-cta {
-      border-top: 1px solid #d4d4d8;
-      text-align: center;
-      padding: 9px 16px 11px;
-      font-size: 0.92rem;
-      font-style: italic;
-    }
+  border-top: 1px solid #d4d4d8;
+  background: #f5f5f5;
+  text-align: center;
+  padding: 16px 16px 18px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+}
+.preview-cta.scrolled {
+  padding: 12px 16px 14px;
+  background: #eeeeee;
+  box-shadow: 0 3px 14px rgba(0,0,0,0.06);
+}
+    
+.preview-cta-link {
+  font-family: Arial Black, Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+  text-decoration: none;
+  color: #000;
+  font-size: clamp(1.4rem, 2vw, 2rem);
+  line-height: 1;
 
-    .preview-cta a {
-      color: #000;
-      text-decoration: underline;
-    }
+  border-bottom: 3px solid #000;
+  display: inline-block;
+  padding-bottom: 2px;
 
-    .preview-cta a:hover {
-      opacity: 0.7;
-    }
+  transition: all 0.15s ease;
+  animation: ctaPulse 1.6s ease-out 0.25s 1;
+transform-origin: center;
+}
+@keyframes ctaPulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  35% {
+    transform: scale(1.045);
+    opacity: 0.92;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+    
+.preview-cta-link:hover {
+  opacity: 0.75;
+  transform: translateY(-1px);
+}
+
 
     .page-wrap {
       max-width: 1320px;
@@ -378,10 +415,11 @@
         <span class="menu-link">Inquiries</span>
       </nav>
     </div>
-    <div class="preview-cta">
-      <a href="https://www.facebook.com/marcbeth" target="_blank">click here to request access to the full mix site</a>
-    </div>
-  </header>
+<a href="../index.html" class="preview-cta">
+  <span class="preview-cta-link">
+    CLICK HERE FOR FULL ACCESS
+  </span>
+</a>
 
   <main id="main" class="page-wrap">
     <section class="top-hero" aria-label="Preview hero">
@@ -402,14 +440,11 @@
       <div id="featuredList" class="player-shell"></div>
     </section>
 
-    <section class="email-wrap" aria-label="Contact information">
-     <p class="email-callout">
-  For access to the full mix site or ask about custom mixes,
-  <a href="https://www.facebook.com/marcbeth" target="_blank">click here</a>
-  or email
-  <a href="mailto:mbdancecuts@gmail.com?subject=Full%20Mix%20Site%20Request">mbdancecuts@gmail.com</a>
-</p>
-    </section>
+<section class="email-wrap" aria-label="Full access">
+  <p class="email-callout">
+    <a href="../index.html">CLICK HERE FOR FULL ACCESS</a>
+  </p>
+</section>
   </main>
 
   <div id="nowPlaying" class="sticky-player" aria-label="Now playing bar">
@@ -761,5 +796,20 @@
 
 <script data-goatcounter="https://jester8887.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
+    <script>
+  (function () {
+    const cta = document.querySelector('.preview-cta');
+
+    function handleScroll() {
+      if (window.scrollY > 40) {
+        cta.classList.add('scrolled');
+      } else {
+        cta.classList.remove('scrolled');
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll);
+  })();
+</script>
 </body>
 </html>
