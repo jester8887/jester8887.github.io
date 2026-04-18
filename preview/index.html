@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>MB DanceCuts</title>
+  <title>MB DanceCuts Preview</title>
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-CG99TYH350"></script>
   <script>
@@ -93,50 +93,60 @@
       pointer-events: none;
       opacity: 0.78;
     }
+.preview-cta {
+  display: block;
+  cursor: pointer;
 
-    .preview-cta {
-      display: block;
-      cursor: pointer;
-      border-top: 1px solid #d4d4d8;
-      background: #f5f5f5;
-      text-align: center;
-      padding: 16px 16px 18px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.04);
-    }
+  border-top: 1px solid #d4d4d8;
+  background: #f5f5f5;
+  text-align: center;
+  padding: 16px 16px 18px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+}
+.preview-cta.scrolled {
+  padding: 12px 16px 14px;
+  background: #eeeeee;
+  box-shadow: 0 3px 14px rgba(0,0,0,0.06);
+}
+    
+.preview-cta-link {
+  font-family: Arial Black, Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+  text-decoration: none;
+  color: #000;
+  font-size: clamp(1.4rem, 2vw, 2rem);
+  line-height: 1;
 
-    .preview-cta.scrolled {
-      padding: 12px 16px 14px;
-      background: #eeeeee;
-      box-shadow: 0 3px 14px rgba(0,0,0,0.06);
-    }
+  border-bottom: 3px solid #000;
+  display: inline-block;
+  padding-bottom: 2px;
 
-    .preview-cta-link {
-      font-family: Arial Black, Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: -0.03em;
-      text-decoration: none;
-      color: #000;
-      font-size: clamp(1.4rem, 2vw, 2rem);
-      line-height: 1;
-      border-bottom: 3px solid #000;
-      display: inline-block;
-      padding-bottom: 2px;
-      transition: all 0.15s ease;
-      animation: ctaPulse 1.6s ease-out 0.25s 1;
-      transform-origin: center;
-    }
+  transition: all 0.15s ease;
+  animation: ctaPulse 1.6s ease-out 0.25s 1;
+transform-origin: center;
+}
+@keyframes ctaPulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  35% {
+    transform: scale(1.045);
+    opacity: 0.92;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+    
+.preview-cta-link:hover {
+  opacity: 0.75;
+  transform: translateY(-1px);
+}
 
-    @keyframes ctaPulse {
-      0% { transform: scale(1); opacity: 1; }
-      35% { transform: scale(1.045); opacity: 0.92; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-
-    .preview-cta-link:hover {
-      opacity: 0.75;
-      transform: translateY(-1px);
-    }
 
     .page-wrap {
       max-width: 1320px;
@@ -292,15 +302,15 @@
       max-width: 1200px;
     }
 
-    .email-callout a {
-      color: inherit;
-      text-decoration: none;
-      border-bottom: none;
-    }
+.email-callout a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: none;
+}
 
-    .email-callout a:first-of-type {
-      border-bottom: 3px solid #000;
-    }
+.email-callout a:first-of-type {
+  border-bottom: 3px solid #000;
+}
 
     .sticky-player {
       position: fixed;
@@ -395,7 +405,7 @@
 
   <header class="topbar">
     <div class="topbar-inner">
-      <a href="./index.html" class="brand">MBDANCECUTS</a>
+      <a href="/preview/" class="brand">MBDANCECUTS</a>
       <nav class="menu preview-menu" aria-label="Preview navigation">
         <span class="menu-link">Home</span>
         <span class="menu-link">Themed</span>
@@ -405,12 +415,11 @@
         <span class="menu-link">Inquiries</span>
       </nav>
     </div>
-    <a href="./new26mixes.html" class="preview-cta">
-      <span class="preview-cta-link">
-        CLICK HERE FOR FULL ACCESS
-      </span>
-    </a>
-  </header>
+<a href="../index.html" class="preview-cta">
+  <span class="preview-cta-link">
+    CLICK HERE FOR FULL ACCESS
+  </span>
+</a>
 
   <main id="main" class="page-wrap">
     <section class="top-hero" aria-label="Preview hero">
@@ -420,7 +429,7 @@
         Preview
       </h1>
       <p class="hero-subtitle">
-        A public preview of selected featured mixes, plus a rotating daily selection from the larger MB DanceCuts catalog.
+        A public preview of selected featured mixes. For access to the full catalog and additional private samples, use the link above to get in touch.
       </p>
     </section>
 
@@ -431,17 +440,11 @@
       <div id="featuredList" class="player-shell"></div>
     </section>
 
-    <section class="mixes-section" aria-label="Daily rotating mixes">
-      <h2 class="section-title">Today’s Picks</h2>
-      <p class="section-subtitle">A rotating selection from the full library.</p>
-      <div id="dailyList" class="player-shell"></div>
-    </section>
-
-    <section class="email-wrap" aria-label="Full access">
-      <p class="email-callout">
-        <a href="./new26mixes.html">CLICK HERE FOR FULL ACCESS</a>
-      </p>
-    </section>
+<section class="email-wrap" aria-label="Full access">
+  <p class="email-callout">
+    <a href="../index.html">CLICK HERE FOR FULL ACCESS</a>
+  </p>
+</section>
   </main>
 
   <div id="nowPlaying" class="sticky-player" aria-label="Now playing bar">
@@ -460,7 +463,7 @@
   </div>
 
   <script>
-    const DATA_URL = './json/new26-2.json';
+    const DATA_URL = '../json/new26-2.json';
 
     function toDirect(url) {
       if (!url) return '';
@@ -478,32 +481,6 @@
         .replace(/(^-|-$)/g, '');
     }
 
-    function hashString(str) {
-      let hash = 0;
-      for (let i = 0; i < str.length; i++) {
-        hash = ((hash << 5) - hash) + str.charCodeAt(i);
-        hash |= 0;
-      }
-      return Math.abs(hash);
-    }
-
-    function seededShuffle(array, seedStr) {
-      const arr = [...array];
-      let seed = hashString(seedStr);
-
-      function random() {
-        seed = (seed * 1664525 + 1013904223) % 4294967296;
-        return seed / 4294967296;
-      }
-
-      for (let i = arr.length - 1; i > 0; i--) {
-        const j = Math.floor(random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-      }
-
-      return arr;
-    }
-
     const el = (tag, props = {}, children = []) => {
       const node = document.createElement(tag);
       Object.assign(node, props);
@@ -512,13 +489,13 @@
     };
 
     const featuredList = document.getElementById('featuredList');
-    const dailyList = document.getElementById('dailyList');
     const resultsNote = document.getElementById('resultsNote');
     const observers = new Map();
     const surfers = new Map();
     const audios = new Map();
 
     let current = { ws: null, audio: null, title: '', anchor: '' };
+    let featuredMixes = [];
 
     const npTitle = document.getElementById('npTitle');
     const npPlay = document.getElementById('npPlay');
@@ -761,28 +738,16 @@
           new Map(allMixes.map(mix => [uniqueKey(mix), mix])).values()
         );
 
-        const featuredMixes = uniqueMixes.filter(isFeaturedMix).slice(0, 3);
-        const featuredKeys = new Set(featuredMixes.map(uniqueKey));
-        const nonFeatured = uniqueMixes.filter(m => !featuredKeys.has(uniqueKey(m)));
-
-        const today = new Date().toISOString().slice(0, 10);
-        const dailyMixes = seededShuffle(nonFeatured, today).slice(0, 6);
+        featuredMixes = uniqueMixes.filter(isFeaturedMix);
 
         renderMixes(featuredList, featuredMixes, 'featured');
-        renderMixes(dailyList, dailyMixes, 'daily');
-
-        resultsNote.textContent = `${featuredMixes.length} featured • ${dailyMixes.length} daily picks`;
+        resultsNote.textContent = `${featuredMixes.length} featured mix${featuredMixes.length === 1 ? '' : 'es'}`;
       } catch (error) {
         console.error(error);
-        const msg1 = document.createElement('p');
-        msg1.className = 'text-sm text-red-700';
-        msg1.textContent = 'Could not load ./json/new26-2.json. Make sure the file exists and contains valid JSON.';
-        featuredList.appendChild(msg1);
-
-        const msg2 = document.createElement('p');
-        msg2.className = 'text-sm text-red-700';
-        msg2.textContent = 'Could not load daily picks.';
-        dailyList.appendChild(msg2);
+        const msg = document.createElement('p');
+        msg.className = 'text-sm text-red-700';
+        msg.textContent = 'Could not load ../json/new26-2.json. Make sure the file exists and contains valid JSON.';
+        featuredList.appendChild(msg);
       }
     })();
 
@@ -821,32 +786,30 @@
       }
     })();
   </script>
+<script>
+  window.goatcounter = {
+    path: function () {
+      return location.pathname;
+    }
+  };
+</script>
 
-  <script>
-    window.goatcounter = {
-      path: function () {
-        return location.pathname;
+<script data-goatcounter="https://jester8887.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+    <script>
+  (function () {
+    const cta = document.querySelector('.preview-cta');
+
+    function handleScroll() {
+      if (window.scrollY > 40) {
+        cta.classList.add('scrolled');
+      } else {
+        cta.classList.remove('scrolled');
       }
-    };
-  </script>
+    }
 
-  <script data-goatcounter="https://jester8887.goatcounter.com/count"
-          async src="//gc.zgo.at/count.js"></script>
-
-  <script>
-    (function () {
-      const cta = document.querySelector('.preview-cta');
-
-      function handleScroll() {
-        if (window.scrollY > 40) {
-          cta.classList.add('scrolled');
-        } else {
-          cta.classList.remove('scrolled');
-        }
-      }
-
-      window.addEventListener('scroll', handleScroll);
-    })();
-  </script>
+    window.addEventListener('scroll', handleScroll);
+  })();
+</script>
 </body>
 </html>
