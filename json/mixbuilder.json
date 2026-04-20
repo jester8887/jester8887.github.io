@@ -1,0 +1,19 @@
+{
+  "pricing": {
+    "baseMixPrice": 50,
+    "includedPreMadeClips": 3,
+    "additionalPreMadeClipPrice": 10,
+    "firstNewSongPrice": 25,
+    "additionalNewSongPrice": 20,
+    "includedRevisionAddonPrice": 10,
+    "rushAddonPrice": 25,
+    "nonIncludedRevisionPrice": 15
+  },
+  "delivery": {
+    "preMadeOnly": "7 days",
+    "upTo2NewSongs": "10 days",
+    "moreThan2NewSongs": "2 weeks",
+    "rush": "3 days",
+    "rushNote": "subject to availability"
+  }
+}
