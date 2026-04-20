@@ -950,16 +950,25 @@
         Add any final notes below, then choose Facebook to copy the mix instructions and open my Facebook page, or choose email to generate a draft with the subject “Mix Builder Request” and your mix instructions already inserted.
       </p>
 
-      <div class="extra-notes-wrap">
-        <label for="extraNotes" class="extra-notes-label">Any Other Notes to Include?</label>
-        <textarea id="extraNotes" placeholder="Add any notes you want me to see with this request."></textarea>
-      </div>
-
+         <div class="extra-notes-wrap">
+      <label style="display:flex; align-items:center; gap:10px; margin-bottom:12px; font-size:0.98rem;">
+        <input type="checkbox" id="fullCustomCheckbox" style="width:16px; height:16px; accent-color:#000; cursor:pointer; flex:0 0 auto;">
+        <span>Check here to request a full custom mix and ignore the builder above</span>
+      </label>
+    
+      <label for="extraNotes" class="extra-notes-label">Any Other Notes to Include?</label>
+      <textarea id="extraNotes" placeholder="Add any notes you want me to see with this request."></textarea>
+    </div>
+      
       <div class="request-send-actions">
-        <button id="facebookRequestBtn">Copy Instructions + Facebook</button>
-        <button id="emailRequestBtn" class="btn-dark">Email Request</button>
+        <button id="facebookRequestBtn" class="btn-dark">
+          Copy Instructions + Open Facebook
+        </button>
+      
+        <button id="emailRequestBtn">
+          Email Request
+        </button>
       </div>
-
       <div id="sendStatus" class="send-status"></div>
     </section>
   </main>
@@ -1001,6 +1010,7 @@
     const rushCheckbox = document.getElementById("rushCheckbox");
     const revisionLabelEl = document.getElementById("revisionLabel");
     const rushLabelEl = document.getElementById("rushLabel");
+    const fullCustomCheckbox = document.getElementById("fullCustomCheckbox");
     const extraNotesEl = document.getElementById("extraNotes");
 
     const heroSubtitleEl = document.getElementById("heroSubtitle");
@@ -1246,34 +1256,45 @@
       }, 360);
     }
 
-    function buildFullOutput() {
-      const mixLines = mixOutputEl.value.trim();
-      const notes = extraNotesEl.value.trim();
-      const pricing = calculatePrice();
-      const summaryTitle = builderConfig.copy.pricing_summary_title || "Pricing Summary";
+function buildFullOutput() {
+  const notes = extraNotesEl.value.trim();
 
-      let output = mixLines || "No clips selected.";
+  if (fullCustomCheckbox.checked) {
+    let output = "Full Custom Mix Request";
 
-      if (notes) {
-        output += `\n\nAny Other Notes:\n${notes}`;
-      }
-
-      output += `\n\n${summaryTitle}:\n`;
-      output += `Pre-made clips: ${pricing.preMadeCount}\n`;
-      output += `New song requests: ${pricing.requestCount}\n`;
-      output += `Pre-order included revision: ${revisionCheckbox.checked ? "Yes" : "No"}\n`;
-      output += `Rush order: ${rushCheckbox.checked ? "Yes" : "No"}\n`;
-
-      if (pricing.breakdown.length) {
-        output += `\n`;
-        pricing.breakdown.forEach(line => {
-          output += `${line}\n`;
-        });
-      }
-
-      output += `\nTotal: ${formatCurrency(pricing.total)}`;
-      return output.trim();
+    if (notes) {
+      output += `\n\nAny Other Notes:\n${notes}`;
     }
+
+    return output.trim();
+  }
+
+  const mixLines = mixOutputEl.value.trim();
+  const pricing = calculatePrice();
+  const summaryTitle = builderConfig.copy.pricing_summary_title || "Pricing Summary";
+
+  let output = mixLines || "No clips selected.";
+
+  if (notes) {
+    output += `\n\nAny Other Notes:\n${notes}`;
+  }
+
+  output += `\n\n${summaryTitle}:\n`;
+  output += `Pre-made clips: ${pricing.preMadeCount}\n`;
+  output += `New song requests: ${pricing.requestCount}\n`;
+  output += `Pre-order included revision: ${revisionCheckbox.checked ? "Yes" : "No"}\n`;
+  output += `Rush order: ${rushCheckbox.checked ? "Yes" : "No"}\n`;
+
+  if (pricing.breakdown.length) {
+    output += `\n`;
+    pricing.breakdown.forEach(line => {
+      output += `${line}\n`;
+    });
+  }
+
+  output += `\nTotal: ${formatCurrency(pricing.total)}`;
+  return output.trim();
+}
 
     function resumeFromPlayhead() {
       if (!roughMix.length) {
@@ -1987,7 +2008,7 @@
     facebookRequestBtn.addEventListener("click", async () => {
       const output = buildFullOutput();
 
-      if (!roughMix.length) {
+        if (!roughMix.length && !fullCustomCheckbox.checked) {
         sendStatusEl.textContent = "Build your mix first so there are instructions to send.";
         return;
       }
@@ -2002,7 +2023,7 @@
     });
 
     emailRequestBtn.addEventListener("click", () => {
-      if (!roughMix.length) {
+      if (!roughMix.length && !fullCustomCheckbox.checked) {
         sendStatusEl.textContent = "Build your mix first so there are instructions to email.";
         return;
       }
