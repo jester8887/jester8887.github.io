@@ -19,6 +19,9 @@
       --timeline-height: 128px;
       --timeline-track-height: 100px;
       --playhead-width: 3px;
+      --request-bg: #f4e5b6;
+      --request-border: #7a5c00;
+      --request-text: #111;
     }
 
     * {
@@ -81,16 +84,21 @@
       order: 1;
     }
 
-    .search-box {
+    .search-box,
+    .request-form input,
+    .request-form textarea {
       width: 100%;
       box-sizing: border-box;
       padding: 12px;
-      margin-bottom: 12px;
       border-radius: 6px;
       border: 1px solid var(--border-soft);
       background: var(--card);
       color: var(--text);
       font-size: 1rem;
+    }
+
+    .search-box {
+      margin-bottom: 12px;
     }
 
     .search-meta {
@@ -100,8 +108,46 @@
       min-height: 1.2em;
     }
 
+    .request-builder {
+      margin-bottom: 18px;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #151515;
+    }
+
+    .request-builder h3 {
+      margin: 0 0 8px 0;
+      font-size: 1rem;
+    }
+
+    .request-note {
+      margin: 0 0 12px 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.35;
+    }
+
+    .request-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .request-form .full-width {
+      grid-column: 1 / -1;
+    }
+
+    .request-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
     .clip-list,
-    .mix-list {
+    .mix-list,
+    .request-list {
       display: flex;
       flex-direction: column;
       gap: 10px;
@@ -109,27 +155,44 @@
       overflow-y: auto;
     }
 
+    .request-list {
+      max-height: none;
+      margin-bottom: 14px;
+    }
+
     .clip-card,
-    .mix-card {
+    .mix-card,
+    .request-card {
       background: var(--card);
       border: 1px solid #3a3a3a;
       border-radius: 8px;
       padding: 12px;
     }
 
+    .request-card {
+      border-color: #645100;
+      background: #2b2411;
+    }
+
     .clip-title,
-    .mix-title {
+    .mix-title,
+    .request-title {
       font-weight: bold;
       margin-bottom: 4px;
       line-height: 1.2;
     }
 
     .clip-meta,
-    .mix-meta {
+    .mix-meta,
+    .request-meta {
       font-size: 0.9rem;
       color: var(--muted);
       margin-bottom: 10px;
       line-height: 1.3;
+    }
+
+    .request-meta {
+      color: #d8c68b;
     }
 
     .button-row {
@@ -257,12 +320,19 @@
       transition: background 0.15s ease, transform 0.15s ease;
     }
 
+    .mix-block.request-block {
+      background: var(--request-bg);
+      border-color: var(--request-border);
+      color: var(--request-text);
+    }
+
     .mix-block + .mix-block {
       margin-left: 6px;
     }
 
     .mix-block.active {
-      background: #cfe9ff;
+      box-shadow: 0 0 0 2px var(--accent) inset;
+      transform: translateY(-1px);
     }
 
     .mix-block-number {
@@ -303,6 +373,15 @@
       -webkit-box-orient: vertical;
       overflow: hidden;
       max-width: 100%;
+    }
+
+    .mix-block-tag {
+      margin-top: 4px;
+      font-size: 0.68rem;
+      font-weight: bold;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      opacity: 0.82;
     }
 
     .playhead {
@@ -348,12 +427,13 @@
       white-space: nowrap;
     }
 
-    .mix-card.playing {
+    .mix-card.playing,
+    .request-card.playing {
       border-color: var(--accent);
       box-shadow: 0 0 0 1px rgba(159, 211, 255, 0.4);
     }
 
-    textarea {
+    textarea#mixOutput {
       width: 100%;
       min-height: 140px;
       box-sizing: border-box;
@@ -403,6 +483,10 @@
       .mix-list {
         max-height: none;
       }
+
+      .request-form {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -429,6 +513,27 @@
     <section class="panel panel-mix">
       <h2>Your Rough Mix</h2>
 
+      <div class="request-builder">
+        <h3>Add New Song Request</h3>
+        <p class="request-note">
+          Need a clip that is not in the library? Add it here. New song requests are an add-on cost.
+          Excerpt details are optional, but timestamps are preferred.
+        </p>
+
+        <div class="request-form">
+          <input id="newSongTitle" type="text" placeholder="Song title" />
+          <input id="newSongArtist" type="text" placeholder="Artist" />
+          <input id="newSongLength" type="text" placeholder="Estimated length (example: 45s or 1m10s)" />
+          <textarea id="newSongExcerpt" class="full-width" rows="3" placeholder="Optional excerpt details or timestamps (example: chorus from 0:42-1:18)"></textarea>
+        </div>
+
+        <div class="request-actions">
+          <button id="addNewSongBtn">Add New Song Request to Mix</button>
+        </div>
+      </div>
+
+      <div id="requestList" class="request-list"></div>
+
       <div class="main-controls">
         <button id="playMixBtn">Play Rough Mix</button>
         <button id="stopMixBtn">Stop</button>
@@ -437,7 +542,7 @@
       </div>
 
       <div class="mix-summary">
-        <div><strong>Clips:</strong> <span id="clipCount">0</span></div>
+        <div><strong>Segments:</strong> <span id="clipCount">0</span></div>
         <div><strong>Total Time:</strong> <span id="totalTime">0:00</span></div>
       </div>
 
@@ -467,6 +572,7 @@
   <script>
     const clipListEl = document.getElementById("clipList");
     const mixListEl = document.getElementById("mixList");
+    const requestListEl = document.getElementById("requestList");
     const mixOutputEl = document.getElementById("mixOutput");
     const searchInputEl = document.getElementById("searchInput");
     const searchMetaEl = document.getElementById("searchMeta");
@@ -485,6 +591,12 @@
     const stopMixBtn = document.getElementById("stopMixBtn");
     const clearMixBtn = document.getElementById("clearMixBtn");
     const copyListBtn = document.getElementById("copyListBtn");
+    const addNewSongBtn = document.getElementById("addNewSongBtn");
+
+    const newSongTitleEl = document.getElementById("newSongTitle");
+    const newSongArtistEl = document.getElementById("newSongArtist");
+    const newSongLengthEl = document.getElementById("newSongLength");
+    const newSongExcerptEl = document.getElementById("newSongExcerpt");
 
     let allClips = [];
     let filteredClips = [];
@@ -495,6 +607,8 @@
     let trackStartTime = 0;
     let animationFrameId = null;
     let isDraggingPlayhead = false;
+    let placeholderTimer = null;
+    let nextRequestId = 1;
 
     async function loadClips() {
       try {
@@ -511,6 +625,10 @@
 
     function clipDisplayName(clip) {
       return `${clip.artist} [${clip.title}]`;
+    }
+
+    function isRequestItem(item) {
+      return item && item.type === "request";
     }
 
     function parseLengthToSeconds(length) {
@@ -533,6 +651,11 @@
       return `${m}:${String(s).padStart(2, "0")}`;
     }
 
+    function isValidLengthFormat(value) {
+      const str = String(value || "").trim().toLowerCase();
+      return /^\d+m\d{1,2}s$/.test(str) || /^\d+s$/.test(str);
+    }
+
     function titleFontSizeForBlock(title, widthPx) {
       const len = (title || "").length;
       if (widthPx < 90 || len > 28) return "0.78rem";
@@ -553,12 +676,6 @@
       return shouldScroll ? fittedWidth : shellWidth;
     }
 
-    function shouldScrollTimeline(totalSeconds) {
-      const width = getTimelineWidth(totalSeconds);
-      const shellWidth = timelineShellEl.clientWidth ? timelineShellEl.clientWidth - 24 : 640;
-      return totalSeconds >= 240 || width > shellWidth;
-    }
-
     function getClipRanges() {
       let elapsed = 0;
       return roughMix.map((clip, index) => {
@@ -571,8 +688,10 @@
     }
 
     function getCurrentGlobalTime() {
-      if (!currentAudio || currentMixIndex < 0 || currentMixIndex >= roughMix.length) return 0;
-      return trackStartTime + (currentAudio.currentTime || 0);
+      if (currentMixIndex < 0 || currentMixIndex >= roughMix.length) return 0;
+      const currentItem = roughMix[currentMixIndex];
+      const currentTime = currentAudio ? (currentAudio.currentTime || 0) : 0;
+      return trackStartTime + currentTime + (isRequestItem(currentItem) && currentItem._placeholderElapsed ? currentItem._placeholderElapsed : 0);
     }
 
     function updateSearchMeta() {
@@ -597,6 +716,13 @@
       }
     }
 
+    function clearPlaceholderTimer() {
+      if (placeholderTimer) {
+        clearInterval(placeholderTimer);
+        placeholderTimer = null;
+      }
+    }
+
     function stopCurrentPlayback() {
       if (currentAudio) {
         currentAudio.pause();
@@ -604,17 +730,21 @@
         currentAudio.onended = null;
       }
       currentAudio = null;
+      clearPlaceholderTimer();
       isPlayingMix = false;
       currentMixIndex = -1;
       trackStartTime = 0;
       cancelPlayheadLoop();
+      roughMix.forEach(item => {
+        if (isRequestItem(item)) item._placeholderElapsed = 0;
+      });
       highlightCurrentMixCard(-1);
       highlightCurrentMixBlock(-1);
       updatePlayhead(0);
     }
 
     function highlightCurrentMixCard(index) {
-      document.querySelectorAll(".mix-card").forEach((card, i) => {
+      document.querySelectorAll(".mix-card, .request-card").forEach((card, i) => {
         card.classList.toggle("playing", i === index);
       });
     }
@@ -728,6 +858,45 @@
       return (x / rect.width) * total;
     }
 
+    function resetNewSongForm() {
+      newSongTitleEl.value = "";
+      newSongArtistEl.value = "";
+      newSongLengthEl.value = "";
+      newSongExcerptEl.value = "";
+    }
+
+    function addNewSongRequest() {
+      const title = newSongTitleEl.value.trim();
+      const artist = newSongArtistEl.value.trim();
+      const length = newSongLengthEl.value.trim().toLowerCase();
+      const excerpt = newSongExcerptEl.value.trim();
+
+      if (!title || !artist || !length) {
+        statusEl.textContent = "New song requests need title, artist, and estimated length.";
+        return;
+      }
+
+      if (!isValidLengthFormat(length)) {
+        statusEl.textContent = "Estimated length must look like 45s or 1m10s.";
+        return;
+      }
+
+      roughMix.push({
+        type: "request",
+        requestId: nextRequestId++,
+        title,
+        artist,
+        length,
+        excerpt,
+        audio: null,
+        _placeholderElapsed: 0
+      });
+
+      resetNewSongForm();
+      renderRoughMix();
+      statusEl.textContent = `Added new song request: ${artist} [${title}]`;
+    }
+
     function renderClipLibrary() {
       clipListEl.innerHTML = "";
 
@@ -762,7 +931,7 @@
       document.querySelectorAll(".add-btn").forEach(btn => {
         btn.addEventListener("click", () => {
           const clip = filteredClips[Number(btn.dataset.index)];
-          roughMix.push(clip);
+          roughMix.push({ ...clip, type: "clip" });
           renderRoughMix();
           statusEl.textContent = `Added: ${clipDisplayName(clip)}`;
         });
@@ -771,9 +940,7 @@
       document.querySelectorAll(".preview-btn").forEach(btn => {
         btn.addEventListener("click", () => {
           const clip = filteredClips[Number(btn.dataset.index)];
-          if (currentAudio) {
-            stopCurrentPlayback();
-          }
+          stopCurrentPlayback();
           currentAudio = new Audio(clip.audio);
           currentAudio.play();
           statusEl.textContent = `Previewing: ${clipDisplayName(clip)}`;
@@ -816,6 +983,7 @@
 
         const block = document.createElement("div");
         block.className = "mix-block";
+        if (isRequestItem(clip)) block.classList.add("request-block");
         block.dataset.index = index;
         block.style.width = `${width}px`;
         block.title = `${index + 1}. ${clip.title || ""} — ${clip.artist || ""} (${clip.length || ""})`;
@@ -833,15 +1001,20 @@
         artist.className = "mix-block-artist";
         artist.textContent = clip.artist || "";
 
+        const tag = document.createElement("div");
+        tag.className = "mix-block-tag";
+        tag.textContent = isRequestItem(clip) ? "new song request" : "";
+
         const number = document.createElement("div");
         number.className = "mix-block-number";
         number.textContent = index + 1;
 
         block.append(number, title, time, artist);
+        if (isRequestItem(clip)) block.append(tag);
 
         block.addEventListener("click", (e) => {
           e.stopPropagation();
-          const target = document.querySelector(`.mix-card[data-index="${index}"]`);
+          const target = document.querySelector(`.mix-card[data-index="${index}"], .request-card[data-index="${index}"]`);
           if (target) target.scrollIntoView({ behavior: "smooth", block: "nearest" });
         });
 
@@ -851,10 +1024,55 @@
       renderTimelineTicks(total, timelineWidth);
       updatePlayhead(getCurrentGlobalTime());
       highlightCurrentMixBlock(currentMixIndex);
+    }
 
-      if (!shouldScrollTimeline(total)) {
-        timelineShellEl.scrollLeft = 0;
-      }
+    function renderRequestList() {
+      const requests = roughMix
+        .map((item, index) => ({ item, index }))
+        .filter(({ item }) => isRequestItem(item));
+
+      requestListEl.innerHTML = "";
+      if (!requests.length) return;
+
+      requests.forEach(({ item, index }) => {
+        const card = document.createElement("div");
+        card.className = "request-card";
+        card.dataset.index = index;
+
+        card.innerHTML = `
+          <div class="request-title">${index + 1}. ${item.title}</div>
+          <div class="request-meta">${item.artist} • ${item.length} • Add-on request</div>
+          ${item.excerpt ? `<div class="request-meta">Excerpt: ${item.excerpt}</div>` : ""}
+          <div class="button-row">
+            <button data-index="${index}" class="request-playfrom-btn">Play from here</button>
+            <button data-index="${index}" class="request-edit-btn">Edit</button>
+            <button data-index="${index}" class="request-remove-btn">Remove</button>
+          </div>
+        `;
+
+        requestListEl.appendChild(card);
+      });
+
+      document.querySelectorAll(".request-playfrom-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const i = Number(btn.dataset.index);
+          playFromHere(i);
+        });
+      });
+
+      document.querySelectorAll(".request-edit-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const i = Number(btn.dataset.index);
+          editRequestAtIndex(i);
+        });
+      });
+
+      document.querySelectorAll(".request-remove-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const i = Number(btn.dataset.index);
+          removeSegmentAtIndex(i);
+        });
+      });
     }
 
     function renderRoughMix() {
@@ -864,6 +1082,7 @@
       totalTimeEl.textContent = formatSeconds(getTotalMixSeconds());
 
       renderMixVisual();
+      renderRequestList();
 
       if (!roughMix.length) {
         mixListEl.innerHTML = `<div class="mix-card">No clips selected yet.</div>`;
@@ -881,6 +1100,8 @@
       copyListBtn.disabled = false;
 
       roughMix.forEach((clip, index) => {
+        if (isRequestItem(clip)) return;
+
         const card = document.createElement("div");
         card.className = "mix-card";
         card.dataset.index = index;
@@ -889,6 +1110,7 @@
           <div class="mix-title">${index + 1}. ${clip.title || "Untitled"}</div>
           <div class="mix-meta">${clip.artist || "Unknown Artist"}${clip.length ? " • " + clip.length : ""}</div>
           <div class="button-row">
+            <button data-index="${index}" class="playfrom-btn">Play from here</button>
             <button data-index="${index}" class="up-btn">Up</button>
             <button data-index="${index}" class="down-btn">Down</button>
             <button data-index="${index}" class="remove-btn">Remove</button>
@@ -898,43 +1120,28 @@
         mixListEl.appendChild(card);
       });
 
-      document.querySelectorAll(".up-btn").forEach(btn => {
+      document.querySelectorAll(".playfrom-btn").forEach(btn => {
         btn.addEventListener("click", () => {
           const i = Number(btn.dataset.index);
-          if (i > 0) {
-            [roughMix[i - 1], roughMix[i]] = [roughMix[i], roughMix[i - 1]];
-            if (currentMixIndex === i) currentMixIndex = i - 1;
-            else if (currentMixIndex === i - 1) currentMixIndex = i;
-            renderRoughMix();
-          }
+          playFromHere(i);
+        });
+      });
+
+      document.querySelectorAll(".up-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          moveSegment(Number(btn.dataset.index), -1);
         });
       });
 
       document.querySelectorAll(".down-btn").forEach(btn => {
         btn.addEventListener("click", () => {
-          const i = Number(btn.dataset.index);
-          if (i < roughMix.length - 1) {
-            [roughMix[i + 1], roughMix[i]] = [roughMix[i], roughMix[i + 1]];
-            if (currentMixIndex === i) currentMixIndex = i + 1;
-            else if (currentMixIndex === i + 1) currentMixIndex = i;
-            renderRoughMix();
-          }
+          moveSegment(Number(btn.dataset.index), 1);
         });
       });
 
       document.querySelectorAll(".remove-btn").forEach(btn => {
         btn.addEventListener("click", () => {
-          const i = Number(btn.dataset.index);
-
-          if (i === currentMixIndex) {
-            stopCurrentPlayback();
-            statusEl.textContent = "Removed currently playing clip.";
-          } else if (i < currentMixIndex) {
-            currentMixIndex -= 1;
-          }
-
-          roughMix.splice(i, 1);
-          renderRoughMix();
+          removeSegmentAtIndex(Number(btn.dataset.index));
         });
       });
 
@@ -942,11 +1149,87 @@
       highlightCurrentMixCard(currentMixIndex);
     }
 
+    function moveSegment(index, delta) {
+      const target = index + delta;
+      if (target < 0 || target >= roughMix.length) return;
+
+      [roughMix[target], roughMix[index]] = [roughMix[index], roughMix[target]];
+
+      if (currentMixIndex === index) currentMixIndex = target;
+      else if (currentMixIndex === target) currentMixIndex = index;
+
+      renderRoughMix();
+    }
+
+    function removeSegmentAtIndex(i) {
+      if (i === currentMixIndex) {
+        stopCurrentPlayback();
+        statusEl.textContent = "Removed currently playing segment.";
+      } else if (i < currentMixIndex) {
+        currentMixIndex -= 1;
+      }
+
+      roughMix.splice(i, 1);
+      renderRoughMix();
+    }
+
+    function editRequestAtIndex(index) {
+      const item = roughMix[index];
+      if (!isRequestItem(item)) return;
+
+      newSongTitleEl.value = item.title || "";
+      newSongArtistEl.value = item.artist || "";
+      newSongLengthEl.value = item.length || "";
+      newSongExcerptEl.value = item.excerpt || "";
+
+      removeSegmentAtIndex(index);
+      statusEl.textContent = "Request loaded into form for editing.";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
     function updateMixOutput() {
       const lines = roughMix.map((clip, i) => {
+        if (isRequestItem(clip)) {
+          const excerptText = clip.excerpt ? ` - excerpt: ${clip.excerpt}` : "";
+          return `${i + 1}. [NEW SONG REQUEST] ${clip.artist || "Unknown Artist"} [${clip.title || "Untitled"}] (${clip.length || ""})${excerptText}`;
+        }
         return `${i + 1}. ${clip.artist || "Unknown Artist"} [${clip.title || "Untitled"}] (${clip.length || ""})`;
       });
       mixOutputEl.value = lines.join("\n");
+    }
+
+    function startPlaceholderSegment(index, startOffset = 0) {
+      clearPlaceholderTimer();
+      cancelPlayheadLoop();
+
+      const clip = roughMix[index];
+      const ranges = getClipRanges();
+      const range = ranges[index];
+      trackStartTime = range ? range.start : 0;
+      currentMixIndex = index;
+      isPlayingMix = true;
+      currentAudio = null;
+      clip._placeholderElapsed = startOffset;
+
+      highlightCurrentMixCard(index);
+      highlightCurrentMixBlock(index);
+      updatePlayhead(trackStartTime + startOffset);
+      statusEl.textContent = `Holding place for new song request: ${clipDisplayName(clip)}`;
+
+      const totalSeconds = parseLengthToSeconds(clip.length);
+      const startedAt = performance.now() - (startOffset * 1000);
+
+      placeholderTimer = setInterval(() => {
+        const elapsed = Math.min(totalSeconds, (performance.now() - startedAt) / 1000);
+        clip._placeholderElapsed = elapsed;
+        updatePlayhead(trackStartTime + elapsed);
+
+        if (elapsed >= totalSeconds) {
+          clearPlaceholderTimer();
+          clip._placeholderElapsed = 0;
+          playMixAtIndex(index + 1, 0);
+        }
+      }, 50);
     }
 
     function playMixAtIndex(index, startOffset = 0) {
@@ -958,8 +1241,14 @@
         return;
       }
 
-      currentMixIndex = index;
       const clip = roughMix[index];
+
+      if (isRequestItem(clip)) {
+        startPlaceholderSegment(index, startOffset);
+        return;
+      }
+
+      currentMixIndex = index;
       const ranges = getClipRanges();
       const range = ranges[index];
       trackStartTime = range ? range.start : 0;
@@ -969,6 +1258,7 @@
         currentAudio.currentTime = 0;
         currentAudio.onended = null;
       }
+      clearPlaceholderTimer();
 
       currentAudio = new Audio(clip.audio);
       isPlayingMix = true;
@@ -997,6 +1287,22 @@
       });
     }
 
+    function playFromHere(index) {
+      if (index < 0 || index >= roughMix.length) return;
+      const ranges = getClipRanges();
+      const range = ranges[index];
+      if (!range) return;
+
+      stopCurrentPlayback();
+      isPlayingMix = true;
+      currentMixIndex = index;
+      trackStartTime = range.start;
+      updatePlayhead(range.start);
+      highlightCurrentMixCard(index);
+      highlightCurrentMixBlock(index);
+      playMixAtIndex(index, 0);
+    }
+
     searchInputEl.addEventListener("input", () => {
       const q = searchInputEl.value.trim().toLowerCase();
 
@@ -1009,17 +1315,18 @@
       updateSearchMeta();
     });
 
+    addNewSongBtn.addEventListener("click", addNewSongRequest);
+
     playMixBtn.addEventListener("click", () => {
       if (!roughMix.length) {
         statusEl.textContent = "Add some clips first.";
         return;
       }
 
-      isPlayingMix = true;
-      const currentGlobal = getCurrentGlobalTime();
-      if (currentMixIndex >= 0 && currentGlobal > 0 && currentGlobal < getTotalMixSeconds()) {
-        seekToGlobalTime(currentGlobal);
+      if (currentMixIndex >= 0) {
+        playFromHere(currentMixIndex);
       } else {
+        isPlayingMix = true;
         playMixAtIndex(0, 0);
       }
     });
@@ -1032,6 +1339,7 @@
     clearMixBtn.addEventListener("click", () => {
       stopCurrentPlayback();
       roughMix = [];
+      resetNewSongForm();
       renderRoughMix();
       statusEl.textContent = "Rough mix cleared.";
     });
