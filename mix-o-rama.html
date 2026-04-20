@@ -568,6 +568,7 @@
 
       <div class="main-controls">
         <button id="playMixBtn">Play Rough Mix</button>
+        <button id="resumeMixBtn">Resume</button>
         <button id="stopMixBtn">Stop</button>
         <button id="clearMixBtn">Clear All</button>
         <button id="copyListBtn">Copy List</button>
@@ -618,6 +619,7 @@
     const mixVisualEmptyEl = document.getElementById("mixVisualEmpty");
 
     const playMixBtn = document.getElementById("playMixBtn");
+    const resumeMixBtn = document.getElementById("resumeMixBtn");
     const stopMixBtn = document.getElementById("stopMixBtn");
     const clearMixBtn = document.getElementById("clearMixBtn");
     const copyListBtn = document.getElementById("copyListBtn");
@@ -731,6 +733,35 @@
       return trackStartTime + currentTime + (isRequestItem(currentItem) && currentItem._placeholderElapsed ? currentItem._placeholderElapsed : 0);
     }
 
+    function resumeFromPlayhead() {
+      if (!roughMix.length) {
+      statusEl.textContent = "Add some clips first.";
+      return;
+    }
+
+      const total = getTotalMixSeconds();
+       const resumeSeconds = Math.max(0, Math.min(
+          (dragTargetSeconds > 0 ? dragTargetSeconds : getCurrentGlobalTime()),
+          total
+        ));
+      const ranges = getClipRanges();
+      if (!ranges.length) return;
+    
+      let targetRange = ranges[ranges.length - 1];
+      for (const range of ranges) {
+        if (resumeSeconds >= range.start && resumeSeconds < range.end) {
+          targetRange = range;
+          break;
+        }
+      }
+    
+      const offset = Math.max(0, resumeSeconds - targetRange.start);
+    
+      hardStopPlayback();
+      isPlayingMix = true;
+      playMixAtIndex(targetRange.index, offset);
+    }
+    
     function updateSearchMeta() {
       const q = searchInputEl.value.trim();
       if (!allClips.length) {
@@ -1141,6 +1172,7 @@
         mixListEl.innerHTML = `<div class="mix-card">No clips selected yet.</div>`;
         mixOutputEl.value = "";
         playMixBtn.disabled = true;
+        resumeMixBtn.disabled = true;
         stopMixBtn.disabled = true;
         clearMixBtn.disabled = true;
         copyListBtn.disabled = true;
@@ -1148,6 +1180,7 @@
       }
 
       playMixBtn.disabled = false;
+      resumeMixBtn.disabled = false;
       stopMixBtn.disabled = false;
       clearMixBtn.disabled = false;
       copyListBtn.disabled = false;
@@ -1400,10 +1433,14 @@
         statusEl.textContent = "Add some clips first.";
         return;
       }
-
+    
       hardStopPlayback();
       isPlayingMix = true;
       playMixAtIndex(0, 0);
+    });
+    
+    resumeMixBtn.addEventListener("click", () => {
+      resumeFromPlayhead();
     });
 
     stopMixBtn.addEventListener("click", () => {
