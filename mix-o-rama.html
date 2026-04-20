@@ -814,9 +814,26 @@
         Build Your<br>
         Rough Mix
       </h1>
-      <p id="heroSubtitle" class="hero-subtitle">
-        Build a rough mix from hosted clip samples.
-      </p>
+<div id="heroSubtitle" class="hero-subtitle">
+  <p style="margin-top:0;">
+    Build a rough mix from hosted clip samples. I will shape each section to flow smoothly and add transitional sounds when needed.
+  </p>
+
+  <p style="margin:16px 0 6px;"><strong>Revisions</strong></p>
+  <ul style="margin:0 0 12px 18px; padding:0;">
+    <li>Not included by default</li>
+    <li>Pre-order 1 included revision for $10</li>
+    <li>If no revision add-on is selected, revisions requested after delivery are $15 each</li>
+  </ul>
+
+  <p style="margin:12px 0 6px;"><strong>Delivery</strong></p>
+  <ul style="margin:0 0 0 18px; padding:0;">
+    <li>7 days for mixes using only pre-made clips</li>
+    <li>10 days for mixes with up to 2 new song requests</li>
+    <li>2 weeks for mixes with more than 2 new songs</li>
+    <li>Rush delivery available for an additional $25 with a 3-day turnaround (subject to availability)</li>
+  </ul>
+</div>
     </section>
 
     <section class="pricing-card">
@@ -1070,12 +1087,6 @@
       revisionLabelEl.textContent = l.revision_checkbox || `Pre-order included revision ${formatCurrency(p.revision_addon_price)}`;
       rushLabelEl.textContent = l.rush_checkbox || `Rush order (pending availability) ${formatCurrency(p.rush_addon_price)}`;
 
-      heroSubtitleEl.textContent = [
-        c.hero_intro || "Build a rough mix from hosted clip samples.",
-        c.transition_sentence || "I will time sections to flow smoothly together, adding transitional sounds when needed.",
-        `Revisions are not included by default. You may pre-order 1 included revision for ${formatCurrency(p.revision_addon_price)}. If no revision add-on is selected, revisions requested after delivery are ${formatCurrency(p.non_included_revision_price)} each.`,
-        `Normal delivery timeline is ${d.pre_made_only} if all clips are pre-made. Up to 2 new songs added has a delivery of ${d.up_to_2_new_songs}. More than 2 new songs, delivery is ${d.more_than_2_new_songs}. If a rush order is selected, an additional ${formatCurrency(p.rush_addon_price)}, and ${d.rush_delivery} delivery. Note, rush order ${d.rush_note}.`
-      ].join(" ");
 
       if (c.pricing_html) {
         pricingTextEl.innerHTML = c.pricing_html;
