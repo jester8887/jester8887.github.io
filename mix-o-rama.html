@@ -109,7 +109,8 @@
     .mega-headline,
     .section-title,
     .panel-title,
-    .request-send-title {
+    .request-send-title,
+    .pricing-title {
       font-family: Arial Black, Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
       font-weight: 900;
       letter-spacing: -0.04em;
@@ -119,7 +120,7 @@
     }
 
     .top-hero {
-      padding: 10px 0 34px;
+      padding: 10px 0 24px;
     }
 
     .mega-headline {
@@ -132,8 +133,28 @@
       margin: 16px 0 0;
       font-size: clamp(1rem, 1.15vw, 1.18rem);
       color: #222;
-      max-width: 820px;
-      line-height: 1.3;
+      max-width: 900px;
+      line-height: 1.45;
+    }
+
+    .pricing-card {
+      background: var(--card-bg);
+      border: 1px solid #f1f1f1;
+      border-radius: 24px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+      padding: 24px;
+      margin-bottom: 26px;
+    }
+
+    .pricing-title {
+      font-size: clamp(2rem, 3vw, 3.35rem);
+      margin-bottom: 12px;
+    }
+
+    .pricing-text {
+      font-size: 1.02rem;
+      line-height: 1.45;
+      color: #222;
     }
 
     .builder-layout {
@@ -156,6 +177,28 @@
       margin-bottom: 10px;
     }
 
+    .panel-title-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+
+    .running-total {
+      font-size: 1rem;
+      color: #333;
+      font-style: italic;
+      transition: transform 0.18s ease, opacity 0.18s ease, color 0.18s ease;
+      white-space: nowrap;
+    }
+
+    .running-total.flash {
+      transform: scale(1.06);
+      color: #000;
+    }
+
     .panel-subtitle {
       margin: 0 0 16px;
       font-size: clamp(1rem, 1.08vw, 1.12rem);
@@ -166,7 +209,8 @@
     .search-box,
     .request-form input,
     .request-form textarea,
-    textarea#mixOutput {
+    textarea#mixOutput,
+    textarea#extraNotes {
       width: 100%;
       box-sizing: border-box;
       padding: 14px 16px;
@@ -183,7 +227,8 @@
     .search-box:focus,
     .request-form input:focus,
     .request-form textarea:focus,
-    textarea#mixOutput:focus {
+    textarea#mixOutput:focus,
+    textarea#extraNotes:focus {
       border-color: #000;
     }
 
@@ -324,6 +369,29 @@
     .btn-dark:hover {
       background: #111;
       box-shadow: 0 4px 10px rgba(0,0,0,0.14);
+    }
+
+    .addon-options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin: 0 0 14px;
+      color: #222;
+    }
+
+    .addon-options label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.96rem;
+    }
+
+    .addon-options input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: #000;
+      cursor: pointer;
+      flex: 0 0 auto;
     }
 
     .mix-summary {
@@ -630,6 +698,23 @@
       max-width: 820px;
     }
 
+    .extra-notes-wrap {
+      margin-top: 18px;
+      margin-bottom: 18px;
+    }
+
+    .extra-notes-label {
+      display: block;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    textarea#extraNotes {
+      min-height: 120px;
+      resize: vertical;
+    }
+
     .send-status {
       margin-top: 12px;
       min-height: 1.2em;
@@ -697,6 +782,14 @@
       .timeline-top {
         align-items: flex-start;
       }
+
+      .panel-title-row {
+        align-items: flex-start;
+      }
+
+      .running-total {
+        white-space: normal;
+      }
     }
   </style>
 </head>
@@ -725,9 +818,17 @@
         Rough Mix
       </h1>
       <p class="hero-subtitle">
-        Build a rough mix from hosted clip samples, add new song requests, shape the sequence,
-        drag the playhead to seek, and send the final instructions by Facebook or email.
+        Build a rough mix from hosted clip samples. I will time sections to flow smoothly together, adding transitional sounds when needed. Revisions are not included by default. You may pre-order 1 included revision for $10. If no revision add-on is selected, revisions requested after delivery are $15 each. Normal delivery timeline is 7 days if all clips are pre-made. Up to 2 new songs added has a delivery of 10 days. More than 2 new songs, delivery is 2 weeks. If a rush order is selected, an additional $25, and 3 days delivery. Note, rush order subject to availability.
       </p>
+    </section>
+
+    <section class="pricing-card">
+      <h2 class="pricing-title">Pricing</h2>
+      <div class="pricing-text">
+        <strong>Mixes cost $50</strong> for up to <strong>3 pre-made song clips</strong>.<br>
+        Additional pre-made song clips are <strong>$10 each</strong>.<br>
+        <strong>New Song Requests:</strong> <strong>$25</strong> for the first new song, <strong>$20</strong> for each new song after that.
+      </div>
     </section>
 
     <div class="builder-layout">
@@ -748,8 +849,23 @@
       </section>
 
       <section class="panel panel-mix">
-        <h2 class="panel-title">Your Rough Mix</h2>
+        <div class="panel-title-row">
+          <h2 class="panel-title">Your Rough Mix</h2>
+          <div id="runningTotal" class="running-total">Running Total: $0</div>
+        </div>
+
         <p class="panel-subtitle">Arrange your clip order, add requested songs not yet in the library, and preview the shape of the mix.</p>
+
+        <div class="addon-options">
+          <label>
+            <input type="checkbox" id="revisionCheckbox">
+            <span>Pre-order included revision $10</span>
+          </label>
+          <label>
+            <input type="checkbox" id="rushCheckbox">
+            <span>Rush order (pending availability) $25</span>
+          </label>
+        </div>
 
         <div class="request-builder">
           <h3 id="requestFormHeading">Add New Song Request</h3>
@@ -814,9 +930,13 @@
     <section class="request-send">
       <h2 class="request-send-title">Send Your Mix Request</h2>
       <p class="request-send-text">
-        Choose Facebook to copy the mix instructions and open my Facebook page, or choose email to generate a draft with the subject
-        “Mix Builder Request” and your mix instructions already inserted.
+        Add any final notes below, then choose Facebook to copy the mix instructions and open my Facebook page, or choose email to generate a draft with the subject “Mix Builder Request” and your mix instructions already inserted.
       </p>
+
+      <div class="extra-notes-wrap">
+        <label for="extraNotes" class="extra-notes-label">Any Other Notes to Include?</label>
+        <textarea id="extraNotes" placeholder="Add any notes you want me to see with this request."></textarea>
+      </div>
 
       <div class="request-send-actions">
         <button id="facebookRequestBtn">Copy Instructions + Facebook</button>
@@ -859,6 +979,11 @@
     const newSongExcerptEl = document.getElementById("newSongExcerpt");
     const newSongStatusEl = document.getElementById("newSongStatus");
 
+    const runningTotalEl = document.getElementById("runningTotal");
+    const revisionCheckbox = document.getElementById("revisionCheckbox");
+    const rushCheckbox = document.getElementById("rushCheckbox");
+    const extraNotesEl = document.getElementById("extraNotes");
+
     const facebookRequestBtn = document.getElementById("facebookRequestBtn");
     const emailRequestBtn = document.getElementById("emailRequestBtn");
     const sendStatusEl = document.getElementById("sendStatus");
@@ -878,6 +1003,7 @@
     let nextRequestId = 1;
     let editRequestId = null;
     let statusFlashTimeout = null;
+    let totalFlashTimeout = null;
 
     async function loadClips() {
       try {
@@ -961,6 +1087,99 @@
       const currentItem = roughMix[currentMixIndex];
       const currentTime = currentAudio ? (currentAudio.currentTime || 0) : 0;
       return trackStartTime + currentTime + (isRequestItem(currentItem) && currentItem._placeholderElapsed ? currentItem._placeholderElapsed : 0);
+    }
+
+    function calculatePrice() {
+      const preMadeCount = roughMix.filter(item => !isRequestItem(item)).length;
+      const requestCount = roughMix.filter(item => isRequestItem(item)).length;
+
+      let total = 0;
+      const breakdown = [];
+
+      if (preMadeCount > 0) {
+        total += 50;
+        breakdown.push("Base mix package (up to 3 pre-made clips): $50");
+
+        if (preMadeCount > 3) {
+          const extraPreMade = preMadeCount - 3;
+          const extraPreMadeCost = extraPreMade * 10;
+          total += extraPreMadeCost;
+          breakdown.push(`Additional pre-made clips: ${extraPreMade} x $10 = $${extraPreMadeCost}`);
+        }
+      }
+
+      if (requestCount > 0) {
+        total += 25;
+        breakdown.push("First new song request: $25");
+
+        if (requestCount > 1) {
+          const extraRequests = requestCount - 1;
+          const extraRequestCost = extraRequests * 20;
+          total += extraRequestCost;
+          breakdown.push(`Additional new song requests: ${extraRequests} x $20 = $${extraRequestCost}`);
+        }
+      }
+
+      if (revisionCheckbox.checked) {
+        total += 10;
+        breakdown.push("Pre-ordered included revision: $10");
+      }
+
+      if (rushCheckbox.checked) {
+        total += 25;
+        breakdown.push("Rush order add-on: $25");
+      }
+
+      return {
+        total,
+        preMadeCount,
+        requestCount,
+        breakdown
+      };
+    }
+
+    function updateRunningTotal(shouldFlash = true) {
+      const { total } = calculatePrice();
+      runningTotalEl.textContent = `Running Total: $${total}`;
+
+      if (!shouldFlash) return;
+
+      runningTotalEl.classList.remove("flash");
+      void runningTotalEl.offsetWidth;
+      runningTotalEl.classList.add("flash");
+
+      clearTimeout(totalFlashTimeout);
+      totalFlashTimeout = setTimeout(() => {
+        runningTotalEl.classList.remove("flash");
+      }, 360);
+    }
+
+    function buildFullOutput() {
+      const mixLines = mixOutputEl.value.trim();
+      const notes = extraNotesEl.value.trim();
+      const pricing = calculatePrice();
+
+      let output = mixLines || "No clips selected.";
+
+      if (notes) {
+        output += `\n\nAny Other Notes:\n${notes}`;
+      }
+
+      output += `\n\nPricing Summary:\n`;
+      output += `Pre-made clips: ${pricing.preMadeCount}\n`;
+      output += `New song requests: ${pricing.requestCount}\n`;
+      output += `Pre-order included revision: ${revisionCheckbox.checked ? "Yes" : "No"}\n`;
+      output += `Rush order: ${rushCheckbox.checked ? "Yes" : "No"}\n`;
+
+      if (pricing.breakdown.length) {
+        output += `\n`;
+        pricing.breakdown.forEach(line => {
+          output += `${line}\n`;
+        });
+      }
+
+      output += `\nTotal: $${pricing.total}`;
+      return output.trim();
     }
 
     function resumeFromPlayhead() {
@@ -1133,35 +1352,6 @@
         tick.style.left = `${trackWidth}px`;
         tick.textContent = formatSeconds(totalSeconds);
         timelineTicksEl.appendChild(tick);
-      }
-    }
-
-    function seekToGlobalTime(globalSeconds) {
-      const ranges = getClipRanges();
-      if (!ranges.length) return;
-
-      const total = getTotalMixSeconds();
-      const clamped = Math.max(0, Math.min(globalSeconds, total));
-
-      let targetRange = ranges[ranges.length - 1];
-      for (const range of ranges) {
-        if (clamped >= range.start && clamped < range.end) {
-          targetRange = range;
-          break;
-        }
-      }
-
-      const offset = Math.max(0, clamped - targetRange.start);
-
-      if (isPlayingMix) {
-        playMixAtIndex(targetRange.index, offset);
-      } else {
-        currentMixIndex = targetRange.index;
-        trackStartTime = targetRange.start;
-        highlightCurrentMixCard(targetRange.index);
-        highlightCurrentMixBlock(targetRange.index);
-        updatePlayhead(clamped);
-        statusEl.textContent = `Seek preview: ${targetRange.index + 1}. ${clipDisplayName(targetRange.clip)} at ${formatSeconds(clamped)}`;
       }
     }
 
@@ -1406,6 +1596,7 @@
         stopMixBtn.disabled = true;
         clearMixBtn.disabled = true;
         copyListBtn.disabled = true;
+        updateRunningTotal();
         return;
       }
 
@@ -1492,6 +1683,7 @@
 
       updateMixOutput();
       highlightCurrentMixCard(currentMixIndex);
+      updateRunningTotal();
     }
 
     function moveSegment(index, delta) {
@@ -1638,27 +1830,6 @@
       playMixAtIndex(index, 0);
     }
 
-    function buildRequestInstructions() {
-      if (!mixOutputEl.value.trim()) return "";
-      return mixOutputEl.value.trim();
-    }
-
-    async function copyRequestInstructions() {
-      const instructions = buildRequestInstructions();
-      if (!instructions) {
-        sendStatusEl.textContent = "Build your mix first so there are instructions to send.";
-        return false;
-      }
-
-      try {
-        await navigator.clipboard.writeText(instructions);
-        return true;
-      } catch (error) {
-        sendStatusEl.textContent = "Clipboard copy was blocked. Copy the list manually from the mix box.";
-        return false;
-      }
-    }
-
     searchInputEl.addEventListener("input", () => {
       const q = searchInputEl.value.trim().toLowerCase();
 
@@ -1717,24 +1888,37 @@
       }
     });
 
+    revisionCheckbox.addEventListener("change", () => updateRunningTotal());
+    rushCheckbox.addEventListener("change", () => updateRunningTotal());
+
     facebookRequestBtn.addEventListener("click", async () => {
-      const ok = await copyRequestInstructions();
-      if (!ok) return;
-      sendStatusEl.textContent = "Instructions copied. Paste them into your Facebook message.";
-      window.open("https://www.facebook.com/marcbeth", "_blank");
+      const output = buildFullOutput();
+
+      if (!roughMix.length) {
+        sendStatusEl.textContent = "Build your mix first so there are instructions to send.";
+        return;
+      }
+
+      try {
+        await navigator.clipboard.writeText(output);
+        sendStatusEl.textContent = "Instructions copied. Paste them into your Facebook message.";
+        window.open("https://www.facebook.com/marcbeth", "_blank");
+      } catch {
+        sendStatusEl.textContent = "Clipboard copy was blocked. Copy the request manually from the page.";
+      }
     });
 
     emailRequestBtn.addEventListener("click", () => {
-      const instructions = buildRequestInstructions();
-      if (!instructions) {
+      if (!roughMix.length) {
         sendStatusEl.textContent = "Build your mix first so there are instructions to email.";
         return;
       }
 
-      const subject = encodeURIComponent("Mix Builder Request");
       const body = encodeURIComponent(
-        "Hello, I would like to build the following mix:\n\n" + instructions
+        "Hello, I would like to build the following mix:\n\n" + buildFullOutput()
       );
+      const subject = encodeURIComponent("Mix Builder Request");
+
       window.location.href = `mailto:mbdancecuts@gmail.com?subject=${subject}&body=${body}`;
     });
 
@@ -1840,6 +2024,7 @@
     loadClips();
     renderRoughMix();
     resetNewSongForm();
+    updateRunningTotal(false);
   </script>
 </body>
 </html>
