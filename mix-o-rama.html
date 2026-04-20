@@ -17,7 +17,6 @@
       --soft-bg-2: #fafafa;
       --accent: #111111;
       --timeline-accent: #111111;
-      --timeline-marker: #52525b;
       --request-bg: #f4e5b6;
       --request-border: #7a5c00;
       --request-text: #111;
@@ -28,13 +27,8 @@
       --playhead-width: 3px;
     }
 
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
@@ -107,7 +101,6 @@
     }
 
     .mega-headline,
-    .section-title,
     .panel-title,
     .request-send-title,
     .pricing-title {
@@ -358,14 +351,12 @@
       box-shadow: none;
     }
 
-    .btn-primary,
     .btn-dark {
       background: #000;
       color: #fff;
       border-color: #000;
     }
 
-    .btn-primary:hover,
     .btn-dark:hover {
       background: #111;
       box-shadow: 0 4px 10px rgba(0,0,0,0.14);
@@ -392,6 +383,12 @@
       accent-color: #000;
       cursor: pointer;
       flex: 0 0 auto;
+    }
+
+    .addon-note {
+      font-size: 0.9rem;
+      color: #555;
+      margin-top: 2px;
     }
 
     .mix-summary {
@@ -817,14 +814,14 @@
         Build Your<br>
         Rough Mix
       </h1>
-      <p class="hero-subtitle">
-        Build a rough mix from hosted clip samples. I will time sections to flow smoothly together, adding transitional sounds when needed. Revisions are not included by default. You may pre-order 1 included revision for $10. If no revision add-on is selected, revisions requested after delivery are $15 each. Normal delivery timeline is 7 days if all clips are pre-made. Up to 2 new songs added has a delivery of 10 days. More than 2 new songs, delivery is 2 weeks. If a rush order is selected, an additional $25, and 3 days delivery. Note, rush order subject to availability.
+      <p id="heroSubtitle" class="hero-subtitle">
+        Build a rough mix from hosted clip samples.
       </p>
     </section>
 
     <section class="pricing-card">
       <h2 class="pricing-title">Pricing</h2>
-      <div class="pricing-text">
+      <div id="pricingText" class="pricing-text">
         <strong>Mixes cost $50</strong> for up to <strong>3 pre-made song clips</strong>.<br>
         Additional pre-made song clips are <strong>$10 each</strong>.<br>
         <strong>New Song Requests:</strong> <strong>$25</strong> for the first new song, <strong>$20</strong> for each new song after that.
@@ -859,12 +856,15 @@
         <div class="addon-options">
           <label>
             <input type="checkbox" id="revisionCheckbox">
-            <span>Pre-order included revision $10</span>
+            <span id="revisionLabel">Pre-order included revision $10</span>
           </label>
+
           <label>
             <input type="checkbox" id="rushCheckbox">
-            <span>Rush order (pending availability) $25</span>
+            <span id="rushLabel">Rush order (pending availability) $25</span>
           </label>
+
+          <div class="addon-note">Include any misc. notes at the bottom of this page.</div>
         </div>
 
         <div class="request-builder">
@@ -982,11 +982,46 @@
     const runningTotalEl = document.getElementById("runningTotal");
     const revisionCheckbox = document.getElementById("revisionCheckbox");
     const rushCheckbox = document.getElementById("rushCheckbox");
+    const revisionLabelEl = document.getElementById("revisionLabel");
+    const rushLabelEl = document.getElementById("rushLabel");
     const extraNotesEl = document.getElementById("extraNotes");
+
+    const heroSubtitleEl = document.getElementById("heroSubtitle");
+    const pricingTextEl = document.getElementById("pricingText");
 
     const facebookRequestBtn = document.getElementById("facebookRequestBtn");
     const emailRequestBtn = document.getElementById("emailRequestBtn");
     const sendStatusEl = document.getElementById("sendStatus");
+
+    const builderConfig = {
+      pricing: {
+        base_mix_price: 50,
+        included_pre_made_clips: 3,
+        additional_pre_made_clip_price: 10,
+        first_new_song_price: 25,
+        additional_new_song_price: 20,
+        revision_addon_price: 10,
+        rush_addon_price: 25,
+        non_included_revision_price: 15
+      },
+      delivery: {
+        pre_made_only: "7 days",
+        up_to_2_new_songs: "10 days",
+        more_than_2_new_songs: "2 weeks",
+        rush_delivery: "3 days",
+        rush_note: "subject to availability"
+      },
+      labels: {
+        revision_checkbox: "Pre-order included revision $10",
+        rush_checkbox: "Rush order (pending availability) $25"
+      },
+      copy: {
+        hero_intro: "Build a rough mix from hosted clip samples.",
+        transition_sentence: "I will time sections to flow smoothly together, adding transitional sounds when needed.",
+        pricing_html: "",
+        pricing_summary_title: "Pricing Summary"
+      }
+    };
 
     let allClips = [];
     let filteredClips = [];
@@ -1004,6 +1039,56 @@
     let editRequestId = null;
     let statusFlashTimeout = null;
     let totalFlashTimeout = null;
+
+    async function loadBuilderConfig() {
+      try {
+        const response = await fetch("json/mixbuilder.json");
+        if (!response.ok) throw new Error("Could not load mixbuilder.json");
+        const json = await response.json();
+
+        if (json.pricing) Object.assign(builderConfig.pricing, json.pricing);
+        if (json.delivery) Object.assign(builderConfig.delivery, json.delivery);
+        if (json.labels) Object.assign(builderConfig.labels, json.labels);
+        if (json.copy) Object.assign(builderConfig.copy, json.copy);
+      } catch (error) {
+        console.warn("Using fallback mix builder config:", error.message);
+      }
+
+      applyBuilderConfigToPage();
+    }
+
+    function formatCurrency(amount) {
+      return `$${amount}`;
+    }
+
+    function applyBuilderConfigToPage() {
+      const p = builderConfig.pricing;
+      const d = builderConfig.delivery;
+      const c = builderConfig.copy;
+      const l = builderConfig.labels;
+
+      revisionLabelEl.textContent = l.revision_checkbox || `Pre-order included revision ${formatCurrency(p.revision_addon_price)}`;
+      rushLabelEl.textContent = l.rush_checkbox || `Rush order (pending availability) ${formatCurrency(p.rush_addon_price)}`;
+
+      heroSubtitleEl.textContent = [
+        c.hero_intro || "Build a rough mix from hosted clip samples.",
+        c.transition_sentence || "I will time sections to flow smoothly together, adding transitional sounds when needed.",
+        `Revisions are not included by default. You may pre-order 1 included revision for ${formatCurrency(p.revision_addon_price)}. If no revision add-on is selected, revisions requested after delivery are ${formatCurrency(p.non_included_revision_price)} each.`,
+        `Normal delivery timeline is ${d.pre_made_only} if all clips are pre-made. Up to 2 new songs added has a delivery of ${d.up_to_2_new_songs}. More than 2 new songs, delivery is ${d.more_than_2_new_songs}. If a rush order is selected, an additional ${formatCurrency(p.rush_addon_price)}, and ${d.rush_delivery} delivery. Note, rush order ${d.rush_note}.`
+      ].join(" ");
+
+      if (c.pricing_html) {
+        pricingTextEl.innerHTML = c.pricing_html;
+      } else {
+        pricingTextEl.innerHTML = `
+          <strong>Mixes cost ${formatCurrency(p.base_mix_price)}</strong> for up to <strong>${p.included_pre_made_clips} pre-made song clips</strong>.<br>
+          Additional pre-made song clips are <strong>${formatCurrency(p.additional_pre_made_clip_price)} each</strong>.<br>
+          <strong>New Song Requests:</strong> <strong>${formatCurrency(p.first_new_song_price)}</strong> for the first new song, <strong>${formatCurrency(p.additional_new_song_price)}</strong> for each new song after that.
+        `;
+      }
+
+      updateRunningTotal(false);
+    }
 
     async function loadClips() {
       try {
@@ -1090,6 +1175,7 @@
     }
 
     function calculatePrice() {
+      const p = builderConfig.pricing;
       const preMadeCount = roughMix.filter(item => !isRequestItem(item)).length;
       const requestCount = roughMix.filter(item => isRequestItem(item)).length;
 
@@ -1097,50 +1183,45 @@
       const breakdown = [];
 
       if (preMadeCount > 0) {
-        total += 50;
-        breakdown.push("Base mix package (up to 3 pre-made clips): $50");
+        total += p.base_mix_price;
+        breakdown.push(`Base mix package (up to ${p.included_pre_made_clips} pre-made clips): ${formatCurrency(p.base_mix_price)}`);
 
-        if (preMadeCount > 3) {
-          const extraPreMade = preMadeCount - 3;
-          const extraPreMadeCost = extraPreMade * 10;
+        if (preMadeCount > p.included_pre_made_clips) {
+          const extraPreMade = preMadeCount - p.included_pre_made_clips;
+          const extraPreMadeCost = extraPreMade * p.additional_pre_made_clip_price;
           total += extraPreMadeCost;
-          breakdown.push(`Additional pre-made clips: ${extraPreMade} x $10 = $${extraPreMadeCost}`);
+          breakdown.push(`Additional pre-made clips: ${extraPreMade} x ${formatCurrency(p.additional_pre_made_clip_price)} = ${formatCurrency(extraPreMadeCost)}`);
         }
       }
 
       if (requestCount > 0) {
-        total += 25;
-        breakdown.push("First new song request: $25");
+        total += p.first_new_song_price;
+        breakdown.push(`First new song request: ${formatCurrency(p.first_new_song_price)}`);
 
         if (requestCount > 1) {
           const extraRequests = requestCount - 1;
-          const extraRequestCost = extraRequests * 20;
+          const extraRequestCost = extraRequests * p.additional_new_song_price;
           total += extraRequestCost;
-          breakdown.push(`Additional new song requests: ${extraRequests} x $20 = $${extraRequestCost}`);
+          breakdown.push(`Additional new song requests: ${extraRequests} x ${formatCurrency(p.additional_new_song_price)} = ${formatCurrency(extraRequestCost)}`);
         }
       }
 
       if (revisionCheckbox.checked) {
-        total += 10;
-        breakdown.push("Pre-ordered included revision: $10");
+        total += p.revision_addon_price;
+        breakdown.push(`Pre-ordered included revision: ${formatCurrency(p.revision_addon_price)}`);
       }
 
       if (rushCheckbox.checked) {
-        total += 25;
-        breakdown.push("Rush order add-on: $25");
+        total += p.rush_addon_price;
+        breakdown.push(`Rush order add-on: ${formatCurrency(p.rush_addon_price)}`);
       }
 
-      return {
-        total,
-        preMadeCount,
-        requestCount,
-        breakdown
-      };
+      return { total, preMadeCount, requestCount, breakdown };
     }
 
     function updateRunningTotal(shouldFlash = true) {
       const { total } = calculatePrice();
-      runningTotalEl.textContent = `Running Total: $${total}`;
+      runningTotalEl.textContent = `Running Total: ${formatCurrency(total)}`;
 
       if (!shouldFlash) return;
 
@@ -1158,6 +1239,7 @@
       const mixLines = mixOutputEl.value.trim();
       const notes = extraNotesEl.value.trim();
       const pricing = calculatePrice();
+      const summaryTitle = builderConfig.copy.pricing_summary_title || "Pricing Summary";
 
       let output = mixLines || "No clips selected.";
 
@@ -1165,7 +1247,7 @@
         output += `\n\nAny Other Notes:\n${notes}`;
       }
 
-      output += `\n\nPricing Summary:\n`;
+      output += `\n\n${summaryTitle}:\n`;
       output += `Pre-made clips: ${pricing.preMadeCount}\n`;
       output += `New song requests: ${pricing.requestCount}\n`;
       output += `Pre-order included revision: ${revisionCheckbox.checked ? "Yes" : "No"}\n`;
@@ -1178,7 +1260,7 @@
         });
       }
 
-      output += `\nTotal: $${pricing.total}`;
+      output += `\nTotal: ${formatCurrency(pricing.total)}`;
       return output.trim();
     }
 
@@ -2021,10 +2103,13 @@
       renderMixVisual();
     });
 
-    loadClips();
-    renderRoughMix();
-    resetNewSongForm();
-    updateRunningTotal(false);
+    (async function init() {
+      await loadBuilderConfig();
+      await loadClips();
+      renderRoughMix();
+      resetNewSongForm();
+      updateRunningTotal(false);
+    })();
   </script>
 </body>
 </html>
