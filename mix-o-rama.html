@@ -2,101 +2,189 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mix-O-Rama</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mix-O-Rama | MB DanceCuts</title>
+
   <style>
     :root {
-      --bg: #111;
-      --panel: #1a1a1a;
-      --card: #222;
-      --border: #333;
-      --border-soft: #444;
-      --text: #eee;
-      --muted: #bbb;
-      --accent: #9fd3ff;
-      --button: #3a3a3a;
-      --button-hover: #555;
-      --timeline-height: 128px;
-      --timeline-track-height: 100px;
-      --playhead-width: 3px;
+      --page-bg: #e9e9e9;
+      --card-bg: #ffffff;
+      --text: #000000;
+      --muted: #3f3f46;
+      --border: #d4d4d8;
+      --border-soft: #e4e4e7;
+      --soft-bg: #f5f5f5;
+      --soft-bg-2: #fafafa;
+      --accent: #111111;
+      --timeline-accent: #111111;
+      --timeline-marker: #52525b;
       --request-bg: #f4e5b6;
       --request-border: #7a5c00;
       --request-text: #111;
-      --status-error: #ffb3b3;
-      --status-ok: #b8f5c5;
+      --status-error: #8f1d1d;
+      --status-ok: #166534;
+      --timeline-height: 128px;
+      --timeline-track-height: 100px;
+      --playhead-width: 3px;
     }
 
     * {
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: var(--bg);
+      background: var(--page-bg);
       color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
     }
 
-    header {
-      padding: 20px;
-      text-align: center;
-      background: #1b1b1b;
-      border-bottom: 1px solid var(--border);
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid #d4d4d8;
+      background: rgba(255,255,255,0.94);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
     }
 
-    header h1 {
-      margin: 0 0 8px 0;
-      font-size: 2rem;
+    .topbar-inner {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
     }
 
-    header p {
+    .brand,
+    .menu-link {
+      font-family: Arial Black, Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: -0.03em;
+      text-decoration: none;
+      color: #000;
+      line-height: 1;
+    }
+
+    .brand {
+      font-size: 1.15rem;
+      margin-right: 8px;
+      white-space: nowrap;
+    }
+
+    .menu {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .menu-link {
+      font-size: 0.88rem;
+      opacity: 0.8;
+      transition: opacity 0.15s ease;
+    }
+
+    .menu-link:hover,
+    .menu-link.active {
+      opacity: 1;
+    }
+
+    .page-wrap {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 28px 20px 72px;
+    }
+
+    .mega-headline,
+    .section-title,
+    .panel-title,
+    .request-send-title {
+      font-family: Arial Black, Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 0.9;
+      text-transform: uppercase;
       margin: 0;
-      color: var(--muted);
     }
 
-    .container {
+    .top-hero {
+      padding: 10px 0 34px;
+    }
+
+    .mega-headline {
+      font-size: clamp(4rem, 8vw, 7rem);
+      max-width: 1100px;
+      text-wrap: balance;
+    }
+
+    .hero-subtitle {
+      margin: 16px 0 0;
+      font-size: clamp(1rem, 1.15vw, 1.18rem);
+      color: #222;
+      max-width: 820px;
+      line-height: 1.3;
+    }
+
+    .builder-layout {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      padding: 20px;
+      grid-template-columns: 0.95fr 1.35fr;
+      gap: 24px;
       align-items: start;
     }
 
     .panel {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 16px;
-      min-height: 500px;
+      background: var(--card-bg);
+      border: 1px solid #f1f1f1;
+      border-radius: 24px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+      padding: 24px;
     }
 
-    .panel h2 {
-      margin-top: 0;
-      margin-bottom: 14px;
-      font-size: 1.3rem;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 8px;
+    .panel-title {
+      font-size: clamp(2rem, 3vw, 3.35rem);
+      margin-bottom: 10px;
     }
 
-    .panel-mix {
-      order: 2;
-    }
-
-    .panel-library {
-      order: 1;
+    .panel-subtitle {
+      margin: 0 0 16px;
+      font-size: clamp(1rem, 1.08vw, 1.12rem);
+      color: #222;
+      line-height: 1.3;
     }
 
     .search-box,
     .request-form input,
-    .request-form textarea {
+    .request-form textarea,
+    textarea#mixOutput {
       width: 100%;
       box-sizing: border-box;
-      padding: 12px;
-      border-radius: 6px;
-      border: 1px solid var(--border-soft);
-      background: var(--card);
-      color: var(--text);
+      padding: 14px 16px;
+      border-radius: 18px;
+      border: 1px solid #ddd;
+      outline: none;
+      background: #fff;
+      color: #111;
       font-size: 1rem;
+      font-family: Arial, Helvetica, sans-serif;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+
+    .search-box:focus,
+    .request-form input:focus,
+    .request-form textarea:focus,
+    textarea#mixOutput:focus {
+      border-color: #000;
     }
 
     .search-box {
@@ -104,29 +192,30 @@
     }
 
     .search-meta {
-      font-size: 0.92rem;
-      color: var(--muted);
+      font-size: 0.95rem;
+      color: #555;
       margin-bottom: 14px;
       min-height: 1.2em;
     }
 
     .request-builder {
       margin-bottom: 18px;
-      padding: 14px;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      background: #151515;
+      padding: 18px;
+      border: 1px solid var(--border-soft);
+      border-radius: 20px;
+      background: var(--soft-bg);
     }
 
     .request-builder h3 {
       margin: 0 0 8px 0;
-      font-size: 1rem;
+      font-size: 1.05rem;
+      font-weight: 700;
     }
 
     .request-note {
       margin: 0 0 12px 0;
-      color: var(--muted);
-      font-size: 0.9rem;
+      color: #444;
+      font-size: 0.94rem;
       line-height: 1.35;
     }
 
@@ -141,6 +230,11 @@
       grid-column: 1 / -1;
     }
 
+    .request-form textarea {
+      min-height: 96px;
+      resize: vertical;
+    }
+
     .length-status-wrap {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -148,118 +242,88 @@
     }
 
     .inline-status {
-      min-height: 48px;
-      border: 1px solid var(--border-soft);
-      border-radius: 6px;
-      background: #181818;
-      padding: 10px 12px;
+      min-height: 52px;
+      border: 1px solid #ddd;
+      border-radius: 18px;
+      background: #fff;
+      padding: 10px 14px;
       display: flex;
       align-items: center;
-      font-size: 0.9rem;
-      color: var(--muted);
+      font-size: 0.92rem;
+      color: #666;
       transition: opacity 0.2s ease, transform 0.2s ease;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
     }
 
     .inline-status.flash-error {
       color: var(--status-error);
-      border-color: #a44;
-      background: #241616;
+      border-color: #d9a8a8;
+      background: #fff4f4;
     }
 
     .inline-status.flash-ok {
       color: var(--status-ok);
-      border-color: #486;
-      background: #142218;
+      border-color: #b9dec2;
+      background: #f3fff6;
     }
 
-    .request-actions {
+    .request-actions,
+    .main-controls,
+    .button-row,
+    .request-send-actions {
       display: flex;
-      gap: 8px;
       flex-wrap: wrap;
-      margin-top: 10px;
-    }
-
-    .clip-list,
-    .mix-list {
-      display: flex;
-      flex-direction: column;
       gap: 10px;
-      max-height: 65vh;
-      overflow-y: auto;
     }
 
-    .clip-card,
-    .mix-card {
-      background: var(--card);
-      border: 1px solid #3a3a3a;
-      border-radius: 8px;
-      padding: 12px;
-    }
-
-    .mix-card.request-item {
-      border-color: #645100;
-      background: #2b2411;
-    }
-
-    .clip-title,
-    .mix-title {
-      font-weight: bold;
-      margin-bottom: 4px;
-      line-height: 1.2;
-    }
-
-    .clip-meta,
-    .mix-meta {
-      font-size: 0.9rem;
-      color: var(--muted);
-      margin-bottom: 10px;
-      line-height: 1.3;
-    }
-
-    .mix-card.request-item .mix-meta {
-      color: #d8c68b;
-    }
-
-    .request-badge {
-      display: inline-block;
-      margin-top: 6px;
-      font-size: 0.7rem;
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
-      color: #d8c68b;
-    }
-
-    .button-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
+    .btn,
     button {
-      background: var(--button);
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      padding: 8px 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.62rem 0.95rem;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      border: 1px solid #d4d4d8;
+      background: #fff;
+      color: #111;
       cursor: pointer;
-      font-size: 0.95rem;
+      text-decoration: none;
+      transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+      min-width: 92px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
     }
 
+    .btn:hover,
     button:hover {
-      background: var(--button-hover);
+      background: #f5f5f5;
     }
 
+    .btn:active,
+    button:active {
+      transform: translateY(1px);
+    }
+
+    .btn[disabled],
     button:disabled {
-      opacity: 0.45;
+      opacity: 0.5;
       cursor: not-allowed;
+      box-shadow: none;
     }
 
-    .main-controls {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 15px;
+    .btn-primary,
+    .btn-dark {
+      background: #000;
+      color: #fff;
+      border-color: #000;
+    }
+
+    .btn-primary:hover,
+    .btn-dark:hover {
+      background: #111;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.14);
     }
 
     .mix-summary {
@@ -267,16 +331,16 @@
       flex-wrap: wrap;
       gap: 14px;
       margin-bottom: 14px;
-      color: var(--muted);
+      color: #444;
       font-size: 0.95rem;
     }
 
     .timeline-wrap {
       margin-bottom: 16px;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 12px;
-      background: #141414;
+      border: 1px solid var(--border-soft);
+      border-radius: 20px;
+      padding: 16px;
+      background: var(--soft-bg-2);
     }
 
     .timeline-top {
@@ -289,20 +353,20 @@
     }
 
     .timeline-title {
-      font-weight: bold;
+      font-weight: 700;
       font-size: 1rem;
     }
 
     .timeline-note {
-      color: var(--muted);
-      font-size: 0.88rem;
+      color: #666;
+      font-size: 0.9rem;
     }
 
     .timeline-shell {
       position: relative;
-      border: 1px solid #2f2f2f;
-      border-radius: 8px;
-      background: #0d0d0d;
+      border: 1px solid #d9d9de;
+      border-radius: 14px;
+      background: #fff;
       overflow-x: auto;
       overflow-y: hidden;
       padding: 12px 12px 10px 12px;
@@ -331,7 +395,7 @@
     }
 
     .mix-visual-empty {
-      color: var(--muted);
+      color: #666;
       font-size: 0.95rem;
       min-height: 40px;
       display: flex;
@@ -342,7 +406,7 @@
       position: relative;
       flex: 0 0 auto;
       height: 100%;
-      background: #e8e8e8;
+      background: #ececec;
       border: 2px solid #111;
       color: #111;
       display: flex;
@@ -366,7 +430,7 @@
     }
 
     .mix-block.active {
-      box-shadow: 0 0 0 2px var(--accent) inset;
+      box-shadow: 0 0 0 2px #111 inset;
       transform: translateY(-1px);
     }
 
@@ -424,10 +488,10 @@
       top: 6px;
       bottom: 18px;
       width: var(--playhead-width);
-      background: var(--accent);
+      background: var(--timeline-accent);
       pointer-events: none;
       z-index: 5;
-      box-shadow: 0 0 0 1px rgba(159, 211, 255, 0.5);
+      box-shadow: 0 0 0 1px rgba(17,17,17,0.18);
       transform: translateX(-50%);
       display: none;
     }
@@ -439,7 +503,7 @@
       left: 50%;
       width: 12px;
       height: 12px;
-      background: var(--accent);
+      background: var(--timeline-accent);
       border-radius: 50%;
       transform: translateX(-50%);
     }
@@ -458,43 +522,143 @@
       bottom: 0;
       transform: translateX(-50%);
       font-size: 0.72rem;
-      color: #888;
+      color: #777;
       white-space: nowrap;
     }
 
+    .clip-list,
+    .mix-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-height: 68vh;
+      overflow-y: auto;
+    }
+
+    .clip-card,
+    .mix-card {
+      background: var(--card-bg);
+      border: 1px solid #f1f1f1;
+      border-radius: 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+      padding: 16px;
+    }
+
+    .mix-card.request-item {
+      border-color: #dbc57a;
+      background: #fff9e9;
+    }
+
     .mix-card.playing {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 1px rgba(159, 211, 255, 0.4);
+      border-color: #111;
+      box-shadow: 0 0 0 1px rgba(17,17,17,0.18);
     }
 
-    textarea#mixOutput {
-      width: 100%;
-      min-height: 140px;
-      box-sizing: border-box;
-      margin-top: 15px;
-      border-radius: 8px;
-      border: 1px solid var(--border-soft);
-      background: #101010;
-      color: var(--text);
-      padding: 12px;
-      font-family: Arial, sans-serif;
-      resize: vertical;
+    .clip-title,
+    .mix-title {
+      font-weight: 700;
+      margin-bottom: 4px;
+      line-height: 1.2;
+      font-size: 1.05rem;
+      letter-spacing: -0.01em;
     }
 
-    .status {
-      margin-top: 10px;
-      color: var(--accent);
-      font-size: 0.95rem;
-      min-height: 1.2em;
+    .clip-meta,
+    .mix-meta {
+      font-size: 0.93rem;
+      color: #555;
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .mix-card.request-item .mix-meta {
+      color: #6b5a20;
+    }
+
+    .request-badge {
+      display: inline-block;
+      margin-top: 4px;
+      margin-bottom: 8px;
+      font-size: 0.7rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: #7a5c00;
     }
 
     audio {
       width: 100%;
       margin-top: 8px;
+      border-radius: 999px;
     }
 
-    @media (max-width: 900px) {
-      .container {
+    textarea#mixOutput {
+      min-height: 160px;
+      margin-top: 15px;
+      resize: vertical;
+      background: #fff;
+      color: #111;
+    }
+
+    .status {
+      margin-top: 10px;
+      color: #222;
+      font-size: 0.95rem;
+      min-height: 1.2em;
+    }
+
+    .request-send {
+      margin-top: 26px;
+      background: #fff;
+      border: 1px solid #f1f1f1;
+      border-radius: 24px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+      padding: 26px 24px;
+    }
+
+    .request-send-title {
+      font-size: clamp(2rem, 3.4vw, 3.8rem);
+      margin-bottom: 12px;
+      max-width: 980px;
+    }
+
+    .request-send-text {
+      margin: 0 0 18px;
+      font-size: 1rem;
+      line-height: 1.35;
+      color: #222;
+      max-width: 820px;
+    }
+
+    .send-status {
+      margin-top: 12px;
+      min-height: 1.2em;
+      font-size: 0.95rem;
+      color: #444;
+    }
+
+    .sr-only-focusable {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      border: 0;
+    }
+
+    .sr-only-focusable:focus {
+      position: static;
+      width: auto;
+      height: auto;
+      margin: 0;
+      overflow: visible;
+      clip: auto;
+    }
+
+    @media (max-width: 980px) {
+      .builder-layout {
         grid-template-columns: 1fr;
       }
 
@@ -510,96 +674,158 @@
       .mix-list {
         max-height: none;
       }
+    }
+
+    @media (max-width: 720px) {
+      .page-wrap {
+        padding: 18px 14px 56px;
+      }
+
+      .topbar-inner {
+        padding: 12px 14px;
+      }
 
       .request-form,
       .length-status-wrap {
         grid-template-columns: 1fr;
       }
+
+      .panel {
+        padding: 20px;
+      }
+
+      .timeline-top {
+        align-items: flex-start;
+      }
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Mix-O-Rama</h1>
-    <p>Build a rough mix from hosted clip samples</p>
+  <a href="#main" class="sr-only-focusable">Skip to content</a>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a href="new26mixes.html" class="brand">MBDANCECUTS</a>
+      <nav class="menu">
+        <a href="new26mixes.html" class="menu-link">Home</a>
+        <a href="new26themed.html" class="menu-link">Themed</a>
+        <a href="new26artist.html" class="menu-link">Artist</a>
+        <a href="new26hiphop.html" class="menu-link">Hip-Hop</a>
+        <a href="new26production.html" class="menu-link">Production</a>
+        <a href="new26form.html" class="menu-link">Inquiries</a>
+      </nav>
+    </div>
   </header>
 
-  <div class="container">
-    <section class="panel panel-library">
-      <h2>Clip Library</h2>
-      <input
-        id="searchInput"
-        class="search-box"
-        type="text"
-        placeholder="Search by artist or title..."
-        autocomplete="off"
-      />
-      <div id="searchMeta" class="search-meta"></div>
-      <div id="clipList" class="clip-list"></div>
+  <main id="main" class="page-wrap">
+    <section class="top-hero">
+      <h1 class="mega-headline">
+        Mix-O-Rama<br>
+        Build Your<br>
+        Rough Mix
+      </h1>
+      <p class="hero-subtitle">
+        Build a rough mix from hosted clip samples, add new song requests, shape the sequence,
+        drag the playhead to seek, and send the final instructions by Facebook or email.
+      </p>
     </section>
 
-    <section class="panel panel-mix">
-      <h2>Your Rough Mix</h2>
+    <div class="builder-layout">
+      <section class="panel panel-library">
+        <h2 class="panel-title">Clip Library</h2>
+        <p class="panel-subtitle">Search by artist or title, preview clips, and add them into your rough mix.</p>
 
-      <div class="request-builder">
-        <h3 id="requestFormHeading">Add New Song Request</h3>
-        <p class="request-note">
-          Need a clip that is not in the library? Add it here. New song requests are an add-on cost.
-          Excerpt details are optional, but timestamps are preferred.
-        </p>
+        <input
+          id="searchInput"
+          class="search-box"
+          type="text"
+          placeholder="Search by artist or title..."
+          autocomplete="off"
+        />
 
-        <div class="request-form">
-          <input id="newSongTitle" type="text" placeholder="Song title" />
-          <input id="newSongArtist" type="text" placeholder="Artist" />
+        <div id="searchMeta" class="search-meta"></div>
+        <div id="clipList" class="clip-list"></div>
+      </section>
 
-          <div class="length-status-wrap full-width">
-            <input id="newSongLength" type="text" placeholder="Estimated length (example: 45s or 1m10s)" />
-            <div id="newSongStatus" class="inline-status">Status</div>
+      <section class="panel panel-mix">
+        <h2 class="panel-title">Your Rough Mix</h2>
+        <p class="panel-subtitle">Arrange your clip order, add requested songs not yet in the library, and preview the shape of the mix.</p>
+
+        <div class="request-builder">
+          <h3 id="requestFormHeading">Add New Song Request</h3>
+          <p class="request-note">
+            Need a clip that is not in the library? Add it here. New song requests are an add-on cost.
+            Excerpt details are optional, but timestamps are preferred.
+          </p>
+
+          <div class="request-form">
+            <input id="newSongTitle" type="text" placeholder="Song title" />
+            <input id="newSongArtist" type="text" placeholder="Artist" />
+
+            <div class="length-status-wrap full-width">
+              <input id="newSongLength" type="text" placeholder="Estimated length (example: 45s or 1m10s)" />
+              <div id="newSongStatus" class="inline-status">Status</div>
+            </div>
+
+            <textarea id="newSongExcerpt" class="full-width" rows="3" placeholder="Optional excerpt details or timestamps (example: chorus from 0:42-1:18)"></textarea>
           </div>
 
-          <textarea id="newSongExcerpt" class="full-width" rows="3" placeholder="Optional excerpt details or timestamps (example: chorus from 0:42-1:18)"></textarea>
-        </div>
-
-        <div class="request-actions">
-          <button id="addNewSongBtn">Add New Song Request to Mix</button>
-          <button id="cancelEditBtn" style="display:none;">Cancel Edit</button>
-        </div>
-      </div>
-
-      <div class="main-controls">
-        <button id="playMixBtn">Play Rough Mix</button>
-        <button id="resumeMixBtn">Resume</button>
-        <button id="stopMixBtn">Stop</button>
-        <button id="clearMixBtn">Clear All</button>
-        <button id="copyListBtn">Copy List</button>
-      </div>
-
-      <div class="mix-summary">
-        <div><strong>Segments:</strong> <span id="clipCount">0</span></div>
-        <div><strong>Total Time:</strong> <span id="totalTime">0:00</span></div>
-      </div>
-
-      <div class="timeline-wrap">
-        <div class="timeline-top">
-          <div class="timeline-title">Mix Shape</div>
-          <div class="timeline-note">Click or drag the vertical line to seek</div>
-        </div>
-
-        <div id="timelineShell" class="timeline-shell empty">
-          <div id="mixVisualEmpty" class="mix-visual-empty">No clips selected yet.</div>
-          <div id="timelineInner" class="timeline-inner" style="display:none;">
-            <div id="timelineTrack" class="timeline-track"></div>
-            <div id="playhead" class="playhead"></div>
-            <div id="timelineTicks" class="timeline-ticks"></div>
+          <div class="request-actions">
+            <button id="addNewSongBtn" class="btn-dark">Add New Song Request to Mix</button>
+            <button id="cancelEditBtn" style="display:none;">Cancel Edit</button>
           </div>
         </div>
+
+        <div class="main-controls">
+          <button id="playMixBtn" class="btn-dark">Play Rough Mix</button>
+          <button id="resumeMixBtn">Resume</button>
+          <button id="stopMixBtn">Stop</button>
+          <button id="clearMixBtn">Clear All</button>
+          <button id="copyListBtn">Copy List</button>
+        </div>
+
+        <div class="mix-summary">
+          <div><strong>Segments:</strong> <span id="clipCount">0</span></div>
+          <div><strong>Total Time:</strong> <span id="totalTime">0:00</span></div>
+        </div>
+
+        <div class="timeline-wrap">
+          <div class="timeline-top">
+            <div class="timeline-title">Mix Shape</div>
+            <div class="timeline-note">Click or drag the vertical line to seek</div>
+          </div>
+
+          <div id="timelineShell" class="timeline-shell empty">
+            <div id="mixVisualEmpty" class="mix-visual-empty">No clips selected yet.</div>
+            <div id="timelineInner" class="timeline-inner" style="display:none;">
+              <div id="timelineTrack" class="timeline-track"></div>
+              <div id="playhead" class="playhead"></div>
+              <div id="timelineTicks" class="timeline-ticks"></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="mixList" class="mix-list"></div>
+        <div id="status" class="status"></div>
+        <textarea id="mixOutput" readonly placeholder="Your selected clip list will appear here..."></textarea>
+      </section>
+    </div>
+
+    <section class="request-send">
+      <h2 class="request-send-title">Send Your Mix Request</h2>
+      <p class="request-send-text">
+        Choose Facebook to copy the mix instructions and open my Facebook page, or choose email to generate a draft with the subject
+        “Mix Builder Request” and your mix instructions already inserted.
+      </p>
+
+      <div class="request-send-actions">
+        <button id="facebookRequestBtn">Copy Instructions + Facebook</button>
+        <button id="emailRequestBtn" class="btn-dark">Email Request</button>
       </div>
 
-      <div id="mixList" class="mix-list"></div>
-      <div id="status" class="status"></div>
-      <textarea id="mixOutput" readonly placeholder="Your selected clip list will appear here..."></textarea>
+      <div id="sendStatus" class="send-status"></div>
     </section>
-  </div>
+  </main>
 
   <script>
     const clipListEl = document.getElementById("clipList");
@@ -632,6 +858,10 @@
     const newSongLengthEl = document.getElementById("newSongLength");
     const newSongExcerptEl = document.getElementById("newSongExcerpt");
     const newSongStatusEl = document.getElementById("newSongStatus");
+
+    const facebookRequestBtn = document.getElementById("facebookRequestBtn");
+    const emailRequestBtn = document.getElementById("emailRequestBtn");
+    const sendStatusEl = document.getElementById("sendStatus");
 
     let allClips = [];
     let filteredClips = [];
@@ -735,18 +965,18 @@
 
     function resumeFromPlayhead() {
       if (!roughMix.length) {
-      statusEl.textContent = "Add some clips first.";
-      return;
-    }
+        statusEl.textContent = "Add some clips first.";
+        return;
+      }
 
       const total = getTotalMixSeconds();
-       const resumeSeconds = Math.max(0, Math.min(
-          (dragTargetSeconds > 0 ? dragTargetSeconds : getCurrentGlobalTime()),
-          total
-        ));
+      const resumeSeconds = Math.max(0, Math.min(
+        (dragTargetSeconds > 0 ? dragTargetSeconds : getCurrentGlobalTime()),
+        total
+      ));
       const ranges = getClipRanges();
       if (!ranges.length) return;
-    
+
       let targetRange = ranges[ranges.length - 1];
       for (const range of ranges) {
         if (resumeSeconds >= range.start && resumeSeconds < range.end) {
@@ -754,14 +984,14 @@
           break;
         }
       }
-    
+
       const offset = Math.max(0, resumeSeconds - targetRange.start);
-    
+
       hardStopPlayback();
       isPlayingMix = true;
       playMixAtIndex(targetRange.index, offset);
     }
-    
+
     function updateSearchMeta() {
       const q = searchInputEl.value.trim();
       if (!allClips.length) {
@@ -961,7 +1191,7 @@
       editRequestId = item.requestId;
       requestFormHeadingEl.textContent = "Edit Song Request";
       addNewSongBtn.textContent = "Save Edited Request";
-      cancelEditBtn.style.display = "inline-block";
+      cancelEditBtn.style.display = "inline-flex";
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
@@ -1408,6 +1638,27 @@
       playMixAtIndex(index, 0);
     }
 
+    function buildRequestInstructions() {
+      if (!mixOutputEl.value.trim()) return "";
+      return mixOutputEl.value.trim();
+    }
+
+    async function copyRequestInstructions() {
+      const instructions = buildRequestInstructions();
+      if (!instructions) {
+        sendStatusEl.textContent = "Build your mix first so there are instructions to send.";
+        return false;
+      }
+
+      try {
+        await navigator.clipboard.writeText(instructions);
+        return true;
+      } catch (error) {
+        sendStatusEl.textContent = "Clipboard copy was blocked. Copy the list manually from the mix box.";
+        return false;
+      }
+    }
+
     searchInputEl.addEventListener("input", () => {
       const q = searchInputEl.value.trim().toLowerCase();
 
@@ -1433,12 +1684,12 @@
         statusEl.textContent = "Add some clips first.";
         return;
       }
-    
+
       hardStopPlayback();
       isPlayingMix = true;
       playMixAtIndex(0, 0);
     });
-    
+
     resumeMixBtn.addEventListener("click", () => {
       resumeFromPlayhead();
     });
@@ -1454,6 +1705,7 @@
       resetNewSongForm();
       renderRoughMix();
       statusEl.textContent = "Rough mix cleared.";
+      sendStatusEl.textContent = "";
     });
 
     copyListBtn.addEventListener("click", async () => {
@@ -1465,89 +1717,109 @@
       }
     });
 
-timelineShellEl.addEventListener("pointerdown", (e) => {
-  if (!roughMix.length || timelineInnerEl.style.display === "none") return;
+    facebookRequestBtn.addEventListener("click", async () => {
+      const ok = await copyRequestInstructions();
+      if (!ok) return;
+      sendStatusEl.textContent = "Instructions copied. Paste them into your Facebook message.";
+      window.open("https://www.facebook.com/marcbeth", "_blank");
+    });
 
-  isDraggingPlayhead = true;
-  wasPlayingBeforeDrag = isPlayingMix;
+    emailRequestBtn.addEventListener("click", () => {
+      const instructions = buildRequestInstructions();
+      if (!instructions) {
+        sendStatusEl.textContent = "Build your mix first so there are instructions to email.";
+        return;
+      }
 
-  // Pause playback once at drag start, but keep the current position state
-  if (isPlayingMix) {
-    hardStopPlayback();
-    isPlayingMix = false;
-  }
+      const subject = encodeURIComponent("Mix Builder Request");
+      const body = encodeURIComponent(
+        "Hello, I would like to build the following mix:\n\n" + instructions
+      );
+      window.location.href = `mailto:mbdancecuts@gmail.com?subject=${subject}&body=${body}`;
+    });
 
-  dragTargetSeconds = timelineEventToSeconds(e.clientX);
-  updatePlayhead(dragTargetSeconds);
+    timelineShellEl.addEventListener("pointerdown", (e) => {
+      if (!roughMix.length || timelineInnerEl.style.display === "none") return;
 
-  const ranges = getClipRanges();
-  let targetRange = ranges[ranges.length - 1];
-  for (const range of ranges) {
-    if (dragTargetSeconds >= range.start && dragTargetSeconds < range.end) {
-      targetRange = range;
-      break;
-    }
-  }
+      isDraggingPlayhead = true;
+      wasPlayingBeforeDrag = isPlayingMix;
 
-  currentMixIndex = targetRange.index;
-  trackStartTime = targetRange.start;
-  highlightCurrentMixCard(targetRange.index);
-  highlightCurrentMixBlock(targetRange.index);
-  statusEl.textContent = `Seek preview: ${targetRange.index + 1}. ${clipDisplayName(targetRange.clip)} at ${formatSeconds(dragTargetSeconds)}`;
+      if (isPlayingMix) {
+        hardStopPlayback();
+        isPlayingMix = false;
+      }
 
-  timelineShellEl.setPointerCapture?.(e.pointerId);
-});
+      dragTargetSeconds = timelineEventToSeconds(e.clientX);
+      updatePlayhead(dragTargetSeconds);
 
-timelineShellEl.addEventListener("pointermove", (e) => {
-  if (!isDraggingPlayhead || !roughMix.length) return;
+      const ranges = getClipRanges();
+      let targetRange = ranges[ranges.length - 1];
+      for (const range of ranges) {
+        if (dragTargetSeconds >= range.start && dragTargetSeconds < range.end) {
+          targetRange = range;
+          break;
+        }
+      }
 
-  dragTargetSeconds = timelineEventToSeconds(e.clientX);
-  updatePlayhead(dragTargetSeconds);
+      currentMixIndex = targetRange.index;
+      trackStartTime = targetRange.start;
+      highlightCurrentMixCard(targetRange.index);
+      highlightCurrentMixBlock(targetRange.index);
+      statusEl.textContent = `Seek preview: ${targetRange.index + 1}. ${clipDisplayName(targetRange.clip)} at ${formatSeconds(dragTargetSeconds)}`;
 
-  const ranges = getClipRanges();
-  let targetRange = ranges[ranges.length - 1];
-  for (const range of ranges) {
-    if (dragTargetSeconds >= range.start && dragTargetSeconds < range.end) {
-      targetRange = range;
-      break;
-    }
-  }
+      timelineShellEl.setPointerCapture?.(e.pointerId);
+    });
 
-  currentMixIndex = targetRange.index;
-  trackStartTime = targetRange.start;
-  highlightCurrentMixCard(targetRange.index);
-  highlightCurrentMixBlock(targetRange.index);
-  statusEl.textContent = `Seek preview: ${targetRange.index + 1}. ${clipDisplayName(targetRange.clip)} at ${formatSeconds(dragTargetSeconds)}`;
-});
+    timelineShellEl.addEventListener("pointermove", (e) => {
+      if (!isDraggingPlayhead || !roughMix.length) return;
 
-function endPlayheadDrag(e) {
-  if (!isDraggingPlayhead) return;
+      dragTargetSeconds = timelineEventToSeconds(e.clientX);
+      updatePlayhead(dragTargetSeconds);
 
-  isDraggingPlayhead = false;
-  timelineShellEl.releasePointerCapture?.(e.pointerId);
+      const ranges = getClipRanges();
+      let targetRange = ranges[ranges.length - 1];
+      for (const range of ranges) {
+        if (dragTargetSeconds >= range.start && dragTargetSeconds < range.end) {
+          targetRange = range;
+          break;
+        }
+      }
 
-  if (!roughMix.length) return;
+      currentMixIndex = targetRange.index;
+      trackStartTime = targetRange.start;
+      highlightCurrentMixCard(targetRange.index);
+      highlightCurrentMixBlock(targetRange.index);
+      statusEl.textContent = `Seek preview: ${targetRange.index + 1}. ${clipDisplayName(targetRange.clip)} at ${formatSeconds(dragTargetSeconds)}`;
+    });
 
- if (wasPlayingBeforeDrag) {
-  resumeFromPlayhead();
-} else {
-    const ranges = getClipRanges();
-    let targetRange = ranges[ranges.length - 1];
-    for (const range of ranges) {
-      if (dragTargetSeconds >= range.start && dragTargetSeconds < range.end) {
-        targetRange = range;
-        break;
+    function endPlayheadDrag(e) {
+      if (!isDraggingPlayhead) return;
+
+      isDraggingPlayhead = false;
+      timelineShellEl.releasePointerCapture?.(e.pointerId);
+
+      if (!roughMix.length) return;
+
+      if (wasPlayingBeforeDrag) {
+        resumeFromPlayhead();
+      } else {
+        const ranges = getClipRanges();
+        let targetRange = ranges[ranges.length - 1];
+        for (const range of ranges) {
+          if (dragTargetSeconds >= range.start && dragTargetSeconds < range.end) {
+            targetRange = range;
+            break;
+          }
+        }
+
+        currentMixIndex = targetRange.index;
+        trackStartTime = targetRange.start;
+        updatePlayhead(dragTargetSeconds);
+        highlightCurrentMixCard(targetRange.index);
+        highlightCurrentMixBlock(targetRange.index);
+        statusEl.textContent = `Seek preview: ${targetRange.index + 1}. ${clipDisplayName(targetRange.clip)} at ${formatSeconds(dragTargetSeconds)}`;
       }
     }
-
-    currentMixIndex = targetRange.index;
-    trackStartTime = targetRange.start;
-    updatePlayhead(dragTargetSeconds);
-    highlightCurrentMixCard(targetRange.index);
-    highlightCurrentMixBlock(targetRange.index);
-    statusEl.textContent = `Seek preview: ${targetRange.index + 1}. ${clipDisplayName(targetRange.clip)} at ${formatSeconds(dragTargetSeconds)}`;
-  }
-}
 
     timelineShellEl.addEventListener("pointerup", endPlayheadDrag);
     timelineShellEl.addEventListener("pointercancel", endPlayheadDrag);
