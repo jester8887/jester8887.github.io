@@ -641,6 +641,8 @@
     let animationFrameId = null;
     let isDraggingPlayhead = false;
     let placeholderTimer = null;
+    let dragTargetSeconds = 0;
+    let wasPlayingBeforeDrag = false;
     let nextRequestId = 1;
     let editRequestId = null;
     let statusFlashTimeout = null;
@@ -1426,27 +1428,90 @@
       }
     });
 
-    timelineShellEl.addEventListener("pointerdown", (e) => {
-      if (!roughMix.length || timelineInnerEl.style.display === "none") return;
-      isDraggingPlayhead = true;
-      const seconds = timelineEventToSeconds(e.clientX);
-      updatePlayhead(seconds);
-      seekToGlobalTime(seconds);
-      timelineShellEl.setPointerCapture?.(e.pointerId);
-    });
+timelineShellEl.addEventListener("pointerdown", (e) => {
+  if (!roughMix.length || timelineInnerEl.style.display === "none") return;
 
-    timelineShellEl.addEventListener("pointermove", (e) => {
-      if (!isDraggingPlayhead || !roughMix.length) return;
-      const seconds = timelineEventToSeconds(e.clientX);
-      updatePlayhead(seconds);
-      seekToGlobalTime(seconds);
-    });
+  isDraggingPlayhead = true;
+  wasPlayingBeforeDrag = isPlayingMix;
 
-    function endPlayheadDrag(e) {
-      if (!isDraggingPlayhead) return;
-      isDraggingPlayhead = false;
-      timelineShellEl.releasePointerCapture?.(e.pointerId);
+  // Pause playback once at drag start, but keep the current position state
+  if (isPlayingMix) {
+    hardStopPlayback();
+    isPlayingMix = false;
+  }
+
+  dragTargetSeconds = timelineEventToSeconds(e.clientX);
+  updatePlayhead(dragTargetSeconds);
+
+  const ranges = getClipRanges();
+  let targetRange = ranges[ranges.length - 1];
+  for (const range of ranges) {
+    if (dragTargetSeconds >= range.start && dragTargetSeconds < range.end) {
+      targetRange = range;
+      break;
     }
+  }
+
+  currentMixIndex = targetRange.index;
+  trackStartTime = targetRange.start;
+  highlightCurrentMixCard(targetRange.index);
+  highlightCurrentMixBlock(targetRange.index);
+  statusEl.textContent = `Seek preview: ${targetRange.index + 1}. ${clipDisplayName(targetRange.clip)} at ${formatSeconds(dragTargetSeconds)}`;
+
+  timelineShellEl.setPointerCapture?.(e.pointerId);
+});
+
+timelineShellEl.addEventListener("pointermove", (e) => {
+  if (!isDraggingPlayhead || !roughMix.length) return;
+
+  dragTargetSeconds = timelineEventToSeconds(e.clientX);
+  updatePlayhead(dragTargetSeconds);
+
+  const ranges = getClipRanges();
+  let targetRange = ranges[ranges.length - 1];
+  for (const range of ranges) {
+    if (dragTargetSeconds >= range.start && dragTargetSeconds < range.end) {
+      targetRange = range;
+      break;
+    }
+  }
+
+  currentMixIndex = targetRange.index;
+  trackStartTime = targetRange.start;
+  highlightCurrentMixCard(targetRange.index);
+  highlightCurrentMixBlock(targetRange.index);
+  statusEl.textContent = `Seek preview: ${targetRange.index + 1}. ${clipDisplayName(targetRange.clip)} at ${formatSeconds(dragTargetSeconds)}`;
+});
+
+function endPlayheadDrag(e) {
+  if (!isDraggingPlayhead) return;
+
+  isDraggingPlayhead = false;
+  timelineShellEl.releasePointerCapture?.(e.pointerId);
+
+  if (!roughMix.length) return;
+
+  if (wasPlayingBeforeDrag) {
+    isPlayingMix = true;
+    seekToGlobalTime(dragTargetSeconds);
+  } else {
+    const ranges = getClipRanges();
+    let targetRange = ranges[ranges.length - 1];
+    for (const range of ranges) {
+      if (dragTargetSeconds >= range.start && dragTargetSeconds < range.end) {
+        targetRange = range;
+        break;
+      }
+    }
+
+    currentMixIndex = targetRange.index;
+    trackStartTime = targetRange.start;
+    updatePlayhead(dragTargetSeconds);
+    highlightCurrentMixCard(targetRange.index);
+    highlightCurrentMixBlock(targetRange.index);
+    statusEl.textContent = `Seek preview: ${targetRange.index + 1}. ${clipDisplayName(targetRange.clip)} at ${formatSeconds(dragTargetSeconds)}`;
+  }
+}
 
     timelineShellEl.addEventListener("pointerup", endPlayheadDrag);
     timelineShellEl.addEventListener("pointercancel", endPlayheadDrag);
