@@ -1528,10 +1528,9 @@ function endPlayheadDrag(e) {
 
   if (!roughMix.length) return;
 
-  if (wasPlayingBeforeDrag) {
-    isPlayingMix = true;
-    seekToGlobalTime(dragTargetSeconds);
-  } else {
+ if (wasPlayingBeforeDrag) {
+  resumeFromPlayhead();
+} else {
     const ranges = getClipRanges();
     let targetRange = ranges[ranges.length - 1];
     for (const range of ranges) {
