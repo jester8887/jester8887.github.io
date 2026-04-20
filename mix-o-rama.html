@@ -5,18 +5,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mix-O-Rama</title>
   <style>
+    :root {
+      --bg: #111;
+      --panel: #1a1a1a;
+      --card: #222;
+      --border: #333;
+      --border-soft: #444;
+      --text: #eee;
+      --muted: #bbb;
+      --accent: #9fd3ff;
+      --button: #3a3a3a;
+      --button-hover: #555;
+      --timeline-gap: 10px;
+      --timeline-height: 110px;
+      --block-min-width: 110px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #111;
-      color: #eee;
+      background: var(--bg);
+      color: var(--text);
     }
 
     header {
       padding: 20px;
       text-align: center;
       background: #1b1b1b;
-      border-bottom: 1px solid #333;
+      border-bottom: 1px solid var(--border);
     }
 
     header h1 {
@@ -26,7 +46,7 @@
 
     header p {
       margin: 0;
-      color: #bbb;
+      color: var(--muted);
     }
 
     .container {
@@ -34,11 +54,12 @@
       grid-template-columns: 1fr 1fr;
       gap: 20px;
       padding: 20px;
+      align-items: start;
     }
 
     .panel {
-      background: #1a1a1a;
-      border: 1px solid #333;
+      background: var(--panel);
+      border: 1px solid var(--border);
       border-radius: 10px;
       padding: 16px;
       min-height: 500px;
@@ -46,20 +67,29 @@
 
     .panel h2 {
       margin-top: 0;
+      margin-bottom: 14px;
       font-size: 1.3rem;
-      border-bottom: 1px solid #333;
+      border-bottom: 1px solid var(--border);
       padding-bottom: 8px;
     }
 
     .search-box {
       width: 100%;
       box-sizing: border-box;
-      padding: 10px;
-      margin-bottom: 15px;
+      padding: 12px;
+      margin-bottom: 12px;
       border-radius: 6px;
-      border: 1px solid #444;
-      background: #222;
-      color: #eee;
+      border: 1px solid var(--border-soft);
+      background: var(--card);
+      color: var(--text);
+      font-size: 1rem;
+    }
+
+    .search-meta {
+      font-size: 0.92rem;
+      color: var(--muted);
+      margin-bottom: 14px;
+      min-height: 1.2em;
     }
 
     .clip-list,
@@ -67,13 +97,13 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
-      max-height: 70vh;
+      max-height: 65vh;
       overflow-y: auto;
     }
 
     .clip-card,
     .mix-card {
-      background: #222;
+      background: var(--card);
       border: 1px solid #3a3a3a;
       border-radius: 8px;
       padding: 12px;
@@ -83,13 +113,15 @@
     .mix-title {
       font-weight: bold;
       margin-bottom: 4px;
+      line-height: 1.2;
     }
 
     .clip-meta,
     .mix-meta {
       font-size: 0.9rem;
-      color: #bbb;
+      color: var(--muted);
       margin-bottom: 10px;
+      line-height: 1.3;
     }
 
     .button-row {
@@ -99,16 +131,22 @@
     }
 
     button {
-      background: #3a3a3a;
+      background: var(--button);
       color: #fff;
       border: none;
       border-radius: 6px;
       padding: 8px 10px;
       cursor: pointer;
+      font-size: 0.95rem;
     }
 
     button:hover {
-      background: #555;
+      background: var(--button-hover);
+    }
+
+    button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
     }
 
     .main-controls {
@@ -118,22 +156,140 @@
       margin-bottom: 15px;
     }
 
+    .mix-summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 14px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .timeline-wrap {
+      margin-bottom: 16px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      background: #141414;
+    }
+
+    .timeline-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .timeline-title {
+      font-weight: bold;
+      font-size: 1rem;
+    }
+
+    .timeline-note {
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .mix-visual {
+      display: flex;
+      align-items: stretch;
+      gap: var(--timeline-gap);
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 8px;
+      min-height: calc(var(--timeline-height) + 6px);
+      scrollbar-width: thin;
+    }
+
+    .mix-visual.empty {
+      display: block;
+      color: var(--muted);
+      font-size: 0.95rem;
+      min-height: auto;
+      padding: 4px 0;
+    }
+
+    .mix-block {
+      position: relative;
+      flex: 0 0 auto;
+      min-width: var(--block-min-width);
+      height: var(--timeline-height);
+      background: #e9e9e9;
+      border: 2px solid #111;
+      color: #111;
+      border-radius: 4px;
+      padding: 10px 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      overflow: hidden;
+    }
+
+    .mix-block.active {
+      background: #cfe9ff;
+      box-shadow: 0 0 0 2px var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .mix-block-number {
+      position: absolute;
+      top: 6px;
+      left: 8px;
+      font-size: 0.72rem;
+      font-weight: bold;
+      opacity: 0.7;
+    }
+
+    .mix-block-title {
+      font-weight: bold;
+      line-height: 1.05;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      word-break: break-word;
+      margin: 0 auto 6px;
+      max-width: 100%;
+    }
+
+    .mix-block-time {
+      font-size: 0.95rem;
+      line-height: 1.1;
+      white-space: nowrap;
+    }
+
+    .mix-block-artist {
+      margin-top: 6px;
+      font-size: 0.73rem;
+      line-height: 1.1;
+      opacity: 0.7;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
     textarea {
       width: 100%;
       min-height: 140px;
       box-sizing: border-box;
       margin-top: 15px;
       border-radius: 8px;
-      border: 1px solid #444;
+      border: 1px solid var(--border-soft);
       background: #101010;
-      color: #eee;
+      color: var(--text);
       padding: 12px;
       font-family: Arial, sans-serif;
+      resize: vertical;
     }
 
     .status {
       margin-top: 10px;
-      color: #9fd3ff;
+      color: var(--accent);
       font-size: 0.95rem;
       min-height: 1.2em;
     }
@@ -143,9 +299,55 @@
       margin-top: 8px;
     }
 
+    .small-note {
+      margin-top: 8px;
+      color: #888;
+      font-size: 0.8rem;
+      line-height: 1.3;
+    }
+
+    .mix-card.playing {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(159, 211, 255, 0.4);
+    }
+
+    .panel-mix {
+      order: 2;
+    }
+
+    .panel-library {
+      order: 1;
+    }
+
     @media (max-width: 900px) {
       .container {
         grid-template-columns: 1fr;
+      }
+
+      .panel-mix {
+        order: 1;
+      }
+
+      .panel-library {
+        order: 2;
+      }
+
+      .clip-list,
+      .mix-list {
+        max-height: none;
+      }
+
+      .mix-block {
+        min-width: 96px;
+        height: 96px;
+      }
+
+      .mix-block-title {
+        font-size: 0.95rem;
+      }
+
+      .mix-block-time {
+        font-size: 0.88rem;
       }
     }
   </style>
@@ -157,13 +359,20 @@
   </header>
 
   <div class="container">
-    <section class="panel">
+    <section class="panel panel-library">
       <h2>Clip Library</h2>
-      <input id="searchInput" class="search-box" type="text" placeholder="Search by artist or title..." />
+      <input
+        id="searchInput"
+        class="search-box"
+        type="text"
+        placeholder="Search by artist or title..."
+        autocomplete="off"
+      />
+      <div id="searchMeta" class="search-meta"></div>
       <div id="clipList" class="clip-list"></div>
     </section>
 
-    <section class="panel">
+    <section class="panel panel-mix">
       <h2>Your Rough Mix</h2>
 
       <div class="main-controls">
@@ -173,18 +382,36 @@
         <button id="copyListBtn">Copy List</button>
       </div>
 
+      <div class="mix-summary">
+        <div><strong>Clips:</strong> <span id="clipCount">0</span></div>
+        <div><strong>Total Time:</strong> <span id="totalTime">0:00</span></div>
+      </div>
+
+      <div class="timeline-wrap">
+        <div class="timeline-top">
+          <div class="timeline-title">Mix Shape</div>
+          <div class="timeline-note">Block width reflects clip length</div>
+        </div>
+        <div id="mixVisual" class="mix-visual empty">No clips selected yet.</div>
+      </div>
+
       <div id="mixList" class="mix-list"></div>
       <div id="status" class="status"></div>
       <textarea id="mixOutput" readonly placeholder="Your selected clip list will appear here..."></textarea>
+      <div class="small-note">Download controls are hidden where possible, but determined users can still access streamed audio.</div>
     </section>
   </div>
 
   <script>
     const clipListEl = document.getElementById("clipList");
     const mixListEl = document.getElementById("mixList");
+    const mixVisualEl = document.getElementById("mixVisual");
     const mixOutputEl = document.getElementById("mixOutput");
     const searchInputEl = document.getElementById("searchInput");
+    const searchMetaEl = document.getElementById("searchMeta");
     const statusEl = document.getElementById("status");
+    const clipCountEl = document.getElementById("clipCount");
+    const totalTimeEl = document.getElementById("totalTime");
 
     const playMixBtn = document.getElementById("playMixBtn");
     const stopMixBtn = document.getElementById("stopMixBtn");
@@ -205,6 +432,7 @@
         allClips = await response.json();
         filteredClips = [...allClips];
         renderClipLibrary();
+        updateSearchMeta();
       } catch (error) {
         clipListEl.innerHTML = `<div class="clip-card">Error loading clips: ${error.message}</div>`;
       }
@@ -212,6 +440,80 @@
 
     function clipDisplayName(clip) {
       return `${clip.artist} [${clip.title}]`;
+    }
+
+    function parseLengthToSeconds(length) {
+      if (!length) return 0;
+      const str = String(length).trim().toLowerCase();
+
+      const m = str.match(/^(\d+)m(\d{1,2})s$/);
+      if (m) return Number(m[1]) * 60 + Number(m[2]);
+
+      const s = str.match(/^(\d+)s$/);
+      if (s) return Number(s[1]);
+
+      return 0;
+    }
+
+    function formatSeconds(seconds) {
+      const safe = Math.max(0, Math.round(seconds || 0));
+      const m = Math.floor(safe / 60);
+      const s = safe % 60;
+      return `${m}:${String(s).padStart(2, "0")}`;
+    }
+
+    function titleFontSizeForBlock(title, widthPx) {
+      const len = (title || "").length;
+      if (widthPx < 110 || len > 24) return "0.84rem";
+      if (widthPx < 150 || len > 18) return "0.95rem";
+      return "1.05rem";
+    }
+
+    function updateSearchMeta() {
+      const q = searchInputEl.value.trim();
+      if (!allClips.length) {
+        searchMetaEl.textContent = "";
+        return;
+      }
+
+      if (!q) {
+        searchMetaEl.textContent = `${allClips.length} clips available`;
+        return;
+      }
+
+      searchMetaEl.textContent = `${filteredClips.length} result${filteredClips.length === 1 ? "" : "s"} for "${q}"`;
+    }
+
+    function stopCurrentPlayback() {
+      if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+        currentAudio.onended = null;
+      }
+      currentAudio = null;
+      isPlayingMix = false;
+      currentMixIndex = -1;
+      highlightCurrentMixCard(-1);
+      highlightCurrentMixBlock(-1);
+    }
+
+    function highlightCurrentMixCard(index) {
+      document.querySelectorAll(".mix-card").forEach((card, i) => {
+        card.classList.toggle("playing", i === index);
+      });
+    }
+
+    function highlightCurrentMixBlock(index) {
+      document.querySelectorAll(".mix-block").forEach((block, i) => {
+        block.classList.toggle("active", i === index);
+      });
+
+      if (index >= 0) {
+        const activeBlock = document.querySelector(`.mix-block[data-index="${index}"]`);
+        if (activeBlock) {
+          activeBlock.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+        }
+      }
     }
 
     function renderClipLibrary() {
@@ -227,13 +529,19 @@
         card.className = "clip-card";
 
         card.innerHTML = `
-          <div class="clip-title">${clip.title}</div>
-          <div class="clip-meta">${clip.artist} • ${clip.length || ""}${clip.bpm ? " • " + clip.bpm + " BPM" : ""}</div>
+          <div class="clip-title">${clip.title || "Untitled"}</div>
+          <div class="clip-meta">${clip.artist || "Unknown Artist"}${clip.length ? " • " + clip.length : ""}${clip.bpm ? " • " + clip.bpm + " BPM" : ""}</div>
           <div class="button-row">
             <button data-index="${index}" class="preview-btn">Preview</button>
             <button data-index="${index}" class="add-btn">Add to Mix</button>
           </div>
-          <audio controls preload="none" src="${clip.audio}"></audio>
+          <audio
+            controls
+            preload="none"
+            controlsList="nodownload noplaybackrate"
+            oncontextmenu="return false;"
+            src="${clip.audio}"
+          ></audio>
         `;
 
         clipListEl.appendChild(card);
@@ -244,6 +552,7 @@
           const clip = filteredClips[Number(btn.dataset.index)];
           roughMix.push(clip);
           renderRoughMix();
+          statusEl.textContent = `Added: ${clipDisplayName(clip)}`;
         });
       });
 
@@ -256,24 +565,102 @@
           statusEl.textContent = `Previewing: ${clipDisplayName(clip)}`;
         });
       });
+
+      document.querySelectorAll("audio").forEach(audio => {
+        audio.addEventListener("play", () => {
+          document.querySelectorAll("audio").forEach(other => {
+            if (other !== audio) other.pause();
+          });
+        });
+      });
+    }
+
+    function renderMixVisual() {
+      if (!roughMix.length) {
+        mixVisualEl.className = "mix-visual empty";
+        mixVisualEl.innerHTML = "No clips selected yet.";
+        return;
+      }
+
+      mixVisualEl.className = "mix-visual";
+      mixVisualEl.innerHTML = "";
+
+      const durations = roughMix.map(clip => parseLengthToSeconds(clip.length));
+      const maxDuration = Math.max(...durations, 1);
+
+      roughMix.forEach((clip, index) => {
+        const seconds = parseLengthToSeconds(clip.length);
+        const width = Math.max(110, Math.round((seconds / maxDuration) * 280));
+
+        const block = document.createElement("div");
+        block.className = "mix-block";
+        block.dataset.index = index;
+        block.style.width = `${width}px`;
+        block.title = `${index + 1}. ${clip.title || ""} — ${clip.artist || ""} (${clip.length || ""})`;
+
+        const title = document.createElement("div");
+        title.className = "mix-block-title";
+        title.textContent = clip.title || "Untitled";
+        title.style.fontSize = titleFontSizeForBlock(clip.title || "", width);
+
+        const time = document.createElement("div");
+        time.className = "mix-block-time";
+        time.textContent = clip.length || "";
+
+        const artist = document.createElement("div");
+        artist.className = "mix-block-artist";
+        artist.textContent = clip.artist || "";
+
+        const number = document.createElement("div");
+        number.className = "mix-block-number";
+        number.textContent = index + 1;
+
+        block.append(number, title, time, artist);
+
+        block.addEventListener("click", () => {
+          const target = document.querySelector(`.mix-card[data-index="${index}"]`);
+          if (target) target.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        });
+
+        mixVisualEl.appendChild(block);
+      });
+
+      highlightCurrentMixBlock(currentMixIndex);
     }
 
     function renderRoughMix() {
       mixListEl.innerHTML = "";
 
+      clipCountEl.textContent = roughMix.length;
+      totalTimeEl.textContent = formatSeconds(
+        roughMix.reduce((sum, clip) => sum + parseLengthToSeconds(clip.length), 0)
+      );
+
+      renderMixVisual();
+
       if (!roughMix.length) {
         mixListEl.innerHTML = `<div class="mix-card">No clips selected yet.</div>`;
         mixOutputEl.value = "";
+        playMixBtn.disabled = true;
+        stopMixBtn.disabled = true;
+        clearMixBtn.disabled = true;
+        copyListBtn.disabled = true;
         return;
       }
+
+      playMixBtn.disabled = false;
+      stopMixBtn.disabled = false;
+      clearMixBtn.disabled = false;
+      copyListBtn.disabled = false;
 
       roughMix.forEach((clip, index) => {
         const card = document.createElement("div");
         card.className = "mix-card";
+        card.dataset.index = index;
 
         card.innerHTML = `
-          <div class="mix-title">${index + 1}. ${clip.title}</div>
-          <div class="mix-meta">${clip.artist} • ${clip.length || ""}</div>
+          <div class="mix-title">${index + 1}. ${clip.title || "Untitled"}</div>
+          <div class="mix-meta">${clip.artist || "Unknown Artist"}${clip.length ? " • " + clip.length : ""}</div>
           <div class="button-row">
             <button data-index="${index}" class="up-btn">Up</button>
             <button data-index="${index}" class="down-btn">Down</button>
@@ -289,6 +676,8 @@
           const i = Number(btn.dataset.index);
           if (i > 0) {
             [roughMix[i - 1], roughMix[i]] = [roughMix[i], roughMix[i - 1]];
+            if (currentMixIndex === i) currentMixIndex = i - 1;
+            else if (currentMixIndex === i - 1) currentMixIndex = i;
             renderRoughMix();
           }
         });
@@ -299,6 +688,8 @@
           const i = Number(btn.dataset.index);
           if (i < roughMix.length - 1) {
             [roughMix[i + 1], roughMix[i]] = [roughMix[i], roughMix[i + 1]];
+            if (currentMixIndex === i) currentMixIndex = i + 1;
+            else if (currentMixIndex === i + 1) currentMixIndex = i;
             renderRoughMix();
           }
         });
@@ -307,30 +698,28 @@
       document.querySelectorAll(".remove-btn").forEach(btn => {
         btn.addEventListener("click", () => {
           const i = Number(btn.dataset.index);
+
+          if (i === currentMixIndex) {
+            stopCurrentPlayback();
+            statusEl.textContent = "Removed currently playing clip.";
+          } else if (i < currentMixIndex) {
+            currentMixIndex -= 1;
+          }
+
           roughMix.splice(i, 1);
           renderRoughMix();
         });
       });
 
       updateMixOutput();
+      highlightCurrentMixCard(currentMixIndex);
     }
 
     function updateMixOutput() {
       const lines = roughMix.map((clip, i) => {
-        return `${i + 1}. ${clip.artist} [${clip.title}] (${clip.length || ""})`;
+        return `${i + 1}. ${clip.artist || "Unknown Artist"} [${clip.title || "Untitled"}] (${clip.length || ""})`;
       });
       mixOutputEl.value = lines.join("\n");
-    }
-
-    function stopCurrentPlayback() {
-      if (currentAudio) {
-        currentAudio.pause();
-        currentAudio.currentTime = 0;
-        currentAudio.onended = null;
-      }
-      currentAudio = null;
-      isPlayingMix = false;
-      currentMixIndex = -1;
     }
 
     function playMixAtIndex(index) {
@@ -345,11 +734,18 @@
       currentMixIndex = index;
       const clip = roughMix[index];
 
-      stopCurrentPlayback();
-      isPlayingMix = true;
-      currentMixIndex = index;
+      if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+        currentAudio.onended = null;
+      }
 
       currentAudio = new Audio(clip.audio);
+      isPlayingMix = true;
+
+      highlightCurrentMixCard(index);
+      highlightCurrentMixBlock(index);
+
       statusEl.textContent = `Playing ${index + 1} of ${roughMix.length}: ${clipDisplayName(clip)}`;
 
       currentAudio.onended = () => {
@@ -364,11 +760,14 @@
 
     searchInputEl.addEventListener("input", () => {
       const q = searchInputEl.value.trim().toLowerCase();
+
       filteredClips = allClips.filter(clip =>
         (clip.title || "").toLowerCase().includes(q) ||
         (clip.artist || "").toLowerCase().includes(q)
       );
+
       renderClipLibrary();
+      updateSearchMeta();
     });
 
     playMixBtn.addEventListener("click", () => {
@@ -398,6 +797,12 @@
         statusEl.textContent = "Mix list copied to clipboard.";
       } catch {
         statusEl.textContent = "Could not copy list.";
+      }
+    });
+
+    document.addEventListener("contextmenu", (e) => {
+      if (e.target.closest("audio")) {
+        e.preventDefault();
       }
     });
 
