@@ -16,9 +16,9 @@
       --accent: #9fd3ff;
       --button: #3a3a3a;
       --button-hover: #555;
-      --timeline-gap: 10px;
-      --timeline-height: 110px;
-      --block-min-width: 110px;
+      --timeline-height: 128px;
+      --timeline-track-height: 100px;
+      --playhead-width: 3px;
     }
 
     * {
@@ -71,6 +71,14 @@
       font-size: 1.3rem;
       border-bottom: 1px solid var(--border);
       padding-bottom: 8px;
+    }
+
+    .panel-mix {
+      order: 2;
+    }
+
+    .panel-library {
+      order: 1;
     }
 
     .search-box {
@@ -179,6 +187,7 @@
       align-items: center;
       gap: 12px;
       margin-bottom: 10px;
+      flex-wrap: wrap;
     }
 
     .timeline-title {
@@ -191,47 +200,69 @@
       font-size: 0.88rem;
     }
 
-    .mix-visual {
-      display: flex;
-      align-items: stretch;
-      gap: var(--timeline-gap);
+    .timeline-shell {
+      position: relative;
+      border: 1px solid #2f2f2f;
+      border-radius: 8px;
+      background: #0d0d0d;
       overflow-x: auto;
       overflow-y: hidden;
-      padding-bottom: 8px;
-      min-height: calc(var(--timeline-height) + 6px);
+      padding: 12px 12px 10px 12px;
+      cursor: pointer;
       scrollbar-width: thin;
     }
 
-    .mix-visual.empty {
-      display: block;
+    .timeline-shell.empty {
+      cursor: default;
+    }
+
+    .timeline-inner {
+      position: relative;
+      height: var(--timeline-height);
+      min-width: 100%;
+    }
+
+    .timeline-track {
+      position: absolute;
+      top: 14px;
+      left: 0;
+      height: var(--timeline-track-height);
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+    }
+
+    .mix-visual-empty {
       color: var(--muted);
       font-size: 0.95rem;
-      min-height: auto;
-      padding: 4px 0;
+      min-height: 40px;
+      display: flex;
+      align-items: center;
     }
 
     .mix-block {
       position: relative;
       flex: 0 0 auto;
-      min-width: var(--block-min-width);
-      height: var(--timeline-height);
-      background: #e9e9e9;
+      height: 100%;
+      background: #e8e8e8;
       border: 2px solid #111;
       color: #111;
-      border-radius: 4px;
-      padding: 10px 8px;
       display: flex;
       flex-direction: column;
       justify-content: center;
+      align-items: center;
+      padding: 10px 8px;
       text-align: center;
-      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
       overflow: hidden;
+      transition: background 0.15s ease, transform 0.15s ease;
+    }
+
+    .mix-block + .mix-block {
+      margin-left: 6px;
     }
 
     .mix-block.active {
       background: #cfe9ff;
-      box-shadow: 0 0 0 2px var(--accent);
-      transform: translateY(-1px);
     }
 
     .mix-block-number {
@@ -245,32 +276,81 @@
 
     .mix-block-title {
       font-weight: bold;
-      line-height: 1.05;
+      line-height: 1.02;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
       text-overflow: ellipsis;
       word-break: break-word;
-      margin: 0 auto 6px;
       max-width: 100%;
     }
 
     .mix-block-time {
+      margin-top: 6px;
       font-size: 0.95rem;
       line-height: 1.1;
       white-space: nowrap;
     }
 
     .mix-block-artist {
-      margin-top: 6px;
-      font-size: 0.73rem;
+      margin-top: 5px;
+      font-size: 0.72rem;
       line-height: 1.1;
-      opacity: 0.7;
+      opacity: 0.72;
       display: -webkit-box;
       -webkit-line-clamp: 1;
       -webkit-box-orient: vertical;
       overflow: hidden;
+      max-width: 100%;
+    }
+
+    .playhead {
+      position: absolute;
+      top: 6px;
+      bottom: 18px;
+      width: var(--playhead-width);
+      background: var(--accent);
+      pointer-events: none;
+      z-index: 5;
+      box-shadow: 0 0 0 1px rgba(159, 211, 255, 0.5);
+      transform: translateX(-50%);
+      display: none;
+    }
+
+    .playhead::before {
+      content: "";
+      position: absolute;
+      top: -7px;
+      left: 50%;
+      width: 12px;
+      height: 12px;
+      background: var(--accent);
+      border-radius: 50%;
+      transform: translateX(-50%);
+    }
+
+    .timeline-ticks {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 18px;
+      pointer-events: none;
+    }
+
+    .timeline-tick {
+      position: absolute;
+      bottom: 0;
+      transform: translateX(-50%);
+      font-size: 0.72rem;
+      color: #888;
+      white-space: nowrap;
+    }
+
+    .mix-card.playing {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(159, 211, 255, 0.4);
     }
 
     textarea {
@@ -306,19 +386,6 @@
       line-height: 1.3;
     }
 
-    .mix-card.playing {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 1px rgba(159, 211, 255, 0.4);
-    }
-
-    .panel-mix {
-      order: 2;
-    }
-
-    .panel-library {
-      order: 1;
-    }
-
     @media (max-width: 900px) {
       .container {
         grid-template-columns: 1fr;
@@ -335,19 +402,6 @@
       .clip-list,
       .mix-list {
         max-height: none;
-      }
-
-      .mix-block {
-        min-width: 96px;
-        height: 96px;
-      }
-
-      .mix-block-title {
-        font-size: 0.95rem;
-      }
-
-      .mix-block-time {
-        font-size: 0.88rem;
       }
     }
   </style>
@@ -390,9 +444,17 @@
       <div class="timeline-wrap">
         <div class="timeline-top">
           <div class="timeline-title">Mix Shape</div>
-          <div class="timeline-note">Block width reflects clip length</div>
+          <div class="timeline-note">Click or drag the vertical line to seek</div>
         </div>
-        <div id="mixVisual" class="mix-visual empty">No clips selected yet.</div>
+
+        <div id="timelineShell" class="timeline-shell empty">
+          <div id="mixVisualEmpty" class="mix-visual-empty">No clips selected yet.</div>
+          <div id="timelineInner" class="timeline-inner" style="display:none;">
+            <div id="timelineTrack" class="timeline-track"></div>
+            <div id="playhead" class="playhead"></div>
+            <div id="timelineTicks" class="timeline-ticks"></div>
+          </div>
+        </div>
       </div>
 
       <div id="mixList" class="mix-list"></div>
@@ -405,13 +467,19 @@
   <script>
     const clipListEl = document.getElementById("clipList");
     const mixListEl = document.getElementById("mixList");
-    const mixVisualEl = document.getElementById("mixVisual");
     const mixOutputEl = document.getElementById("mixOutput");
     const searchInputEl = document.getElementById("searchInput");
     const searchMetaEl = document.getElementById("searchMeta");
     const statusEl = document.getElementById("status");
     const clipCountEl = document.getElementById("clipCount");
     const totalTimeEl = document.getElementById("totalTime");
+
+    const timelineShellEl = document.getElementById("timelineShell");
+    const timelineInnerEl = document.getElementById("timelineInner");
+    const timelineTrackEl = document.getElementById("timelineTrack");
+    const timelineTicksEl = document.getElementById("timelineTicks");
+    const playheadEl = document.getElementById("playhead");
+    const mixVisualEmptyEl = document.getElementById("mixVisualEmpty");
 
     const playMixBtn = document.getElementById("playMixBtn");
     const stopMixBtn = document.getElementById("stopMixBtn");
@@ -424,6 +492,9 @@
     let currentAudio = null;
     let currentMixIndex = -1;
     let isPlayingMix = false;
+    let trackStartTime = 0;
+    let animationFrameId = null;
+    let isDraggingPlayhead = false;
 
     async function loadClips() {
       try {
@@ -446,11 +517,11 @@
       if (!length) return 0;
       const str = String(length).trim().toLowerCase();
 
-      const m = str.match(/^(\d+)m(\d{1,2})s$/);
+      let m = str.match(/^(\d+)m(\d{1,2})s$/);
       if (m) return Number(m[1]) * 60 + Number(m[2]);
 
-      const s = str.match(/^(\d+)s$/);
-      if (s) return Number(s[1]);
+      m = str.match(/^(\d+)s$/);
+      if (m) return Number(m[1]);
 
       return 0;
     }
@@ -464,9 +535,44 @@
 
     function titleFontSizeForBlock(title, widthPx) {
       const len = (title || "").length;
-      if (widthPx < 110 || len > 24) return "0.84rem";
-      if (widthPx < 150 || len > 18) return "0.95rem";
-      return "1.05rem";
+      if (widthPx < 90 || len > 28) return "0.78rem";
+      if (widthPx < 120 || len > 20) return "0.88rem";
+      if (widthPx < 170 || len > 14) return "0.98rem";
+      return "1.08rem";
+    }
+
+    function getTotalMixSeconds() {
+      return roughMix.reduce((sum, clip) => sum + parseLengthToSeconds(clip.length), 0);
+    }
+
+    function getTimelineWidth(totalSeconds) {
+      const secondsPerPixel = 0.6;
+      const fittedWidth = Math.max(640, Math.round(totalSeconds / secondsPerPixel));
+      const shellWidth = timelineShellEl.clientWidth ? timelineShellEl.clientWidth - 24 : 640;
+      const shouldScroll = totalSeconds >= 240 || fittedWidth > shellWidth;
+      return shouldScroll ? fittedWidth : shellWidth;
+    }
+
+    function shouldScrollTimeline(totalSeconds) {
+      const width = getTimelineWidth(totalSeconds);
+      const shellWidth = timelineShellEl.clientWidth ? timelineShellEl.clientWidth - 24 : 640;
+      return totalSeconds >= 240 || width > shellWidth;
+    }
+
+    function getClipRanges() {
+      let elapsed = 0;
+      return roughMix.map((clip, index) => {
+        const seconds = parseLengthToSeconds(clip.length);
+        const start = elapsed;
+        const end = elapsed + seconds;
+        elapsed = end;
+        return { clip, index, start, end, seconds };
+      });
+    }
+
+    function getCurrentGlobalTime() {
+      if (!currentAudio || currentMixIndex < 0 || currentMixIndex >= roughMix.length) return 0;
+      return trackStartTime + (currentAudio.currentTime || 0);
     }
 
     function updateSearchMeta() {
@@ -484,6 +590,13 @@
       searchMetaEl.textContent = `${filteredClips.length} result${filteredClips.length === 1 ? "" : "s"} for "${q}"`;
     }
 
+    function cancelPlayheadLoop() {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+      }
+    }
+
     function stopCurrentPlayback() {
       if (currentAudio) {
         currentAudio.pause();
@@ -493,8 +606,11 @@
       currentAudio = null;
       isPlayingMix = false;
       currentMixIndex = -1;
+      trackStartTime = 0;
+      cancelPlayheadLoop();
       highlightCurrentMixCard(-1);
       highlightCurrentMixBlock(-1);
+      updatePlayhead(0);
     }
 
     function highlightCurrentMixCard(index) {
@@ -507,13 +623,109 @@
       document.querySelectorAll(".mix-block").forEach((block, i) => {
         block.classList.toggle("active", i === index);
       });
+    }
 
-      if (index >= 0) {
-        const activeBlock = document.querySelector(`.mix-block[data-index="${index}"]`);
-        if (activeBlock) {
-          activeBlock.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+    function updatePlayhead(globalSeconds) {
+      const total = getTotalMixSeconds();
+      if (!total || timelineInnerEl.style.display === "none") {
+        playheadEl.style.display = "none";
+        return;
+      }
+
+      const trackWidth = timelineTrackEl.offsetWidth;
+      const clamped = Math.max(0, Math.min(globalSeconds, total));
+      const x = (clamped / total) * trackWidth;
+
+      playheadEl.style.display = "block";
+      playheadEl.style.left = `${x}px`;
+
+      if (!isDraggingPlayhead && isPlayingMix) {
+        const shellScrollLeft = timelineShellEl.scrollLeft;
+        const visibleLeft = shellScrollLeft;
+        const visibleRight = shellScrollLeft + timelineShellEl.clientWidth;
+        const desiredLeft = x - 80;
+        const desiredRight = x + 80;
+
+        if (desiredLeft < visibleLeft) {
+          timelineShellEl.scrollLeft = Math.max(0, x - timelineShellEl.clientWidth * 0.25);
+        } else if (desiredRight > visibleRight) {
+          timelineShellEl.scrollLeft = Math.max(0, x - timelineShellEl.clientWidth * 0.75);
         }
       }
+    }
+
+    function runPlayheadLoop() {
+      cancelPlayheadLoop();
+
+      const loop = () => {
+        if (isPlayingMix && currentAudio) {
+          updatePlayhead(getCurrentGlobalTime());
+          animationFrameId = requestAnimationFrame(loop);
+        }
+      };
+
+      animationFrameId = requestAnimationFrame(loop);
+    }
+
+    function renderTimelineTicks(totalSeconds, trackWidth) {
+      timelineTicksEl.innerHTML = "";
+      if (!totalSeconds) return;
+
+      let interval = 30;
+      if (totalSeconds > 300) interval = 60;
+      if (totalSeconds > 600) interval = 120;
+
+      for (let t = 0; t <= totalSeconds; t += interval) {
+        const tick = document.createElement("div");
+        tick.className = "timeline-tick";
+        tick.style.left = `${(t / totalSeconds) * trackWidth}px`;
+        tick.textContent = formatSeconds(t);
+        timelineTicksEl.appendChild(tick);
+      }
+
+      if (totalSeconds % interval !== 0) {
+        const tick = document.createElement("div");
+        tick.className = "timeline-tick";
+        tick.style.left = `${trackWidth}px`;
+        tick.textContent = formatSeconds(totalSeconds);
+        timelineTicksEl.appendChild(tick);
+      }
+    }
+
+    function seekToGlobalTime(globalSeconds) {
+      const ranges = getClipRanges();
+      if (!ranges.length) return;
+
+      const total = getTotalMixSeconds();
+      const clamped = Math.max(0, Math.min(globalSeconds, total));
+
+      let targetRange = ranges[ranges.length - 1];
+      for (const range of ranges) {
+        if (clamped >= range.start && clamped < range.end) {
+          targetRange = range;
+          break;
+        }
+      }
+
+      const offset = Math.max(0, clamped - targetRange.start);
+
+      if (isPlayingMix) {
+        playMixAtIndex(targetRange.index, offset);
+      } else {
+        currentMixIndex = targetRange.index;
+        trackStartTime = targetRange.start;
+        highlightCurrentMixCard(targetRange.index);
+        highlightCurrentMixBlock(targetRange.index);
+        updatePlayhead(clamped);
+        statusEl.textContent = `Seek preview: ${targetRange.index + 1}. ${clipDisplayName(targetRange.clip)} at ${formatSeconds(clamped)}`;
+      }
+    }
+
+    function timelineEventToSeconds(clientX) {
+      const total = getTotalMixSeconds();
+      const rect = timelineTrackEl.getBoundingClientRect();
+      const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
+      return (x / rect.width) * total;
     }
 
     function renderClipLibrary() {
@@ -559,7 +771,9 @@
       document.querySelectorAll(".preview-btn").forEach(btn => {
         btn.addEventListener("click", () => {
           const clip = filteredClips[Number(btn.dataset.index)];
-          stopCurrentPlayback();
+          if (currentAudio) {
+            stopCurrentPlayback();
+          }
           currentAudio = new Audio(clip.audio);
           currentAudio.play();
           statusEl.textContent = `Previewing: ${clipDisplayName(clip)}`;
@@ -577,20 +791,28 @@
 
     function renderMixVisual() {
       if (!roughMix.length) {
-        mixVisualEl.className = "mix-visual empty";
-        mixVisualEl.innerHTML = "No clips selected yet.";
+        timelineShellEl.classList.add("empty");
+        mixVisualEmptyEl.style.display = "flex";
+        timelineInnerEl.style.display = "none";
+        timelineTrackEl.innerHTML = "";
+        timelineTicksEl.innerHTML = "";
+        playheadEl.style.display = "none";
         return;
       }
 
-      mixVisualEl.className = "mix-visual";
-      mixVisualEl.innerHTML = "";
+      timelineShellEl.classList.remove("empty");
+      mixVisualEmptyEl.style.display = "none";
+      timelineInnerEl.style.display = "block";
+      timelineTrackEl.innerHTML = "";
 
-      const durations = roughMix.map(clip => parseLengthToSeconds(clip.length));
-      const maxDuration = Math.max(...durations, 1);
+      const ranges = getClipRanges();
+      const total = getTotalMixSeconds();
+      const timelineWidth = getTimelineWidth(total);
+      timelineInnerEl.style.width = `${timelineWidth}px`;
+      timelineTrackEl.style.width = `${timelineWidth}px`;
 
-      roughMix.forEach((clip, index) => {
-        const seconds = parseLengthToSeconds(clip.length);
-        const width = Math.max(110, Math.round((seconds / maxDuration) * 280));
+      ranges.forEach(({ clip, index, seconds }) => {
+        const width = Math.max(72, Math.round((seconds / total) * timelineWidth));
 
         const block = document.createElement("div");
         block.className = "mix-block";
@@ -617,24 +839,29 @@
 
         block.append(number, title, time, artist);
 
-        block.addEventListener("click", () => {
+        block.addEventListener("click", (e) => {
+          e.stopPropagation();
           const target = document.querySelector(`.mix-card[data-index="${index}"]`);
           if (target) target.scrollIntoView({ behavior: "smooth", block: "nearest" });
         });
 
-        mixVisualEl.appendChild(block);
+        timelineTrackEl.appendChild(block);
       });
 
+      renderTimelineTicks(total, timelineWidth);
+      updatePlayhead(getCurrentGlobalTime());
       highlightCurrentMixBlock(currentMixIndex);
+
+      if (!shouldScrollTimeline(total)) {
+        timelineShellEl.scrollLeft = 0;
+      }
     }
 
     function renderRoughMix() {
       mixListEl.innerHTML = "";
 
       clipCountEl.textContent = roughMix.length;
-      totalTimeEl.textContent = formatSeconds(
-        roughMix.reduce((sum, clip) => sum + parseLengthToSeconds(clip.length), 0)
-      );
+      totalTimeEl.textContent = formatSeconds(getTotalMixSeconds());
 
       renderMixVisual();
 
@@ -722,7 +949,7 @@
       mixOutputEl.value = lines.join("\n");
     }
 
-    function playMixAtIndex(index) {
+    function playMixAtIndex(index, startOffset = 0) {
       if (!isPlayingMix) return;
 
       if (index >= roughMix.length) {
@@ -733,6 +960,9 @@
 
       currentMixIndex = index;
       const clip = roughMix[index];
+      const ranges = getClipRanges();
+      const range = ranges[index];
+      trackStartTime = range ? range.start : 0;
 
       if (currentAudio) {
         currentAudio.pause();
@@ -746,13 +976,22 @@
       highlightCurrentMixCard(index);
       highlightCurrentMixBlock(index);
 
+      currentAudio.onloadedmetadata = () => {
+        if (startOffset > 0) {
+          currentAudio.currentTime = Math.min(startOffset, currentAudio.duration || startOffset);
+        }
+        updatePlayhead(getCurrentGlobalTime());
+      };
+
       statusEl.textContent = `Playing ${index + 1} of ${roughMix.length}: ${clipDisplayName(clip)}`;
 
       currentAudio.onended = () => {
-        playMixAtIndex(index + 1);
+        playMixAtIndex(index + 1, 0);
       };
 
-      currentAudio.play().catch(err => {
+      currentAudio.play().then(() => {
+        runPlayheadLoop();
+      }).catch(err => {
         statusEl.textContent = `Playback error: ${err.message}`;
         stopCurrentPlayback();
       });
@@ -775,8 +1014,14 @@
         statusEl.textContent = "Add some clips first.";
         return;
       }
+
       isPlayingMix = true;
-      playMixAtIndex(0);
+      const currentGlobal = getCurrentGlobalTime();
+      if (currentMixIndex >= 0 && currentGlobal > 0 && currentGlobal < getTotalMixSeconds()) {
+        seekToGlobalTime(currentGlobal);
+      } else {
+        playMixAtIndex(0, 0);
+      }
     });
 
     stopMixBtn.addEventListener("click", () => {
@@ -800,10 +1045,42 @@
       }
     });
 
+    timelineShellEl.addEventListener("pointerdown", (e) => {
+      if (!roughMix.length || timelineInnerEl.style.display === "none") return;
+      isDraggingPlayhead = true;
+      const seconds = timelineEventToSeconds(e.clientX);
+      updatePlayhead(seconds);
+      seekToGlobalTime(seconds);
+      timelineShellEl.setPointerCapture?.(e.pointerId);
+    });
+
+    timelineShellEl.addEventListener("pointermove", (e) => {
+      if (!isDraggingPlayhead || !roughMix.length) return;
+      const seconds = timelineEventToSeconds(e.clientX);
+      updatePlayhead(seconds);
+      seekToGlobalTime(seconds);
+    });
+
+    function endPlayheadDrag(e) {
+      if (!isDraggingPlayhead) return;
+      isDraggingPlayhead = false;
+      timelineShellEl.releasePointerCapture?.(e.pointerId);
+    }
+
+    timelineShellEl.addEventListener("pointerup", endPlayheadDrag);
+    timelineShellEl.addEventListener("pointercancel", endPlayheadDrag);
+    timelineShellEl.addEventListener("pointerleave", (e) => {
+      if (isDraggingPlayhead && e.buttons === 0) endPlayheadDrag(e);
+    });
+
     document.addEventListener("contextmenu", (e) => {
       if (e.target.closest("audio")) {
         e.preventDefault();
       }
+    });
+
+    window.addEventListener("resize", () => {
+      renderMixVisual();
     });
 
     loadClips();
