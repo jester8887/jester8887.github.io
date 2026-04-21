@@ -80,19 +80,24 @@
       return this.output;
     },
 
-    update() {
-      const enabled = this.els.enabled.checked;
-      const rate = enabled ? Number(this.els.rate.value) : 0.1;
-      const depth = enabled ? Number(this.els.depth.value) : 0;
+update() {
+  const enabled = this.els.enabled.checked;
+  const rate = enabled ? Number(this.els.rate.value) : 0.1;
 
-      this.osc.frequency.value = rate;
-      this.depthNode.gain.value = depth / 2;
-      this.baseNode.offset.value = 1 - depth / 2;
+  const rawDepth = enabled ? Number(this.els.depth.value) : 0;
 
-      this.els.rateValue.textContent = `${rate.toFixed(1)} Hz`;
-      this.els.depthValue.textContent = `${Math.round(depth * 100)}%`;
-    },
+  // 🔥 Non-linear curve (4x feel)
+  const depth = Math.pow(rawDepth, 0.25); 
+  // (0.25 exponent = much more aggressive response)
 
+  this.osc.frequency.value = rate;
+
+  this.depthNode.gain.value = depth / 2;
+  this.baseNode.offset.value = 1 - depth / 2;
+
+  this.els.rateValue.textContent = `${rate.toFixed(1)} Hz`;
+  this.els.depthValue.textContent = `${Math.round(rawDepth * 100)}%`;
+}
     reset() {
       this.els.enabled.checked = false;
       this.els.rate.value = 5;
