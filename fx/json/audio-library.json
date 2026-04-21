@@ -1,0 +1,87 @@
+[
+  {
+    "title": "Acoustic Bass 1",
+    "file": "audio/bass -- acoustic -- 01.wav",
+    "category": "bass"
+  },
+  {
+    "title": "Clarinet 1",
+    "file": "audio/clarinet -- 01.wav",
+    "category": "woodwind"
+  },
+  {
+    "title": "Drum Set 1",
+    "file": "audio/drum -- set -- 01.wav",
+    "category": "drums"
+  },
+  {
+    "title": "Flute 1",
+    "file": "audio/flute -- 01.wav",
+    "category": "woodwind"
+  },
+  {
+    "title": "Acoustic Guitar 1",
+    "file": "audio/guitar -- acoustic -- 01.wav",
+    "category": "guitar"
+  },
+  {
+    "title": "Acoustic Guitar 2",
+    "file": "audio/guitar -- acoustic -- 02.wav",
+    "category": "guitar"
+  },
+  {
+    "title": "Acoustic Guitar 3",
+    "file": "audio/guitar -- acoustic -- 03.wav",
+    "category": "guitar"
+  },
+  {
+    "title": "Clean Electric Guitar 1",
+    "file": "audio/guitar -- electric -- clean -- 01.wav",
+    "category": "guitar"
+  },
+  {
+    "title": "Distorted Electric Guitar 1",
+    "file": "audio/guitar -- electric -- distorted -- 01.wav",
+    "category": "guitar"
+  },
+  {
+    "title": "Marimba 1",
+    "file": "audio/marimba -- 01.wav",
+    "category": "percussion"
+  },
+  {
+    "title": "Organ 1",
+    "file": "audio/organ -- 01.wav",
+    "category": "keys"
+  },
+  {
+    "title": "Piano 1",
+    "file": "audio/piano -- 01.wav",
+    "category": "keys"
+  },
+  {
+    "title": "Trumpet 1",
+    "file": "audio/trumpet -- 01.wav",
+    "category": "brass"
+  },
+  {
+    "title": "Female Vocal 1",
+    "file": "audio/vocal -- female -- 01.wav",
+    "category": "vocal"
+  },
+  {
+    "title": "Hip-Hop Vocal 1",
+    "file": "audio/vocal -- hiphop -- 01.wav",
+    "category": "vocal"
+  },
+  {
+    "title": "Male Vocal 1",
+    "file": "audio/vocal -- male -- 01.wav",
+    "category": "vocal"
+  },
+  {
+    "title": "Speech Vocal 1",
+    "file": "audio/vocal -- speech -- 01.wav",
+    "category": "vocal"
+  }
+]
