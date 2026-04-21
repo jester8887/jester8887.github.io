@@ -16,6 +16,8 @@ window.ModuleRegistry = {
         module.init();
       }
     });
+
+    this.enforceExclusiveActivation();
   },
 
   connectGraph(inputNode) {
@@ -33,6 +35,28 @@ window.ModuleRegistry = {
   updateAll() {
     AppState.modules.forEach(module => {
       if (module.update) module.update();
+    });
+  },
+
+  enforceExclusiveActivation() {
+    const toggles = DOM.effectsContainer.querySelectorAll('input[type="checkbox"]');
+
+    toggles.forEach(toggle => {
+      if (toggle.id === 'loopToggle') return;
+
+      toggle.addEventListener('change', () => {
+        if (!toggle.checked) return;
+
+        toggles.forEach(other => {
+          if (other === toggle) return;
+          if (other.id === 'loopToggle') return;
+          if (!other.checked) return;
+
+          other.checked = false;
+          other.dispatchEvent(new Event('input', { bubbles: true }));
+          other.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+      });
     });
   }
 };
