@@ -1,7 +1,11 @@
 (function () {
   const module = {
     id: 'compressor',
-    node: null,
+    input: null,
+    compressor: null,
+    bypassGain: null,
+    wetGain: null,
+    output: null,
     els: {},
 
     createUI() {
@@ -44,13 +48,33 @@
               <div class="value" id="compressor-release-value"></div>
             </div>
           </div>
+          <div>
+            <label for="compressor-makeup">Makeup Gain</label>
+            <div class="slider-row">
+              <input type="range" id="compressor-makeup" min="0" max="2" step="0.01" value="1" />
+              <div class="value" id="compressor-makeup-value"></div>
+            </div>
+          </div>
         </div>
       `;
       return card;
     },
 
     init() {
-      this.node = AppState.audioContext.createDynamicsCompressor();
+      const ctx = AppState.audioContext;
+
+      this.input = ctx.createGain();
+      this.compressor = ctx.createDynamicsCompressor();
+      this.bypassGain = ctx.createGain();
+      this.wetGain = ctx.createGain();
+      this.output = ctx.createGain();
+
+      this.input.connect(this.bypassGain);
+      this.bypassGain.connect(this.output);
+
+      this.input.connect(this.compressor);
+      this.compressor.connect(this.wetGain);
+      this.wetGain.connect(this.output);
 
       this.els.enabled = document.getElementById('compressor-enabled');
       this.els.threshold = document.getElementById('compressor-threshold');
@@ -61,35 +85,45 @@
       this.els.attackValue = document.getElementById('compressor-attack-value');
       this.els.release = document.getElementById('compressor-release');
       this.els.releaseValue = document.getElementById('compressor-release-value');
+      this.els.makeup = document.getElementById('compressor-makeup');
+      this.els.makeupValue = document.getElementById('compressor-makeup-value');
 
-      Object.values(this.els).forEach(el => {
-        if (el && el.tagName === 'INPUT') el.addEventListener('input', () => this.update());
-      });
+      this.els.enabled.addEventListener('input', () => this.update());
+      this.els.threshold.addEventListener('input', () => this.update());
+      this.els.ratio.addEventListener('input', () => this.update());
+      this.els.attack.addEventListener('input', () => this.update());
+      this.els.release.addEventListener('input', () => this.update());
+      this.els.makeup.addEventListener('input', () => this.update());
 
       this.update();
     },
 
     connect(inputNode) {
-      if (!this.els.enabled.checked) return inputNode;
-      inputNode.connect(this.node);
-      return this.node;
+      inputNode.connect(this.input);
+      return this.output;
     },
 
     update() {
+      const enabled = this.els.enabled.checked;
       const threshold = Number(this.els.threshold.value);
       const ratio = Number(this.els.ratio.value);
       const attack = Number(this.els.attack.value);
       const release = Number(this.els.release.value);
+      const makeup = enabled ? Number(this.els.makeup.value) : 1;
 
-      this.node.threshold.value = threshold;
-      this.node.ratio.value = ratio;
-      this.node.attack.value = attack;
-      this.node.release.value = release;
+      this.compressor.threshold.value = threshold;
+      this.compressor.ratio.value = ratio;
+      this.compressor.attack.value = attack;
+      this.compressor.release.value = release;
+
+      this.bypassGain.gain.value = enabled ? 0 : 1;
+      this.wetGain.gain.value = enabled ? makeup : 0;
 
       this.els.thresholdValue.textContent = `${Math.round(threshold)} dB`;
       this.els.ratioValue.textContent = `${ratio.toFixed(1)}:1`;
       this.els.attackValue.textContent = `${attack.toFixed(3)} s`;
       this.els.releaseValue.textContent = `${release.toFixed(3)} s`;
+      this.els.makeupValue.textContent = `${makeup.toFixed(2)}x`;
     },
 
     reset() {
@@ -98,6 +132,7 @@
       this.els.ratio.value = 4;
       this.els.attack.value = 0.003;
       this.els.release.value = 0.25;
+      this.els.makeup.value = 1;
       this.update();
     }
   };
