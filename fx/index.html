@@ -94,6 +94,10 @@
       font-size: 14px;
     }
 
+    input[type="checkbox"] {
+      accent-color: var(--accent);
+    }
+
     button {
       cursor: pointer;
       transition: 0.15s ease;
@@ -149,7 +153,7 @@
 
     .effects-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(260px, 1fr));
+      grid-template-columns: repeat(2, minmax(280px, 1fr));
       gap: 16px;
     }
 
@@ -164,6 +168,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 10px;
       margin: 0 0 12px;
       font-size: 17px;
     }
@@ -183,7 +188,7 @@
     .slider-row .value {
       font-size: 12px;
       color: var(--muted);
-      min-width: 64px;
+      min-width: 74px;
       text-align: right;
     }
 
@@ -206,6 +211,22 @@
       width: 0%;
       background: linear-gradient(90deg, #4ade80, #facc15, #fb7185);
       transition: width 0.08s linear;
+    }
+
+    .inline-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .note {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
     }
 
     @media (max-width: 980px) {
@@ -259,6 +280,7 @@
 
       <div class="status" id="statusText">Loading source library...</div>
       <div class="meter"><div class="meter-fill" id="meterFill"></div></div>
+      <div class="note">Frequency sliders now use logarithmic mapping so the low end is much more usable.</div>
     </section>
 
     <section>
@@ -266,13 +288,13 @@
         <div class="effect-card">
           <h3>
             Low-Pass Filter
-            <label><input type="checkbox" id="lpEnabled" checked /> On</label>
+            <label class="inline-toggle"><input type="checkbox" id="lpEnabled" checked /> On</label>
           </h3>
           <div class="controls">
             <div>
               <label for="lpFreq">Cutoff Frequency</label>
               <div class="slider-row">
-                <input type="range" id="lpFreq" min="200" max="20000" step="1" value="20000" />
+                <input type="range" id="lpFreq" min="0" max="100" step="0.1" value="100" />
                 <div class="value" id="lpFreqValue"></div>
               </div>
             </div>
@@ -282,13 +304,13 @@
         <div class="effect-card">
           <h3>
             High-Pass Filter
-            <label><input type="checkbox" id="hpEnabled" /> On</label>
+            <label class="inline-toggle"><input type="checkbox" id="hpEnabled" /> On</label>
           </h3>
           <div class="controls">
             <div>
               <label for="hpFreq">Cutoff Frequency</label>
               <div class="slider-row">
-                <input type="range" id="hpFreq" min="20" max="5000" step="1" value="20" />
+                <input type="range" id="hpFreq" min="0" max="100" step="0.1" value="0" />
                 <div class="value" id="hpFreqValue"></div>
               </div>
             </div>
@@ -297,8 +319,137 @@
 
         <div class="effect-card">
           <h3>
+            Band-Pass Filter
+            <label class="inline-toggle"><input type="checkbox" id="bpEnabled" /> On</label>
+          </h3>
+          <div class="controls">
+            <div>
+              <label for="bpFreq">Center Frequency</label>
+              <div class="slider-row">
+                <input type="range" id="bpFreq" min="0" max="100" step="0.1" value="50" />
+                <div class="value" id="bpFreqValue"></div>
+              </div>
+            </div>
+            <div>
+              <label for="bpQ">Q Factor</label>
+              <div class="slider-row">
+                <input type="range" id="bpQ" min="0.1" max="30" step="0.1" value="1" />
+                <div class="value" id="bpQValue"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="effect-card">
+          <h3>
+            Band-Reject Filter
+            <label class="inline-toggle"><input type="checkbox" id="notchEnabled" /> On</label>
+          </h3>
+          <div class="controls">
+            <div>
+              <label for="notchFreq">Center Frequency</label>
+              <div class="slider-row">
+                <input type="range" id="notchFreq" min="0" max="100" step="0.1" value="50" />
+                <div class="value" id="notchFreqValue"></div>
+              </div>
+            </div>
+            <div>
+              <label for="notchQ">Q Factor</label>
+              <div class="slider-row">
+                <input type="range" id="notchQ" min="0.1" max="30" step="0.1" value="1" />
+                <div class="value" id="notchQValue"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="effect-card">
+          <h3>
+            Low Shelf EQ
+            <label class="inline-toggle"><input type="checkbox" id="lowShelfEnabled" /> On</label>
+          </h3>
+          <div class="controls">
+            <div>
+              <label for="lowShelfFreq">Frequency</label>
+              <div class="slider-row">
+                <input type="range" id="lowShelfFreq" min="0" max="100" step="0.1" value="35" />
+                <div class="value" id="lowShelfFreqValue"></div>
+              </div>
+            </div>
+            <div>
+              <label for="lowShelfGain">Boost / Attenuate</label>
+              <div class="slider-row">
+                <input type="range" id="lowShelfGain" min="-24" max="24" step="0.1" value="0" />
+                <div class="value" id="lowShelfGainValue"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="effect-card">
+          <h3>
+            High Shelf EQ
+            <label class="inline-toggle"><input type="checkbox" id="highShelfEnabled" /> On</label>
+          </h3>
+          <div class="controls">
+            <div>
+              <label for="highShelfFreq">Frequency</label>
+              <div class="slider-row">
+                <input type="range" id="highShelfFreq" min="0" max="100" step="0.1" value="70" />
+                <div class="value" id="highShelfFreqValue"></div>
+              </div>
+            </div>
+            <div>
+              <label for="highShelfGain">Boost / Attenuate</label>
+              <div class="slider-row">
+                <input type="range" id="highShelfGain" min="-24" max="24" step="0.1" value="0" />
+                <div class="value" id="highShelfGainValue"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="effect-card">
+          <h3>
+            Compressor
+            <label class="inline-toggle"><input type="checkbox" id="compEnabled" /> On</label>
+          </h3>
+          <div class="controls">
+            <div>
+              <label for="compThreshold">Threshold</label>
+              <div class="slider-row">
+                <input type="range" id="compThreshold" min="-100" max="0" step="1" value="-24" />
+                <div class="value" id="compThresholdValue"></div>
+              </div>
+            </div>
+            <div>
+              <label for="compRatio">Ratio</label>
+              <div class="slider-row">
+                <input type="range" id="compRatio" min="1" max="20" step="0.1" value="4" />
+                <div class="value" id="compRatioValue"></div>
+              </div>
+            </div>
+            <div>
+              <label for="compAttack">Attack</label>
+              <div class="slider-row">
+                <input type="range" id="compAttack" min="0" max="1" step="0.001" value="0.003" />
+                <div class="value" id="compAttackValue"></div>
+              </div>
+            </div>
+            <div>
+              <label for="compRelease">Release</label>
+              <div class="slider-row">
+                <input type="range" id="compRelease" min="0" max="1" step="0.001" value="0.25" />
+                <div class="value" id="compReleaseValue"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="effect-card">
+          <h3>
             Distortion
-            <label><input type="checkbox" id="distEnabled" /> On</label>
+            <label class="inline-toggle"><input type="checkbox" id="distEnabled" /> On</label>
           </h3>
           <div class="controls">
             <div>
@@ -321,7 +472,7 @@
         <div class="effect-card">
           <h3>
             Delay
-            <label><input type="checkbox" id="delayEnabled" /> On</label>
+            <label class="inline-toggle"><input type="checkbox" id="delayEnabled" /> On</label>
           </h3>
           <div class="controls">
             <div>
@@ -350,8 +501,31 @@
 
         <div class="effect-card">
           <h3>
+            Reverb
+            <label class="inline-toggle"><input type="checkbox" id="reverbEnabled" /> On</label>
+          </h3>
+          <div class="controls">
+            <div>
+              <label for="reverbLength">Reverb Length</label>
+              <div class="slider-row">
+                <input type="range" id="reverbLength" min="0.2" max="6" step="0.1" value="2.5" />
+                <div class="value" id="reverbLengthValue"></div>
+              </div>
+            </div>
+            <div>
+              <label for="reverbWet">Wet Mix</label>
+              <div class="slider-row">
+                <input type="range" id="reverbWet" min="0" max="1" step="0.01" value="0.25" />
+                <div class="value" id="reverbWetValue"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="effect-card">
+          <h3>
             Tremolo
-            <label><input type="checkbox" id="tremEnabled" /> On</label>
+            <label class="inline-toggle"><input type="checkbox" id="tremEnabled" /> On</label>
           </h3>
           <div class="controls">
             <div>
@@ -373,6 +547,29 @@
 
         <div class="effect-card">
           <h3>
+            Vibrato
+            <label class="inline-toggle"><input type="checkbox" id="vibratoEnabled" /> On</label>
+          </h3>
+          <div class="controls">
+            <div>
+              <label for="vibratoRate">Rate</label>
+              <div class="slider-row">
+                <input type="range" id="vibratoRate" min="0.1" max="20" step="0.1" value="5" />
+                <div class="value" id="vibratoRateValue"></div>
+              </div>
+            </div>
+            <div>
+              <label for="vibratoDepth">Depth</label>
+              <div class="slider-row">
+                <input type="range" id="vibratoDepth" min="0" max="1" step="0.01" value="0.2" />
+                <div class="value" id="vibratoDepthValue"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="effect-card">
+          <h3>
             Master Output
           </h3>
           <div class="controls">
@@ -381,13 +578,6 @@
               <div class="slider-row">
                 <input type="range" id="masterGain" min="0" max="1.5" step="0.01" value="1" />
                 <div class="value" id="masterGainValue"></div>
-              </div>
-            </div>
-            <div>
-              <label for="dryWet">Dry / Wet Blend</label>
-              <div class="slider-row">
-                <input type="range" id="dryWet" min="0" max="1" step="0.01" value="1" />
-                <div class="value" id="dryWetValue"></div>
               </div>
             </div>
           </div>
@@ -405,7 +595,8 @@
       pauseOffset: 0,
       isPlaying: false,
       selectedItem: null,
-      library: []
+      library: [],
+      impulseCache: new Map()
     };
 
     const els = {
@@ -426,21 +617,37 @@
     let meterData = null;
     let meterFrame = null;
     let tremoloOsc = null;
-    let chorusOsc = null;
+    let vibratoOsc = null;
 
     const controlIds = [
-      'lpEnabled','lpFreq','hpEnabled','hpFreq','distEnabled','distAmount','distMix',
-      'delayEnabled','delayTime','delayFeedback','delayWet','tremEnabled','tremRate',
-      'tremDepth','masterGain','dryWet'
+      'lpEnabled','lpFreq','hpEnabled','hpFreq',
+      'bpEnabled','bpFreq','bpQ','notchEnabled','notchFreq','notchQ',
+      'lowShelfEnabled','lowShelfFreq','lowShelfGain','highShelfEnabled','highShelfFreq','highShelfGain',
+      'compEnabled','compThreshold','compRatio','compAttack','compRelease',
+      'distEnabled','distAmount','distMix',
+      'delayEnabled','delayTime','delayFeedback','delayWet',
+      'reverbEnabled','reverbLength','reverbWet',
+      'tremEnabled','tremRate','tremDepth',
+      'vibratoEnabled','vibratoRate','vibratoDepth',
+      'masterGain'
     ];
 
     function setStatus(text) {
       els.statusText.textContent = text;
     }
 
+    function clamp(value, min, max) {
+      return Math.min(max, Math.max(min, value));
+    }
+
+    function sliderToLogFrequency(sliderValue, minHz = 20, maxHz = 20000) {
+      const normalized = clamp(Number(sliderValue) / 100, 0, 1);
+      return minHz * Math.pow(maxHz / minHz, normalized);
+    }
+
     function formatHz(value) {
       const n = Number(value);
-      return n >= 1000 ? `${(n / 1000).toFixed(1)} kHz` : `${Math.round(n)} Hz`;
+      return n >= 1000 ? `${(n / 1000).toFixed(2)} kHz` : `${Math.round(n)} Hz`;
     }
 
     function formatSeconds(value) {
@@ -455,18 +662,38 @@
       return Number(value).toFixed(2);
     }
 
+    function formatDb(value) {
+      const n = Number(value);
+      return `${n > 0 ? '+' : ''}${n.toFixed(1)} dB`;
+    }
+
     function updateValueLabels() {
-      document.getElementById('lpFreqValue').textContent = formatHz(document.getElementById('lpFreq').value);
-      document.getElementById('hpFreqValue').textContent = formatHz(document.getElementById('hpFreq').value);
+      document.getElementById('lpFreqValue').textContent = formatHz(sliderToLogFrequency(document.getElementById('lpFreq').value));
+      document.getElementById('hpFreqValue').textContent = formatHz(sliderToLogFrequency(document.getElementById('hpFreq').value));
+      document.getElementById('bpFreqValue').textContent = formatHz(sliderToLogFrequency(document.getElementById('bpFreq').value));
+      document.getElementById('bpQValue').textContent = formatNumber(document.getElementById('bpQ').value);
+      document.getElementById('notchFreqValue').textContent = formatHz(sliderToLogFrequency(document.getElementById('notchFreq').value));
+      document.getElementById('notchQValue').textContent = formatNumber(document.getElementById('notchQ').value);
+      document.getElementById('lowShelfFreqValue').textContent = formatHz(sliderToLogFrequency(document.getElementById('lowShelfFreq').value));
+      document.getElementById('lowShelfGainValue').textContent = formatDb(document.getElementById('lowShelfGain').value);
+      document.getElementById('highShelfFreqValue').textContent = formatHz(sliderToLogFrequency(document.getElementById('highShelfFreq').value));
+      document.getElementById('highShelfGainValue').textContent = formatDb(document.getElementById('highShelfGain').value);
+      document.getElementById('compThresholdValue').textContent = `${Math.round(Number(document.getElementById('compThreshold').value))} dB`;
+      document.getElementById('compRatioValue').textContent = `${Number(document.getElementById('compRatio').value).toFixed(1)}:1`;
+      document.getElementById('compAttackValue').textContent = formatSeconds(document.getElementById('compAttack').value);
+      document.getElementById('compReleaseValue').textContent = formatSeconds(document.getElementById('compRelease').value);
       document.getElementById('distAmountValue').textContent = document.getElementById('distAmount').value;
       document.getElementById('distMixValue').textContent = formatNumber(document.getElementById('distMix').value);
       document.getElementById('delayTimeValue').textContent = formatSeconds(document.getElementById('delayTime').value);
       document.getElementById('delayFeedbackValue').textContent = formatPercent(document.getElementById('delayFeedback').value);
       document.getElementById('delayWetValue').textContent = formatPercent(document.getElementById('delayWet').value);
+      document.getElementById('reverbLengthValue').textContent = formatSeconds(document.getElementById('reverbLength').value);
+      document.getElementById('reverbWetValue').textContent = formatPercent(document.getElementById('reverbWet').value);
       document.getElementById('tremRateValue').textContent = `${Number(document.getElementById('tremRate').value).toFixed(1)} Hz`;
       document.getElementById('tremDepthValue').textContent = formatPercent(document.getElementById('tremDepth').value);
+      document.getElementById('vibratoRateValue').textContent = `${Number(document.getElementById('vibratoRate').value).toFixed(1)} Hz`;
+      document.getElementById('vibratoDepthValue').textContent = formatPercent(document.getElementById('vibratoDepth').value);
       document.getElementById('masterGainValue').textContent = formatNumber(document.getElementById('masterGain').value);
-      document.getElementById('dryWetValue').textContent = formatPercent(document.getElementById('dryWet').value);
     }
 
     function populateCategories(items) {
@@ -517,8 +744,8 @@
 
       const AudioCtx = window.AudioContext || window.webkitAudioContext;
       state.audioContext = new AudioCtx();
-
       buildAudioGraph();
+      await rebuildImpulseResponse();
       updateFx();
       startMeter();
     }
@@ -527,15 +754,27 @@
       const ctx = state.audioContext;
 
       fx.input = ctx.createGain();
-      fx.dryGain = ctx.createGain();
-      fx.wetIn = ctx.createGain();
+      fx.preDelay = ctx.createDelay(0.05);
+      fx.vibratoDepth = ctx.createGain();
+      fx.vibratoMix = ctx.createGain();
+
       fx.lowpass = ctx.createBiquadFilter();
       fx.highpass = ctx.createBiquadFilter();
+      fx.bandpass = ctx.createBiquadFilter();
+      fx.notch = ctx.createBiquadFilter();
+      fx.lowShelf = ctx.createBiquadFilter();
+      fx.highShelf = ctx.createBiquadFilter();
+      fx.compressor = ctx.createDynamicsCompressor();
+      fx.compressorBypass = ctx.createGain();
+      fx.compressorWet = ctx.createGain();
       fx.distortion = ctx.createWaveShaper();
       fx.distOut = ctx.createGain();
       fx.delay = ctx.createDelay(2.0);
       fx.delayFeedback = ctx.createGain();
       fx.delayWet = ctx.createGain();
+      fx.reverb = ctx.createConvolver();
+      fx.reverbSend = ctx.createGain();
+      fx.reverbWet = ctx.createGain();
       fx.tremoloGain = ctx.createGain();
       fx.master = ctx.createGain();
       meterAnalyser = ctx.createAnalyser();
@@ -544,22 +783,40 @@
 
       fx.lowpass.type = 'lowpass';
       fx.highpass.type = 'highpass';
+      fx.bandpass.type = 'bandpass';
+      fx.notch.type = 'notch';
+      fx.lowShelf.type = 'lowshelf';
+      fx.highShelf.type = 'highshelf';
 
-      fx.input.connect(fx.dryGain);
-      fx.input.connect(fx.wetIn);
-
-      fx.wetIn.connect(fx.lowpass);
+      fx.input.connect(fx.preDelay);
+      fx.preDelay.connect(fx.vibratoMix);
+      fx.vibratoMix.connect(fx.lowpass);
       fx.lowpass.connect(fx.highpass);
-      fx.highpass.connect(fx.distortion);
+      fx.highpass.connect(fx.bandpass);
+      fx.bandpass.connect(fx.notch);
+      fx.notch.connect(fx.lowShelf);
+      fx.lowShelf.connect(fx.highShelf);
+
+      fx.highShelf.connect(fx.compressorBypass);
+      fx.highShelf.connect(fx.compressor);
+      fx.compressor.connect(fx.compressorWet);
+      fx.compressorBypass.connect(fx.distortion);
+      fx.compressorWet.connect(fx.distortion);
+
       fx.distortion.connect(fx.distOut);
       fx.distOut.connect(fx.delay);
+      fx.distOut.connect(fx.reverbSend);
       fx.distOut.connect(fx.tremoloGain);
+
       fx.delay.connect(fx.delayWet);
       fx.delay.connect(fx.delayFeedback);
       fx.delayFeedback.connect(fx.delay);
       fx.delayWet.connect(fx.tremoloGain);
 
-      fx.dryGain.connect(fx.master);
+      fx.reverbSend.connect(fx.reverb);
+      fx.reverb.connect(fx.reverbWet);
+      fx.reverbWet.connect(fx.tremoloGain);
+
       fx.tremoloGain.connect(fx.master);
       fx.master.connect(meterAnalyser);
       meterAnalyser.connect(ctx.destination);
@@ -567,17 +824,23 @@
       tremoloOsc = ctx.createOscillator();
       fx.tremoloDepth = ctx.createGain();
       fx.tremoloBase = ctx.createConstantSource();
-
       tremoloOsc.type = 'sine';
       tremoloOsc.frequency.value = 5;
-      fx.tremoloDepth.gain.value = 0.5;
-      fx.tremoloBase.offset.value = 0.5;
-
+      fx.tremoloDepth.gain.value = 0;
+      fx.tremoloBase.offset.value = 1;
       tremoloOsc.connect(fx.tremoloDepth);
       fx.tremoloDepth.connect(fx.tremoloGain.gain);
       fx.tremoloBase.connect(fx.tremoloGain.gain);
       tremoloOsc.start();
       fx.tremoloBase.start();
+
+      vibratoOsc = ctx.createOscillator();
+      vibratoOsc.type = 'sine';
+      vibratoOsc.frequency.value = 5;
+      fx.vibratoDepth.gain.value = 0;
+      vibratoOsc.connect(fx.vibratoDepth);
+      fx.vibratoDepth.connect(fx.preDelay.delayTime);
+      vibratoOsc.start();
     }
 
     function makeDistortionCurve(amount = 0) {
@@ -592,18 +855,76 @@
       return curve;
     }
 
-    function updateFx() {
+    function generateImpulseResponse(durationSeconds) {
+      const ctx = state.audioContext;
+      const length = Math.max(1, Math.floor(ctx.sampleRate * durationSeconds));
+      const impulse = ctx.createBuffer(2, length, ctx.sampleRate);
+
+      for (let channel = 0; channel < impulse.numberOfChannels; channel++) {
+        const data = impulse.getChannelData(channel);
+        for (let i = 0; i < length; i++) {
+          const t = i / length;
+          const decay = Math.pow(1 - t, 2.8);
+          data[i] = (Math.random() * 2 - 1) * decay;
+        }
+      }
+
+      return impulse;
+    }
+
+    async function rebuildImpulseResponse() {
       if (!state.audioContext) return;
+      const seconds = Number(document.getElementById('reverbLength').value).toFixed(1);
+      if (!state.impulseCache.has(seconds)) {
+        state.impulseCache.set(seconds, generateImpulseResponse(Number(seconds)));
+      }
+      fx.reverb.buffer = state.impulseCache.get(seconds);
+    }
+
+    async function updateFx(event) {
+      if (!state.audioContext) {
+        updateValueLabels();
+        return;
+      }
 
       const now = state.audioContext.currentTime;
       const lpEnabled = document.getElementById('lpEnabled').checked;
       const hpEnabled = document.getElementById('hpEnabled').checked;
+      const bpEnabled = document.getElementById('bpEnabled').checked;
+      const notchEnabled = document.getElementById('notchEnabled').checked;
+      const lowShelfEnabled = document.getElementById('lowShelfEnabled').checked;
+      const highShelfEnabled = document.getElementById('highShelfEnabled').checked;
+      const compEnabled = document.getElementById('compEnabled').checked;
       const distEnabled = document.getElementById('distEnabled').checked;
       const delayEnabled = document.getElementById('delayEnabled').checked;
+      const reverbEnabled = document.getElementById('reverbEnabled').checked;
       const tremEnabled = document.getElementById('tremEnabled').checked;
+      const vibratoEnabled = document.getElementById('vibratoEnabled').checked;
 
-      fx.lowpass.frequency.setTargetAtTime(lpEnabled ? Number(document.getElementById('lpFreq').value) : 20000, now, 0.01);
-      fx.highpass.frequency.setTargetAtTime(hpEnabled ? Number(document.getElementById('hpFreq').value) : 20, now, 0.01);
+      fx.lowpass.frequency.setTargetAtTime(lpEnabled ? sliderToLogFrequency(document.getElementById('lpFreq').value) : 20000, now, 0.01);
+      fx.highpass.frequency.setTargetAtTime(hpEnabled ? sliderToLogFrequency(document.getElementById('hpFreq').value) : 20, now, 0.01);
+
+      fx.bandpass.frequency.setTargetAtTime(sliderToLogFrequency(document.getElementById('bpFreq').value), now, 0.01);
+      fx.bandpass.Q.setTargetAtTime(Number(document.getElementById('bpQ').value), now, 0.01);
+      fx.bandpass.gain.setTargetAtTime(bpEnabled ? 1 : 0, now, 0.01);
+      fx.bandpass.type = bpEnabled ? 'bandpass' : 'allpass';
+
+      fx.notch.frequency.setTargetAtTime(sliderToLogFrequency(document.getElementById('notchFreq').value), now, 0.01);
+      fx.notch.Q.setTargetAtTime(Number(document.getElementById('notchQ').value), now, 0.01);
+      fx.notch.type = notchEnabled ? 'notch' : 'allpass';
+
+      fx.lowShelf.frequency.setTargetAtTime(sliderToLogFrequency(document.getElementById('lowShelfFreq').value), now, 0.01);
+      fx.lowShelf.gain.setTargetAtTime(lowShelfEnabled ? Number(document.getElementById('lowShelfGain').value) : 0, now, 0.01);
+      fx.highShelf.frequency.setTargetAtTime(sliderToLogFrequency(document.getElementById('highShelfFreq').value), now, 0.01);
+      fx.highShelf.gain.setTargetAtTime(highShelfEnabled ? Number(document.getElementById('highShelfGain').value) : 0, now, 0.01);
+
+      fx.compressor.threshold.setTargetAtTime(Number(document.getElementById('compThreshold').value), now, 0.01);
+      fx.compressor.ratio.setTargetAtTime(Number(document.getElementById('compRatio').value), now, 0.01);
+      fx.compressor.attack.setTargetAtTime(Number(document.getElementById('compAttack').value), now, 0.01);
+      fx.compressor.release.setTargetAtTime(Number(document.getElementById('compRelease').value), now, 0.01);
+      fx.compressorBypass.gain.setTargetAtTime(compEnabled ? 0 : 1, now, 0.01);
+      fx.compressorWet.gain.setTargetAtTime(compEnabled ? 1 : 0, now, 0.01);
+
       fx.distortion.curve = makeDistortionCurve(distEnabled ? Number(document.getElementById('distAmount').value) : 0);
       fx.distortion.oversample = '4x';
       fx.distOut.gain.setTargetAtTime(distEnabled ? Number(document.getElementById('distMix').value) : 1, now, 0.01);
@@ -612,12 +933,20 @@
       fx.delayFeedback.gain.setTargetAtTime(delayEnabled ? Number(document.getElementById('delayFeedback').value) : 0, now, 0.01);
       fx.delayWet.gain.setTargetAtTime(delayEnabled ? Number(document.getElementById('delayWet').value) : 0, now, 0.01);
 
+      if (!event || event.target.id === 'reverbLength') {
+        await rebuildImpulseResponse();
+      }
+      fx.reverbSend.gain.setTargetAtTime(reverbEnabled ? 1 : 0, now, 0.01);
+      fx.reverbWet.gain.setTargetAtTime(reverbEnabled ? Number(document.getElementById('reverbWet').value) : 0, now, 0.01);
+
       tremoloOsc.frequency.setTargetAtTime(tremEnabled ? Number(document.getElementById('tremRate').value) : 0.1, now, 0.01);
       fx.tremoloDepth.gain.setTargetAtTime(tremEnabled ? Number(document.getElementById('tremDepth').value) / 2 : 0, now, 0.01);
       fx.tremoloBase.offset.setTargetAtTime(tremEnabled ? 1 - Number(document.getElementById('tremDepth').value) / 2 : 1, now, 0.01);
 
-      const blend = Number(document.getElementById('dryWet').value);
-      fx.dryGain.gain.setTargetAtTime(1 - blend, now, 0.01);
+      vibratoOsc.frequency.setTargetAtTime(vibratoEnabled ? Number(document.getElementById('vibratoRate').value) : 0.1, now, 0.01);
+      fx.preDelay.delayTime.setTargetAtTime(vibratoEnabled ? 0.008 : 0.0, now, 0.01);
+      fx.vibratoDepth.gain.setTargetAtTime(vibratoEnabled ? Number(document.getElementById('vibratoDepth').value) * 0.006 : 0, now, 0.01);
+
       fx.master.gain.setTargetAtTime(Number(document.getElementById('masterGain').value), now, 0.01);
       updateValueLabels();
     }
@@ -642,6 +971,7 @@
       stopPlayback();
       setStatus(`Loading ${label}...`);
       const response = await fetch(url);
+      if (!response.ok) throw new Error(`Fetch failed for ${url}`);
       const arrayBuffer = await response.arrayBuffer();
       state.audioBuffer = await state.audioContext.decodeAudioData(arrayBuffer);
       state.pauseOffset = 0;
@@ -730,11 +1060,28 @@
       setStatus(`Stopped: ${state.selectedItem?.title || 'audio'}`);
     }
 
-    function resetFx() {
+    async function resetFx() {
       document.getElementById('lpEnabled').checked = true;
-      document.getElementById('lpFreq').value = 20000;
+      document.getElementById('lpFreq').value = 100;
       document.getElementById('hpEnabled').checked = false;
-      document.getElementById('hpFreq').value = 20;
+      document.getElementById('hpFreq').value = 0;
+      document.getElementById('bpEnabled').checked = false;
+      document.getElementById('bpFreq').value = 50;
+      document.getElementById('bpQ').value = 1;
+      document.getElementById('notchEnabled').checked = false;
+      document.getElementById('notchFreq').value = 50;
+      document.getElementById('notchQ').value = 1;
+      document.getElementById('lowShelfEnabled').checked = false;
+      document.getElementById('lowShelfFreq').value = 35;
+      document.getElementById('lowShelfGain').value = 0;
+      document.getElementById('highShelfEnabled').checked = false;
+      document.getElementById('highShelfFreq').value = 70;
+      document.getElementById('highShelfGain').value = 0;
+      document.getElementById('compEnabled').checked = false;
+      document.getElementById('compThreshold').value = -24;
+      document.getElementById('compRatio').value = 4;
+      document.getElementById('compAttack').value = 0.003;
+      document.getElementById('compRelease').value = 0.25;
       document.getElementById('distEnabled').checked = false;
       document.getElementById('distAmount').value = 0;
       document.getElementById('distMix').value = 1;
@@ -742,12 +1089,17 @@
       document.getElementById('delayTime').value = 0.25;
       document.getElementById('delayFeedback').value = 0.35;
       document.getElementById('delayWet').value = 0.25;
+      document.getElementById('reverbEnabled').checked = false;
+      document.getElementById('reverbLength').value = 2.5;
+      document.getElementById('reverbWet').value = 0.25;
       document.getElementById('tremEnabled').checked = false;
       document.getElementById('tremRate').value = 5;
       document.getElementById('tremDepth').value = 0.5;
+      document.getElementById('vibratoEnabled').checked = false;
+      document.getElementById('vibratoRate').value = 5;
+      document.getElementById('vibratoDepth').value = 0.2;
       document.getElementById('masterGain').value = 1;
-      document.getElementById('dryWet').value = 1;
-      updateFx();
+      await updateFx();
       setStatus('Effects reset.');
     }
 
@@ -785,8 +1137,9 @@
     });
 
     controlIds.forEach(id => {
-      document.getElementById(id).addEventListener('input', updateFx);
-      document.getElementById(id).addEventListener('change', updateFx);
+      const el = document.getElementById(id);
+      el.addEventListener('input', updateFx);
+      el.addEventListener('change', updateFx);
     });
 
     updateValueLabels();
