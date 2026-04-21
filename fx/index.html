@@ -1,9 +1,796 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>TEST FX</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Audio Workshop Demo</title>
+  <style>
+    :root {
+      --bg: #0f1115;
+      --panel: #171a21;
+      --panel-2: #1f2430;
+      --text: #eef2f7;
+      --muted: #a9b3c3;
+      --accent: #63b3ff;
+      --border: #2a3140;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #0d1016, #121723);
+      color: var(--text);
+    }
+
+    header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 17, 21, 0.95);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(8px);
+    }
+
+    header h1 {
+      margin: 0 0 6px 0;
+      font-size: 28px;
+    }
+
+    header p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    .panel h2 {
+      margin: 0 0 14px;
+      font-size: 20px;
+    }
+
+    .source-actions {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .row {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    label {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    input[type="text"],
+    select,
+    input[type="file"],
+    button {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--panel-2);
+      color: var(--text);
+      padding: 10px 12px;
+      font-size: 14px;
+    }
+
+    button {
+      cursor: pointer;
+      transition: 0.15s ease;
+    }
+
+    button:hover {
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .transport {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .status {
+      margin-top: 12px;
+      font-size: 13px;
+      color: var(--muted);
+      min-height: 18px;
+    }
+
+    .library {
+      max-height: 480px;
+      overflow: auto;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    .library-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .library-item:last-child { border-bottom: 0; }
+
+    .library-item-title {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .library-item-meta {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: capitalize;
+    }
+
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .effect-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    .effect-card h3 {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 0 0 12px;
+      font-size: 17px;
+    }
+
+    .effect-card .controls {
+      display: grid;
+      gap: 12px;
+    }
+
+    .slider-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .slider-row .value {
+      font-size: 12px;
+      color: var(--muted);
+      min-width: 64px;
+      text-align: right;
+    }
+
+    input[type="range"] {
+      width: 100%;
+    }
+
+    .meter {
+      height: 10px;
+      width: 100%;
+      background: #0f1115;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+
+    .meter-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #4ade80, #facc15, #fb7185);
+      transition: width 0.08s linear;
+    }
+
+    @media (max-width: 980px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
-  This is TEST FX
+  <header>
+    <h1>Audio Workshop Demo</h1>
+    <p>Choose a built-in source or upload your own file, then experiment with effect settings in real time.</p>
+  </header>
+
+  <main class="layout">
+    <section class="panel">
+      <h2>Source</h2>
+
+      <div class="source-actions">
+        <div class="row">
+          <label for="categoryFilter">Filter by category</label>
+          <select id="categoryFilter">
+            <option value="all">All categories</option>
+          </select>
+        </div>
+
+        <div class="row">
+          <label for="searchInput">Search library</label>
+          <input type="text" id="searchInput" placeholder="Type part of a source name..." />
+        </div>
+
+        <div class="row">
+          <label for="uploadInput">Upload your own audio file</label>
+          <input type="file" id="uploadInput" accept="audio/*" />
+        </div>
+      </div>
+
+      <div class="library" id="libraryList"></div>
+
+      <div class="transport">
+        <button id="playBtn">Play</button>
+        <button id="pauseBtn">Pause</button>
+        <button id="stopBtn">Stop</button>
+        <button id="resetBtn">Reset FX</button>
+      </div>
+
+      <div class="status" id="statusText">Loading source library...</div>
+      <div class="meter"><div class="meter-fill" id="meterFill"></div></div>
+    </section>
+
+    <section>
+      <div class="effects-grid">
+        <div class="effect-card">
+          <h3>
+            Low-Pass Filter
+            <label><input type="checkbox" id="lpEnabled" checked /> On</label>
+          </h3>
+          <div class="controls">
+            <div>
+              <label for="lpFreq">Cutoff Frequency</label>
+              <div class="slider-row">
+                <input type="range" id="lpFreq" min="200" max="20000" step="1" value="20000" />
+                <div class="value" id="lpFreqValue"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="effect-card">
+          <h3>
+            High-Pass Filter
+            <label><input type="checkbox" id="hpEnabled" /> On</label>
+          </h3>
+          <div class="controls">
+            <div>
+              <label for="hpFreq">Cutoff Frequency</label>
+              <div class="slider-row">
+                <input type="range" id="hpFreq" min="20" max="5000" step="1" value="20" />
+                <div class="value" id="hpFreqValue"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="effect-card">
+          <h3>
+            Distortion
+            <label><input type="checkbox" id="distEnabled" /> On</label>
+          </h3>
+          <div class="controls">
+            <div>
+              <label for="distAmount">Drive</label>
+              <div class="slider-row">
+                <input type="range" id="distAmount" min="0" max="1000" step="1" value="0" />
+                <div class="value" id="distAmountValue"></div>
+              </div>
+            </div>
+            <div>
+              <label for="distMix">Output Gain</label>
+              <div class="slider-row">
+                <input type="range" id="distMix" min="0" max="1.5" step="0.01" value="1" />
+                <div class="value" id="distMixValue"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="effect-card">
+          <h3>
+            Delay
+            <label><input type="checkbox" id="delayEnabled" /> On</label>
+          </h3>
+          <div class="controls">
+            <div>
+              <label for="delayTime">Delay Time</label>
+              <div class="slider-row">
+                <input type="range" id="delayTime" min="0" max="1.2" step="0.01" value="0.25" />
+                <div class="value" id="delayTimeValue"></div>
+              </div>
+            </div>
+            <div>
+              <label for="delayFeedback">Feedback</label>
+              <div class="slider-row">
+                <input type="range" id="delayFeedback" min="0" max="0.9" step="0.01" value="0.35" />
+                <div class="value" id="delayFeedbackValue"></div>
+              </div>
+            </div>
+            <div>
+              <label for="delayWet">Wet Mix</label>
+              <div class="slider-row">
+                <input type="range" id="delayWet" min="0" max="1" step="0.01" value="0.25" />
+                <div class="value" id="delayWetValue"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="effect-card">
+          <h3>
+            Tremolo
+            <label><input type="checkbox" id="tremEnabled" /> On</label>
+          </h3>
+          <div class="controls">
+            <div>
+              <label for="tremRate">Rate</label>
+              <div class="slider-row">
+                <input type="range" id="tremRate" min="0.1" max="20" step="0.1" value="5" />
+                <div class="value" id="tremRateValue"></div>
+              </div>
+            </div>
+            <div>
+              <label for="tremDepth">Depth</label>
+              <div class="slider-row">
+                <input type="range" id="tremDepth" min="0" max="1" step="0.01" value="0.5" />
+                <div class="value" id="tremDepthValue"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="effect-card">
+          <h3>
+            Master Output
+          </h3>
+          <div class="controls">
+            <div>
+              <label for="masterGain">Volume</label>
+              <div class="slider-row">
+                <input type="range" id="masterGain" min="0" max="1.5" step="0.01" value="1" />
+                <div class="value" id="masterGainValue"></div>
+              </div>
+            </div>
+            <div>
+              <label for="dryWet">Dry / Wet Blend</label>
+              <div class="slider-row">
+                <input type="range" id="dryWet" min="0" max="1" step="0.01" value="1" />
+                <div class="value" id="dryWetValue"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const state = {
+      audioContext: null,
+      audioBuffer: null,
+      sourceNode: null,
+      startTime: 0,
+      pauseOffset: 0,
+      isPlaying: false,
+      selectedItem: null,
+      library: []
+    };
+
+    const els = {
+      libraryList: document.getElementById('libraryList'),
+      categoryFilter: document.getElementById('categoryFilter'),
+      searchInput: document.getElementById('searchInput'),
+      uploadInput: document.getElementById('uploadInput'),
+      playBtn: document.getElementById('playBtn'),
+      pauseBtn: document.getElementById('pauseBtn'),
+      stopBtn: document.getElementById('stopBtn'),
+      resetBtn: document.getElementById('resetBtn'),
+      statusText: document.getElementById('statusText'),
+      meterFill: document.getElementById('meterFill')
+    };
+
+    const fx = {};
+    let meterAnalyser = null;
+    let meterData = null;
+    let meterFrame = null;
+    let tremoloOsc = null;
+    let chorusOsc = null;
+
+    const controlIds = [
+      'lpEnabled','lpFreq','hpEnabled','hpFreq','distEnabled','distAmount','distMix',
+      'delayEnabled','delayTime','delayFeedback','delayWet','tremEnabled','tremRate',
+      'tremDepth','masterGain','dryWet'
+    ];
+
+    function setStatus(text) {
+      els.statusText.textContent = text;
+    }
+
+    function formatHz(value) {
+      const n = Number(value);
+      return n >= 1000 ? `${(n / 1000).toFixed(1)} kHz` : `${Math.round(n)} Hz`;
+    }
+
+    function formatSeconds(value) {
+      return `${Number(value).toFixed(2)} s`;
+    }
+
+    function formatPercent(value) {
+      return `${Math.round(Number(value) * 100)}%`;
+    }
+
+    function formatNumber(value) {
+      return Number(value).toFixed(2);
+    }
+
+    function updateValueLabels() {
+      document.getElementById('lpFreqValue').textContent = formatHz(document.getElementById('lpFreq').value);
+      document.getElementById('hpFreqValue').textContent = formatHz(document.getElementById('hpFreq').value);
+      document.getElementById('distAmountValue').textContent = document.getElementById('distAmount').value;
+      document.getElementById('distMixValue').textContent = formatNumber(document.getElementById('distMix').value);
+      document.getElementById('delayTimeValue').textContent = formatSeconds(document.getElementById('delayTime').value);
+      document.getElementById('delayFeedbackValue').textContent = formatPercent(document.getElementById('delayFeedback').value);
+      document.getElementById('delayWetValue').textContent = formatPercent(document.getElementById('delayWet').value);
+      document.getElementById('tremRateValue').textContent = `${Number(document.getElementById('tremRate').value).toFixed(1)} Hz`;
+      document.getElementById('tremDepthValue').textContent = formatPercent(document.getElementById('tremDepth').value);
+      document.getElementById('masterGainValue').textContent = formatNumber(document.getElementById('masterGain').value);
+      document.getElementById('dryWetValue').textContent = formatPercent(document.getElementById('dryWet').value);
+    }
+
+    function populateCategories(items) {
+      const categories = [...new Set(items.map(item => item.category).filter(Boolean))].sort();
+      els.categoryFilter.innerHTML = '<option value="all">All categories</option>';
+      categories.forEach(category => {
+        const opt = document.createElement('option');
+        opt.value = category;
+        opt.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+        els.categoryFilter.appendChild(opt);
+      });
+    }
+
+    function renderLibrary() {
+      const category = els.categoryFilter.value;
+      const term = els.searchInput.value.trim().toLowerCase();
+
+      const filtered = state.library.filter(item => {
+        const categoryMatch = category === 'all' || item.category === category;
+        const textMatch = !term || item.title.toLowerCase().includes(term);
+        return categoryMatch && textMatch;
+      });
+
+      els.libraryList.innerHTML = '';
+
+      if (!filtered.length) {
+        els.libraryList.innerHTML = '<div class="library-item"><div>No matching files found.</div></div>';
+        return;
+      }
+
+      filtered.forEach(item => {
+        const row = document.createElement('div');
+        row.className = 'library-item';
+        row.innerHTML = `
+          <div>
+            <div class="library-item-title">${item.title}</div>
+            <div class="library-item-meta">${item.category || 'uncategorized'}</div>
+          </div>
+          <button type="button">Load</button>
+        `;
+        row.querySelector('button').addEventListener('click', () => loadLibraryItem(item));
+        els.libraryList.appendChild(row);
+      });
+    }
+
+    async function ensureAudioContext() {
+      if (state.audioContext) return;
+
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      state.audioContext = new AudioCtx();
+
+      buildAudioGraph();
+      updateFx();
+      startMeter();
+    }
+
+    function buildAudioGraph() {
+      const ctx = state.audioContext;
+
+      fx.input = ctx.createGain();
+      fx.dryGain = ctx.createGain();
+      fx.wetIn = ctx.createGain();
+      fx.lowpass = ctx.createBiquadFilter();
+      fx.highpass = ctx.createBiquadFilter();
+      fx.distortion = ctx.createWaveShaper();
+      fx.distOut = ctx.createGain();
+      fx.delay = ctx.createDelay(2.0);
+      fx.delayFeedback = ctx.createGain();
+      fx.delayWet = ctx.createGain();
+      fx.tremoloGain = ctx.createGain();
+      fx.master = ctx.createGain();
+      meterAnalyser = ctx.createAnalyser();
+      meterAnalyser.fftSize = 2048;
+      meterData = new Uint8Array(meterAnalyser.fftSize);
+
+      fx.lowpass.type = 'lowpass';
+      fx.highpass.type = 'highpass';
+
+      fx.input.connect(fx.dryGain);
+      fx.input.connect(fx.wetIn);
+
+      fx.wetIn.connect(fx.lowpass);
+      fx.lowpass.connect(fx.highpass);
+      fx.highpass.connect(fx.distortion);
+      fx.distortion.connect(fx.distOut);
+      fx.distOut.connect(fx.delay);
+      fx.distOut.connect(fx.tremoloGain);
+      fx.delay.connect(fx.delayWet);
+      fx.delay.connect(fx.delayFeedback);
+      fx.delayFeedback.connect(fx.delay);
+      fx.delayWet.connect(fx.tremoloGain);
+
+      fx.dryGain.connect(fx.master);
+      fx.tremoloGain.connect(fx.master);
+      fx.master.connect(meterAnalyser);
+      meterAnalyser.connect(ctx.destination);
+
+      tremoloOsc = ctx.createOscillator();
+      fx.tremoloDepth = ctx.createGain();
+      fx.tremoloBase = ctx.createConstantSource();
+
+      tremoloOsc.type = 'sine';
+      tremoloOsc.frequency.value = 5;
+      fx.tremoloDepth.gain.value = 0.5;
+      fx.tremoloBase.offset.value = 0.5;
+
+      tremoloOsc.connect(fx.tremoloDepth);
+      fx.tremoloDepth.connect(fx.tremoloGain.gain);
+      fx.tremoloBase.connect(fx.tremoloGain.gain);
+      tremoloOsc.start();
+      fx.tremoloBase.start();
+    }
+
+    function makeDistortionCurve(amount = 0) {
+      const k = Number(amount);
+      const samples = 44100;
+      const curve = new Float32Array(samples);
+      const deg = Math.PI / 180;
+      for (let i = 0; i < samples; i++) {
+        const x = (i * 2) / samples - 1;
+        curve[i] = k === 0 ? x : ((3 + k) * x * 20 * deg) / (Math.PI + k * Math.abs(x));
+      }
+      return curve;
+    }
+
+    function updateFx() {
+      if (!state.audioContext) return;
+
+      const now = state.audioContext.currentTime;
+      const lpEnabled = document.getElementById('lpEnabled').checked;
+      const hpEnabled = document.getElementById('hpEnabled').checked;
+      const distEnabled = document.getElementById('distEnabled').checked;
+      const delayEnabled = document.getElementById('delayEnabled').checked;
+      const tremEnabled = document.getElementById('tremEnabled').checked;
+
+      fx.lowpass.frequency.setTargetAtTime(lpEnabled ? Number(document.getElementById('lpFreq').value) : 20000, now, 0.01);
+      fx.highpass.frequency.setTargetAtTime(hpEnabled ? Number(document.getElementById('hpFreq').value) : 20, now, 0.01);
+      fx.distortion.curve = makeDistortionCurve(distEnabled ? Number(document.getElementById('distAmount').value) : 0);
+      fx.distortion.oversample = '4x';
+      fx.distOut.gain.setTargetAtTime(distEnabled ? Number(document.getElementById('distMix').value) : 1, now, 0.01);
+
+      fx.delay.delayTime.setTargetAtTime(delayEnabled ? Number(document.getElementById('delayTime').value) : 0, now, 0.01);
+      fx.delayFeedback.gain.setTargetAtTime(delayEnabled ? Number(document.getElementById('delayFeedback').value) : 0, now, 0.01);
+      fx.delayWet.gain.setTargetAtTime(delayEnabled ? Number(document.getElementById('delayWet').value) : 0, now, 0.01);
+
+      tremoloOsc.frequency.setTargetAtTime(tremEnabled ? Number(document.getElementById('tremRate').value) : 0.1, now, 0.01);
+      fx.tremoloDepth.gain.setTargetAtTime(tremEnabled ? Number(document.getElementById('tremDepth').value) / 2 : 0, now, 0.01);
+      fx.tremoloBase.offset.setTargetAtTime(tremEnabled ? 1 - Number(document.getElementById('tremDepth').value) / 2 : 1, now, 0.01);
+
+      const blend = Number(document.getElementById('dryWet').value);
+      fx.dryGain.gain.setTargetAtTime(1 - blend, now, 0.01);
+      fx.master.gain.setTargetAtTime(Number(document.getElementById('masterGain').value), now, 0.01);
+      updateValueLabels();
+    }
+
+    async function loadLibrary() {
+      try {
+        const response = await fetch('json/audio-library.json');
+        if (!response.ok) throw new Error('Could not load JSON library.');
+        const items = await response.json();
+        state.library = items;
+        populateCategories(items);
+        renderLibrary();
+        setStatus('Library loaded. Choose a file or upload your own audio.');
+      } catch (error) {
+        console.error(error);
+        setStatus('Could not load json/audio-library.json. Make sure the file exists.');
+      }
+    }
+
+    async function loadAudioFromUrl(url, label) {
+      await ensureAudioContext();
+      stopPlayback();
+      setStatus(`Loading ${label}...`);
+      const response = await fetch(url);
+      const arrayBuffer = await response.arrayBuffer();
+      state.audioBuffer = await state.audioContext.decodeAudioData(arrayBuffer);
+      state.pauseOffset = 0;
+      setStatus(`Loaded: ${label}`);
+    }
+
+    async function loadLibraryItem(item) {
+      state.selectedItem = item;
+      try {
+        await loadAudioFromUrl(item.file, item.title);
+      } catch (error) {
+        console.error(error);
+        setStatus(`Could not load ${item.title}. Check the file path.`);
+      }
+    }
+
+    async function loadUploadedFile(file) {
+      await ensureAudioContext();
+      stopPlayback();
+      setStatus(`Loading uploaded file: ${file.name}...`);
+      const arrayBuffer = await file.arrayBuffer();
+      state.audioBuffer = await state.audioContext.decodeAudioData(arrayBuffer);
+      state.pauseOffset = 0;
+      state.selectedItem = { title: file.name, category: 'uploaded' };
+      setStatus(`Loaded uploaded file: ${file.name}`);
+    }
+
+    function createSourceNode(offset = 0) {
+      const source = state.audioContext.createBufferSource();
+      source.buffer = state.audioBuffer;
+      source.connect(fx.input);
+      source.onended = () => {
+        if (state.isPlaying) {
+          state.isPlaying = false;
+          state.pauseOffset = 0;
+          state.sourceNode = null;
+          setStatus(`Finished: ${state.selectedItem?.title || 'audio'}`);
+        }
+      };
+      source.start(0, offset);
+      state.startTime = state.audioContext.currentTime - offset;
+      state.sourceNode = source;
+      state.isPlaying = true;
+    }
+
+    async function playAudio() {
+      if (!state.audioBuffer) {
+        setStatus('Choose a built-in file or upload your own audio first.');
+        return;
+      }
+
+      await ensureAudioContext();
+      if (state.audioContext.state === 'suspended') {
+        await state.audioContext.resume();
+      }
+
+      if (state.isPlaying) return;
+      createSourceNode(state.pauseOffset);
+      setStatus(`Playing: ${state.selectedItem?.title || 'audio'}`);
+    }
+
+    function pauseAudio() {
+      if (!state.isPlaying || !state.sourceNode) return;
+      state.pauseOffset = state.audioContext.currentTime - state.startTime;
+      state.isPlaying = false;
+      state.sourceNode.onended = null;
+      state.sourceNode.stop();
+      state.sourceNode.disconnect();
+      state.sourceNode = null;
+      setStatus(`Paused: ${state.selectedItem?.title || 'audio'}`);
+    }
+
+    function stopPlayback() {
+      if (state.sourceNode) {
+        state.sourceNode.onended = null;
+        state.sourceNode.stop();
+        state.sourceNode.disconnect();
+        state.sourceNode = null;
+      }
+      state.pauseOffset = 0;
+      state.isPlaying = false;
+    }
+
+    function stopAudio() {
+      stopPlayback();
+      setStatus(`Stopped: ${state.selectedItem?.title || 'audio'}`);
+    }
+
+    function resetFx() {
+      document.getElementById('lpEnabled').checked = true;
+      document.getElementById('lpFreq').value = 20000;
+      document.getElementById('hpEnabled').checked = false;
+      document.getElementById('hpFreq').value = 20;
+      document.getElementById('distEnabled').checked = false;
+      document.getElementById('distAmount').value = 0;
+      document.getElementById('distMix').value = 1;
+      document.getElementById('delayEnabled').checked = false;
+      document.getElementById('delayTime').value = 0.25;
+      document.getElementById('delayFeedback').value = 0.35;
+      document.getElementById('delayWet').value = 0.25;
+      document.getElementById('tremEnabled').checked = false;
+      document.getElementById('tremRate').value = 5;
+      document.getElementById('tremDepth').value = 0.5;
+      document.getElementById('masterGain').value = 1;
+      document.getElementById('dryWet').value = 1;
+      updateFx();
+      setStatus('Effects reset.');
+    }
+
+    function startMeter() {
+      const tick = () => {
+        if (meterAnalyser) {
+          meterAnalyser.getByteTimeDomainData(meterData);
+          let peak = 0;
+          for (let i = 0; i < meterData.length; i++) {
+            const normalized = Math.abs((meterData[i] - 128) / 128);
+            if (normalized > peak) peak = normalized;
+          }
+          els.meterFill.style.width = `${Math.min(100, peak * 140)}%`;
+        }
+        meterFrame = requestAnimationFrame(tick);
+      };
+      if (!meterFrame) tick();
+    }
+
+    els.playBtn.addEventListener('click', playAudio);
+    els.pauseBtn.addEventListener('click', pauseAudio);
+    els.stopBtn.addEventListener('click', stopAudio);
+    els.resetBtn.addEventListener('click', resetFx);
+    els.categoryFilter.addEventListener('change', renderLibrary);
+    els.searchInput.addEventListener('input', renderLibrary);
+    els.uploadInput.addEventListener('change', async (event) => {
+      const file = event.target.files?.[0];
+      if (!file) return;
+      try {
+        await loadUploadedFile(file);
+      } catch (error) {
+        console.error(error);
+        setStatus('Could not decode uploaded audio file.');
+      }
+    });
+
+    controlIds.forEach(id => {
+      document.getElementById(id).addEventListener('input', updateFx);
+      document.getElementById(id).addEventListener('change', updateFx);
+    });
+
+    updateValueLabels();
+    loadLibrary();
+  </script>
 </body>
 </html>
