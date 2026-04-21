@@ -39,17 +39,14 @@ window.ModuleRegistry = {
   },
 
   enforceExclusiveActivation() {
-    const toggles = DOM.effectsContainer.querySelectorAll('input[type="checkbox"]');
+    const toggles = DOM.effectsContainer.querySelectorAll('input[type="checkbox"][id$="-enabled"]');
 
     toggles.forEach(toggle => {
-      if (toggle.id === 'loopToggle') return;
-
       toggle.addEventListener('change', () => {
         if (!toggle.checked) return;
 
         toggles.forEach(other => {
           if (other === toggle) return;
-          if (other.id === 'loopToggle') return;
           if (!other.checked) return;
 
           other.checked = false;
