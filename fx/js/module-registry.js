@@ -1,5 +1,3 @@
-// Central registry for effect modules
-
 window.ModuleRegistry = {
   register(module) {
     AppState.modules.push(module);
@@ -17,7 +15,7 @@ window.ModuleRegistry = {
       }
     });
 
-    this.enforceExclusiveActivation();
+    this.bindExclusiveActivation();
   },
 
   connectGraph(inputNode) {
@@ -34,26 +32,43 @@ window.ModuleRegistry = {
 
   updateAll() {
     AppState.modules.forEach(module => {
-      if (module.update) module.update();
+      if (module.update) {
+        module.update();
+      }
     });
   },
 
-  enforceExclusiveActivation() {
-    const toggles = DOM.effectsContainer.querySelectorAll('input[type="checkbox"][id$="-enabled"]');
+  bindExclusiveActivation() {
+    if (this._exclusiveBound) return;
+    this._exclusiveBound = true;
 
-    toggles.forEach(toggle => {
-      toggle.addEventListener('change', () => {
-        if (!toggle.checked) return;
+    DOM.effectsContainer.addEventListener('change', (event) => {
+      const target = event.target;
 
-        toggles.forEach(other => {
-          if (other === toggle) return;
-          if (!other.checked) return;
+      if (
+        !target ||
+        target.type !== 'checkbox' ||
+        !target.id ||
+        !target.id.endsWith('-enabled')
+      ) {
+        return;
+      }
 
-          other.checked = false;
-          other.dispatchEvent(new Event('input', { bubbles: true }));
-          other.dispatchEvent(new Event('change', { bubbles: true }));
-        });
+      if (!target.checked) return;
+
+      const toggles = DOM.effectsContainer.querySelectorAll(
+        'input[type="checkbox"][id$="-enabled"]'
+      );
+
+      toggles.forEach(other => {
+        if (other === target) return;
+        if (!other.checked) return;
+
+        other.checked = false;
+        other.dispatchEvent(new Event('input', { bubbles: true }));
       });
+
+      target.dispatchEvent(new Event('input', { bubbles: true }));
     });
   }
 };
