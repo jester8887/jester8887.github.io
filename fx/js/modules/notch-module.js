@@ -4,6 +4,23 @@
     node: null,
     els: {},
 
+    sliderToQ(sliderValue) {
+      const x = Number(sliderValue);
+
+      if (x <= 33.3333) {
+        const t = x / 33.3333;
+        return 0.1 * Math.pow(1 / 0.1, t); // 0.1 -> 1
+      }
+
+      if (x <= 66.6667) {
+        const t = (x - 33.3333) / 33.3334;
+        return 1 * Math.pow(4 / 1, t); // 1 -> 4
+      }
+
+      const t = (x - 66.6667) / 33.3333;
+      return 4 * Math.pow(10 / 4, t); // 4 -> 10
+    },
+
     createUI() {
       const card = document.createElement('div');
       card.className = 'effect-card';
@@ -26,7 +43,7 @@
           <div>
             <label for="notch-q">Q Factor</label>
             <div class="slider-row">
-              <input type="range" id="notch-q" min="0.1" max="30" step="0.1" value="1" />
+              <input type="range" id="notch-q" min="0" max="100" step="0.1" value="33.3" />
               <div class="value" id="notch-q-value"></div>
             </div>
           </div>
@@ -60,7 +77,7 @@
     update() {
       const enabled = this.els.enabled.checked;
       const freq = Utils.logSliderToHz(Number(this.els.freq.value));
-      const q = Number(this.els.q.value);
+      const q = this.sliderToQ(this.els.q.value);
 
       this.node.type = enabled ? 'notch' : 'allpass';
       this.node.frequency.value = freq;
@@ -73,7 +90,7 @@
     reset() {
       this.els.enabled.checked = false;
       this.els.freq.value = 50;
-      this.els.q.value = 1;
+      this.els.q.value = 33.3;
       this.update();
     }
   };
