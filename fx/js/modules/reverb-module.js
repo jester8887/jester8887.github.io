@@ -6,6 +6,7 @@
     wet: null,
     dry: null,
     output: null,
+    toneFilter: null,
     impulseCache: new Map(),
     els: {},
 
@@ -34,6 +35,11 @@
       this.convolver.buffer = this.impulseCache.get(key);
     },
 
+    toneToDb(value) {
+      const clamped = Math.max(0, Math.min(100, value));
+      return (clamped / 100) * 20 - 10;
+    },
+
     createUI() {
       const card = document.createElement('div');
       card.className = 'effect-card';
@@ -54,10 +60,17 @@
             </div>
           </div>
           <div>
-            <label for="reverb-wet">Wet Mix</label>
+            <label for="reverb-wet">Dry / Wet</label>
             <div class="slider-row">
-              <input type="range" id="reverb-wet" min="0" max="1" step="0.01" value="0.25" />
+              <input type="range" id="reverb-wet" min="0" max="100" step="1" value="25" />
               <div class="value" id="reverb-wet-value"></div>
+            </div>
+          </div>
+          <div>
+            <label for="reverb-tone">Brightness</label>
+            <div class="slider-row">
+              <input type="range" id="reverb-tone" min="0" max="100" step="1" value="50" />
+              <div class="value" id="reverb-tone-value"></div>
             </div>
           </div>
         </div>
@@ -70,15 +83,21 @@
 
       this.input = ctx.createGain();
       this.convolver = ctx.createConvolver();
+      this.toneFilter = ctx.createBiquadFilter();
       this.wet = ctx.createGain();
       this.dry = ctx.createGain();
       this.output = ctx.createGain();
+
+      this.toneFilter.type = 'highshelf';
+      this.toneFilter.frequency.value = 500;
+      this.toneFilter.gain.value = 0;
 
       this.input.connect(this.dry);
       this.dry.connect(this.output);
 
       this.input.connect(this.convolver);
-      this.convolver.connect(this.wet);
+      this.convolver.connect(this.toneFilter);
+      this.toneFilter.connect(this.wet);
       this.wet.connect(this.output);
 
       this.els.enabled = document.getElementById('reverb-enabled');
@@ -86,10 +105,13 @@
       this.els.lengthValue = document.getElementById('reverb-length-value');
       this.els.wet = document.getElementById('reverb-wet');
       this.els.wetValue = document.getElementById('reverb-wet-value');
+      this.els.tone = document.getElementById('reverb-tone');
+      this.els.toneValue = document.getElementById('reverb-tone-value');
 
       this.els.enabled.addEventListener('input', () => this.update());
       this.els.length.addEventListener('input', () => this.update());
       this.els.wet.addEventListener('input', () => this.update());
+      this.els.tone.addEventListener('input', () => this.update());
 
       this.update();
     },
@@ -102,20 +124,27 @@
     update() {
       const enabled = this.els.enabled.checked;
       const length = Number(this.els.length.value);
-      const wet = enabled ? Number(this.els.wet.value) : 0;
+      const wetPercent = enabled ? Number(this.els.wet.value) : 0;
+      const wet = wetPercent / 100;
+      const dry = 1 - wet;
+      const tone = Number(this.els.tone.value);
+      const toneDb = this.toneToDb(tone);
 
       this.ensureImpulse(length);
       this.wet.gain.value = wet;
-      this.dry.gain.value = 1;
+      this.dry.gain.value = enabled ? dry : 1;
+      this.toneFilter.gain.value = toneDb;
 
       this.els.lengthValue.textContent = `${length.toFixed(1)} s`;
-      this.els.wetValue.textContent = `${Math.round(wet * 100)}%`;
+      this.els.wetValue.textContent = `${Math.round(wetPercent)}% wet`;
+      this.els.toneValue.textContent = `${toneDb >= 0 ? '+' : ''}${toneDb.toFixed(1)} dB`;
     },
 
     reset() {
       this.els.enabled.checked = false;
       this.els.length.value = 2.5;
-      this.els.wet.value = 0.25;
+      this.els.wet.value = 25;
+      this.els.tone.value = 50;
       this.update();
     }
   };
