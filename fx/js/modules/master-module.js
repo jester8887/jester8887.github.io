@@ -43,7 +43,7 @@
         <div>
           <label for="master-slider">Level</label>
           <div class="slider-row">
-            <input type="range" id="master-slider" min="-60" max="15" step="1" value="0">
+            <input type="range" id="master-slider" min="-60" max="15" step="1" value="0" />
             <div class="value" id="master-value">0 dB</div>
           </div>
         </div>
@@ -95,6 +95,7 @@
     },
 
     setDb(db) {
+      if (!this.gainNode) return;
       this.gainNode.gain.value = this.dbToGain(db);
 
       if (this.els.value) {
