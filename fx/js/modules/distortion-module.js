@@ -240,7 +240,7 @@
       this.odHP.frequency.value = this.lerp(20, 150, od);
       this.odPre.gain.value = this.lerp(1, 6.5, od);
       this.odShaper.curve = od > 0 ? this.makeOverdriveCurve(od) : this.linearCurve;
-      this.odLP.frequency.value = this.lerp(20000, 4200, od);
+      this.odLP.frequency.value = this.lerp(20000, 2800, od);
       this.odTrim.gain.value = this.lerp(1, 0.82, od);
 
       // Distortion: tighter low end, harder clipping, slightly brighter than OD
@@ -254,8 +254,8 @@
       this.fuzzHP.frequency.value = this.lerp(20, 90, fuzz);
       this.fuzzPre.gain.value = this.lerp(1, 24, fuzz);
       this.fuzzShaper.curve = fuzz > 0 ? this.makeFuzzCurve(fuzz) : this.linearCurve;
-      this.fuzzLP.frequency.value = this.lerp(20000, 3200, fuzz);
-      this.fuzzTrim.gain.value = this.lerp(1, 0.52, fuzz);
+      this.fuzzLP.frequency.value = this.lerp(20000, 4800, fuzz);
+      this.fuzzTrim.gain.value = this.lerp(1, 0.62, fuzz);
 
       this.outputGain.gain.value = this.dbToGain(outDb);
 
