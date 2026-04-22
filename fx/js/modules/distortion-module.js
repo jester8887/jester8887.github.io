@@ -8,6 +8,7 @@
     odHP: null,
     odPre: null,
     odShaper: null,
+    odShelf: null,
     odLP: null,
     odTrim: null,
 
@@ -20,11 +21,14 @@
     fuzzHP: null,
     fuzzPre: null,
     fuzzShaper: null,
+    fuzzShelf: null,
     fuzzLP: null,
     fuzzTrim: null,
 
     outputGain: null,
 
+    settings: null,
+    linearCurve: null,
     els: {},
 
     clamp(value, min, max) {
@@ -43,6 +47,18 @@
       return `${db > 0 ? '+' : ''}${db} dB`;
     },
 
+    async loadSettings() {
+      if (this.settings) return this.settings;
+
+      const response = await fetch('json/distortion-settings.json', { cache: 'no-store' });
+      if (!response.ok) {
+        throw new Error(`Failed to load distortion settings: ${response.status}`);
+      }
+
+      this.settings = await response.json();
+      return this.settings;
+    },
+
     makeLinearCurve() {
       const samples = 2048;
       const curve = new Float32Array(samples);
@@ -55,32 +71,30 @@
     },
 
     makeOverdriveCurve(amount) {
+      const s = this.settings.overdrive;
       const samples = 44100;
       const curve = new Float32Array(samples);
-      const drive = this.lerp(1, 8, amount);
+      const drive = this.lerp(s.curveDriveStart, s.curveDriveEnd, amount);
 
       for (let i = 0; i < samples; i++) {
         const x = (i * 2) / (samples - 1) - 1;
-
-        // Mild asymmetry for more pedal-like overdrive
-        const shifted = x + 0.08 * amount;
+        const shifted = x + s.curveShiftAmount * amount;
         const y = Math.tanh(drive * shifted) / Math.tanh(drive);
-
-        curve[i] = this.clamp(y - 0.04 * amount, -1, 1);
+        curve[i] = this.clamp(y - s.curveOutputOffset * amount, -1, 1);
       }
 
       return curve;
     },
 
     makeDistortionCurve(amount) {
+      const s = this.settings.distortion;
       const samples = 44100;
       const curve = new Float32Array(samples);
-      const drive = this.lerp(1, 20, amount);
+      const drive = this.lerp(s.curveDriveStart, s.curveDriveEnd, amount);
 
       for (let i = 0; i < samples; i++) {
         const x = (i * 2) / (samples - 1) - 1;
         const y = Math.tanh(drive * x) / Math.tanh(drive);
-
         curve[i] = this.clamp(y, -1, 1);
       }
 
@@ -88,15 +102,16 @@
     },
 
     makeFuzzCurve(amount) {
+      const s = this.settings.fuzz;
       const samples = 44100;
       const curve = new Float32Array(samples);
-      const drive = this.lerp(1, 45, amount);
+      const drive = this.lerp(s.curveDriveStart, s.curveDriveEnd, amount);
+      const power = this.lerp(s.curvePowerStart, s.curvePowerEnd, amount);
 
       for (let i = 0; i < samples; i++) {
         const x = (i * 2) / (samples - 1) - 1;
         const hard = Math.tanh(drive * x) / Math.tanh(drive);
-        const squared = Math.sign(hard) * Math.pow(Math.abs(hard), 0.55 - 0.25 * amount);
-
+        const squared = Math.sign(hard) * Math.pow(Math.abs(hard), power);
         curve[i] = this.clamp(squared, -1, 1);
       }
 
@@ -147,7 +162,9 @@
       return card;
     },
 
-    init() {
+    async init() {
+      await this.loadSettings();
+
       const ctx = AppState.audioContext;
 
       this.input = ctx.createGain();
@@ -157,6 +174,8 @@
       this.odHP.type = 'highpass';
       this.odPre = ctx.createGain();
       this.odShaper = ctx.createWaveShaper();
+      this.odShelf = ctx.createBiquadFilter();
+      this.odShelf.type = this.settings.overdrive.shelfType;
       this.odLP = ctx.createBiquadFilter();
       this.odLP.type = 'lowpass';
       this.odTrim = ctx.createGain();
@@ -173,6 +192,8 @@
       this.fuzzHP.type = 'highpass';
       this.fuzzPre = ctx.createGain();
       this.fuzzShaper = ctx.createWaveShaper();
+      this.fuzzShelf = ctx.createBiquadFilter();
+      this.fuzzShelf.type = this.settings.fuzz.shelfType;
       this.fuzzLP = ctx.createBiquadFilter();
       this.fuzzLP.type = 'lowpass';
       this.fuzzTrim = ctx.createGain();
@@ -186,7 +207,8 @@
       this.input.connect(this.odHP);
       this.odHP.connect(this.odPre);
       this.odPre.connect(this.odShaper);
-      this.odShaper.connect(this.odLP);
+      this.odShaper.connect(this.odShelf);
+      this.odShelf.connect(this.odLP);
       this.odLP.connect(this.odTrim);
 
       this.odTrim.connect(this.distHP);
@@ -198,7 +220,8 @@
       this.distTrim.connect(this.fuzzHP);
       this.fuzzHP.connect(this.fuzzPre);
       this.fuzzPre.connect(this.fuzzShaper);
-      this.fuzzShaper.connect(this.fuzzLP);
+      this.fuzzShaper.connect(this.fuzzShelf);
+      this.fuzzShelf.connect(this.fuzzLP);
       this.fuzzLP.connect(this.fuzzTrim);
 
       this.fuzzTrim.connect(this.outputGain);
@@ -216,6 +239,11 @@
       this.els.output = document.getElementById('distortion-output');
       this.els.outputValue = document.getElementById('distortion-output-value');
 
+      const out = this.settings.output;
+      this.els.output.min = out.minDb;
+      this.els.output.max = out.maxDb;
+      this.els.output.value = out.defaultDb;
+
       this.els.overdrive.addEventListener('input', () => this.update());
       this.els.distortion.addEventListener('input', () => this.update());
       this.els.fuzz.addEventListener('input', () => this.update());
@@ -231,31 +259,38 @@
     },
 
     update() {
+      if (!this.settings) return;
+
       const od = Number(this.els.overdrive.value) / 100;
       const dist = Number(this.els.distortion.value) / 100;
       const fuzz = Number(this.els.fuzz.value) / 100;
       const outDb = Number(this.els.output.value);
 
-      // Overdrive: mild bass cut, soft asymmetric clipping, darker top end as it increases
-      this.odHP.frequency.value = this.lerp(20, 150, od);
-      this.odPre.gain.value = this.lerp(1, 6.5, od);
+      const ods = this.settings.overdrive;
+      const ds = this.settings.distortion;
+      const fs = this.settings.fuzz;
+
+      this.odHP.frequency.value = this.lerp(ods.hpStartHz, ods.hpEndHz, od);
+      this.odPre.gain.value = this.lerp(ods.preGainStart, ods.preGainEnd, od);
       this.odShaper.curve = od > 0 ? this.makeOverdriveCurve(od) : this.linearCurve;
-      this.odLP.frequency.value = this.lerp(20000, 2800, od);
-      this.odTrim.gain.value = this.lerp(1, 0.82, od);
+      this.odShelf.frequency.value = ods.shelfFrequencyHz;
+      this.odShelf.gain.value = ods.shelfGainDb;
+      this.odLP.frequency.value = this.lerp(ods.lpStartHz, ods.lpEndHz, od);
+      this.odTrim.gain.value = this.lerp(ods.trimStart, ods.trimEnd, od);
 
-      // Distortion: tighter low end, harder clipping, slightly brighter than OD
-      this.distHP.frequency.value = this.lerp(20, 220, dist);
-      this.distPre.gain.value = this.lerp(1, 12, dist);
+      this.distHP.frequency.value = this.lerp(ds.hpStartHz, ds.hpEndHz, dist);
+      this.distPre.gain.value = this.lerp(ds.preGainStart, ds.preGainEnd, dist);
       this.distShaper.curve = dist > 0 ? this.makeDistortionCurve(dist) : this.linearCurve;
-      this.distLP.frequency.value = this.lerp(20000, 5200, dist);
-      this.distTrim.gain.value = this.lerp(1, 0.68, dist);
+      this.distLP.frequency.value = this.lerp(ds.lpStartHz, ds.lpEndHz, dist);
+      this.distTrim.gain.value = this.lerp(ds.trimStart, ds.trimEnd, dist);
 
-      // Fuzz: lots of gain, flatter clipping, darker and thicker
-      this.fuzzHP.frequency.value = this.lerp(20, 90, fuzz);
-      this.fuzzPre.gain.value = this.lerp(1, 24, fuzz);
+      this.fuzzHP.frequency.value = this.lerp(fs.hpStartHz, fs.hpEndHz, fuzz);
+      this.fuzzPre.gain.value = this.lerp(fs.preGainStart, fs.preGainEnd, fuzz);
       this.fuzzShaper.curve = fuzz > 0 ? this.makeFuzzCurve(fuzz) : this.linearCurve;
-      this.fuzzLP.frequency.value = this.lerp(20000, 4800, fuzz);
-      this.fuzzTrim.gain.value = this.lerp(1, 0.62, fuzz);
+      this.fuzzShelf.frequency.value = fs.shelfFrequencyHz;
+      this.fuzzShelf.gain.value = fs.shelfGainDb;
+      this.fuzzLP.frequency.value = this.lerp(fs.lpStartHz, fs.lpEndHz, fuzz);
+      this.fuzzTrim.gain.value = this.lerp(fs.trimStart, fs.trimEnd, fuzz);
 
       this.outputGain.gain.value = this.dbToGain(outDb);
 
@@ -269,7 +304,7 @@
       this.els.overdrive.value = 0;
       this.els.distortion.value = 0;
       this.els.fuzz.value = 0;
-      this.els.output.value = 0;
+      this.els.output.value = this.settings ? this.settings.output.defaultDb : 0;
       this.update();
     }
   };
