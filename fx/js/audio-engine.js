@@ -40,7 +40,7 @@ window.AudioEngine = {
     let chain = source;
     chain = ModuleRegistry.connectGraph(chain);
 
-    const masterModule = ModuleRegistry.modules.find(
+    const masterModule = AppState.modules.find(
       (m) => m.id === 'master'
     );
 
