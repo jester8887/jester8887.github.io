@@ -1,5 +1,4 @@
 window.AudioEngine = {
-
   async init() {
     if (AppState.audioContext) return;
 
@@ -39,26 +38,29 @@ window.AudioEngine = {
     source.loop = AppState.loop;
 
     let chain = source;
-chain = ModuleRegistry.connectGraph(chain);
+    chain = ModuleRegistry.connectGraph(chain);
 
-const masterModule = ModuleRegistry.modules.find(
-  (m) => m.id === 'master'
-);
+    const masterModule = ModuleRegistry.modules.find(
+      (m) => m.id === 'master'
+    );
 
-chain.connect(this.masterGain);
+    if (masterModule && masterModule.input && masterModule.output) {
+      chain.connect(masterModule.input);
 
-if (masterModule && masterModule.input && masterModule.output) {
-  this.masterGain.disconnect();
-  this.masterGain.connect(masterModule.input);
+      try {
+        masterModule.output.disconnect();
+      } catch (e) {}
 
-  try {
-    masterModule.output.disconnect();
-  } catch (e) {}
+      masterModule.output.connect(AppState.audioContext.destination);
+    } else {
+      chain.connect(this.masterGain);
 
-  masterModule.output.connect(AppState.audioContext.destination);
-} else {
-  this.masterGain.connect(AppState.audioContext.destination);
-}
+      try {
+        this.masterGain.disconnect();
+      } catch (e) {}
+
+      this.masterGain.connect(AppState.audioContext.destination);
+    }
 
     source.start(0, AppState.pauseOffset);
 
@@ -78,7 +80,6 @@ if (masterModule && masterModule.input && masterModule.output) {
     if (!AppState.isPlaying) return;
 
     const ctx = AppState.audioContext;
-
     AppState.pauseOffset = ctx.currentTime - AppState.startTime;
 
     this.stop();
