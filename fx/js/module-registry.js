@@ -6,9 +6,18 @@ window.ModuleRegistry = {
   initAll() {
     DOM.effectsContainer.innerHTML = "";
 
+    if (DOM.masterOutputHost) {
+      DOM.masterOutputHost.innerHTML = "";
+    }
+
     AppState.modules.forEach(module => {
       const el = module.createUI();
-      DOM.effectsContainer.appendChild(el);
+
+      if (module.id === 'master' && DOM.masterOutputHost) {
+        DOM.masterOutputHost.appendChild(el);
+      } else {
+        DOM.effectsContainer.appendChild(el);
+      }
 
       if (module.init) {
         module.init();
