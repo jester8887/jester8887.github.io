@@ -1,5 +1,4 @@
 window.LibraryManager = {
-
   async load() {
     try {
       const res = await fetch('json/audio-library.json');
@@ -17,24 +16,35 @@ window.LibraryManager = {
   render() {
     DOM.libraryList.innerHTML = "";
 
-    AppState.library.forEach(item => {
-      const row = document.createElement('div');
-      row.className = "library-item";
+    const grid = document.createElement('div');
+    grid.className = 'library-grid';
 
-      row.innerHTML = `
-        <div>
-          <div class="library-item-title">${item.title}</div>
-          <div class="library-item-meta">${item.category}</div>
-        </div>
-        <button>Load</button>
+    AppState.library.forEach(item => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'library-grid-button';
+
+      if (
+        AppState.selectedItem &&
+        AppState.selectedItem.title === item.title &&
+        AppState.selectedItem.file === item.file
+      ) {
+        btn.classList.add('active');
+      }
+
+      btn.innerHTML = `
+        <span class="library-grid-title">${item.title}</span>
+        <span class="library-grid-meta">${item.category}</span>
       `;
 
-      row.querySelector('button').onclick = () => {
+      btn.onclick = () => {
         this.loadItem(item);
       };
 
-      DOM.libraryList.appendChild(row);
+      grid.appendChild(btn);
     });
+
+    DOM.libraryList.appendChild(grid);
   },
 
   async loadItem(item) {
@@ -49,5 +59,7 @@ window.LibraryManager = {
 
     Utils.setActiveSource(item.title);
     Utils.setStatus("Loaded");
+
+    this.render();
   }
 };
