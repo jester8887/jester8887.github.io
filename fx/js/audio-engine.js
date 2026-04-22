@@ -7,7 +7,6 @@ window.AudioEngine = {
     AppState.audioContext = new AudioCtx();
 
     this.masterGain = AppState.audioContext.createGain();
-    this.masterGain.connect(AppState.audioContext.destination);
   },
 
   async loadBufferFromArrayBuffer(arrayBuffer) {
@@ -40,8 +39,26 @@ window.AudioEngine = {
     source.loop = AppState.loop;
 
     let chain = source;
-    chain = ModuleRegistry.connectGraph(chain);
-    chain.connect(this.masterGain);
+chain = ModuleRegistry.connectGraph(chain);
+
+const masterModule = ModuleRegistry.modules.find(
+  (m) => m.id === 'master'
+);
+
+chain.connect(this.masterGain);
+
+if (masterModule && masterModule.input && masterModule.output) {
+  this.masterGain.disconnect();
+  this.masterGain.connect(masterModule.input);
+
+  try {
+    masterModule.output.disconnect();
+  } catch (e) {}
+
+  masterModule.output.connect(AppState.audioContext.destination);
+} else {
+  this.masterGain.connect(AppState.audioContext.destination);
+}
 
     source.start(0, AppState.pauseOffset);
 
