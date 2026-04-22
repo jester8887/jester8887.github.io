@@ -16,5 +16,6 @@ window.DOM = {
   searchInput: document.getElementById('searchInput'),
   uploadInput: document.getElementById('uploadInput'),
 
-  effectsContainer: document.getElementById('effectsContainer')
+  effectsContainer: document.getElementById('effectsContainer'),
+  masterOutputHost: document.getElementById('masterOutputHost')
 };
