@@ -1,0 +1,53 @@
+{
+  "overdrive": {
+    "hpStartHz": 20,
+    "hpEndHz": 150,
+    "preGainStart": 1,
+    "preGainEnd": 6.5,
+    "lpStartHz": 20000,
+    "lpEndHz": 2800,
+    "trimStart": 1,
+    "trimEnd": 0.82,
+    "shelfType": "highshelf",
+    "shelfFrequencyHz": 600,
+    "shelfGainDb": -8,
+    "curveDriveStart": 1,
+    "curveDriveEnd": 8,
+    "curveShiftAmount": 0.08,
+    "curveOutputOffset": 0.04
+  },
+  "distortion": {
+    "hpStartHz": 20,
+    "hpEndHz": 220,
+    "preGainStart": 1,
+    "preGainEnd": 12,
+    "lpStartHz": 20000,
+    "lpEndHz": 5200,
+    "trimStart": 1,
+    "trimEnd": 0.68,
+    "curveDriveStart": 1,
+    "curveDriveEnd": 20
+  },
+  "fuzz": {
+    "hpStartHz": 20,
+    "hpEndHz": 90,
+    "preGainStart": 1,
+    "preGainEnd": 24,
+    "lpStartHz": 20000,
+    "lpEndHz": 4800,
+    "trimStart": 1,
+    "trimEnd": 0.62,
+    "shelfType": "lowshelf",
+    "shelfFrequencyHz": 1000,
+    "shelfGainDb": -10,
+    "curveDriveStart": 1,
+    "curveDriveEnd": 45,
+    "curvePowerStart": 0.55,
+    "curvePowerEnd": 0.30
+  },
+  "output": {
+    "minDb": -20,
+    "maxDb": 20,
+    "defaultDb": 0
+  }
+}
