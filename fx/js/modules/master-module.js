@@ -35,30 +35,35 @@
 
     createUI() {
       const card = document.createElement('div');
-      card.className = 'effect-card master-card';
+      card.className = 'transport-master';
 
       card.innerHTML = `
         <h3>Master Output</h3>
 
-        <div>
+        <div class="master-top-row">
           <label for="master-slider">Level</label>
-          <div class="slider-row">
-            <input type="range" id="master-slider" min="-60" max="15" step="1" value="0" />
-            <div class="value" id="master-value">0 dB</div>
-          </div>
+          <input
+            type="range"
+            id="master-slider"
+            min="-60"
+            max="15"
+            step="1"
+            value="0"
+          />
+          <div class="master-value" id="master-value">0 dB</div>
         </div>
 
         <div class="meter-wrap">
           <div class="meter-ruler">
             <span style="left:0%">-60</span>
-            <span style="left:33.3%">-40</span>
-            <span style="left:66.6%">-20</span>
-            <span style="left:83.3%">-10</span>
-            <span style="left:91.6%">-5</span>
+            <span style="left:33.3333%">-40</span>
+            <span style="left:66.6667%">-20</span>
+            <span style="left:83.3333%">-10</span>
+            <span style="left:91.6667%">-5</span>
             <span style="left:100%">0</span>
           </div>
 
-          <div class="meter" id="master-meter">
+          <div class="master-meter">
             <div class="zone green"></div>
             <div class="zone yellow"></div>
             <div class="zone orange"></div>
@@ -68,34 +73,34 @@
           </div>
 
           <div class="meter-readout">
-            <span id="master-meter-db">-60 dB</span>
+            Output: <span id="master-meter-db">-60 dB</span>
           </div>
         </div>
       `;
 
-      return card;
-    },
-
-    init() {
-      this.createNodes();
-
-      this.els.slider = document.getElementById('master-slider');
-      this.els.value = document.getElementById('master-value');
-      this.els.overlay = document.getElementById('master-overlay');
-      this.els.peak = document.getElementById('master-peak');
-      this.els.db = document.getElementById('master-meter-db');
+      this.els.slider = card.querySelector('#master-slider');
+      this.els.value = card.querySelector('#master-value');
+      this.els.overlay = card.querySelector('#master-overlay');
+      this.els.peak = card.querySelector('#master-peak');
+      this.els.db = card.querySelector('#master-meter-db');
 
       this.els.slider.addEventListener('input', () => {
         const db = Number(this.els.slider.value);
         this.setDb(db);
       });
 
+      return card;
+    },
+
+    init() {
+      this.createNodes();
       this.setDb(0);
       this.startMeter();
     },
 
     setDb(db) {
       if (!this.gainNode) return;
+
       this.gainNode.gain.value = this.dbToGain(db);
 
       if (this.els.value) {
