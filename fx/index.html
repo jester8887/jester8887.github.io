@@ -341,6 +341,67 @@
         align-items: flex-start;
       }
     }
+    .master-card {
+  order: -999;
+}
+
+.meter-wrap {
+  margin-top: 10px;
+}
+
+.meter-ruler {
+  position: relative;
+  height: 14px;
+  font-size: 10px;
+  color: #ccc;
+}
+
+.meter-ruler span {
+  position: absolute;
+  transform: translateX(-50%);
+}
+
+.meter {
+  position: relative;
+  height: 16px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: #111;
+  border: 1px solid #444;
+}
+
+.zone {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+
+.green { left:0%; width:66.6%; background:#123c12; }
+.yellow { left:66.6%; width:16.6%; background:#5c5c12; }
+.orange { left:83.3%; width:8.3%; background:#6b3c12; }
+.red { left:91.6%; width:8.3%; background:#6b1212; }
+
+.overlay {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  background: rgba(0,0,0,0.8);
+}
+
+.peak {
+  position: absolute;
+  width: 2px;
+  top: 0;
+  bottom: 0;
+  background: white;
+}
+
+.meter-readout {
+  font-size: 11px;
+  margin-top: 4px;
+}
   </style>
 </head>
 <body>
