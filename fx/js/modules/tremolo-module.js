@@ -85,7 +85,7 @@ update() {
   const rate = enabled ? Number(this.els.rate.value) : 0.1;
   const rawDepth = enabled ? Number(this.els.depth.value) : 0;
 
-  const depth = Math.min(1, Math.pow(rawDepth, 0.25) * 4);
+  const depth = Math.min(1, rawDepth * 4);
 
   this.osc.frequency.value = rate;
   this.depthNode.gain.value = depth / 2;
