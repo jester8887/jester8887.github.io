@@ -26,14 +26,11 @@
 
       this.analyser.fftSize = 2048;
       this.analyser.smoothingTimeConstant = 0.85;
-
       this.meterData = new Float32Array(this.analyser.fftSize);
 
       this.input.connect(this.gainNode);
       this.gainNode.connect(this.analyser);
       this.analyser.connect(this.output);
-
-      this.setDb(0);
     },
 
     createUI() {
@@ -43,10 +40,12 @@
       card.innerHTML = `
         <h3>Master Output</h3>
 
-        <div class="slider-row">
-          <label>Level</label>
-          <input type="range" id="master-slider" min="-60" max="15" step="1" value="0">
-          <span id="master-value">0 dB</span>
+        <div>
+          <label for="master-slider">Level</label>
+          <div class="slider-row">
+            <input type="range" id="master-slider" min="-60" max="15" step="1" value="0">
+            <div class="value" id="master-value">0 dB</div>
+          </div>
         </div>
 
         <div class="meter-wrap">
@@ -59,42 +58,53 @@
             <span style="left:100%">0</span>
           </div>
 
-          <div class="meter" id="meter">
+          <div class="meter" id="master-meter">
             <div class="zone green"></div>
             <div class="zone yellow"></div>
             <div class="zone orange"></div>
             <div class="zone red"></div>
-
-            <div class="overlay" id="overlay"></div>
-            <div class="peak" id="peak"></div>
+            <div class="overlay" id="master-overlay"></div>
+            <div class="peak" id="master-peak"></div>
           </div>
 
           <div class="meter-readout">
-            <span id="meter-db">-60 dB</span>
+            <span id="master-meter-db">-60 dB</span>
           </div>
         </div>
       `;
 
-      this.els.slider = card.querySelector('#master-slider');
-      this.els.value = card.querySelector('#master-value');
-      this.els.overlay = card.querySelector('#overlay');
-      this.els.peak = card.querySelector('#peak');
-      this.els.db = card.querySelector('#meter-db');
+      return card;
+    },
+
+    init() {
+      this.createNodes();
+
+      this.els.slider = document.getElementById('master-slider');
+      this.els.value = document.getElementById('master-value');
+      this.els.overlay = document.getElementById('master-overlay');
+      this.els.peak = document.getElementById('master-peak');
+      this.els.db = document.getElementById('master-meter-db');
 
       this.els.slider.addEventListener('input', () => {
         const db = Number(this.els.slider.value);
         this.setDb(db);
       });
 
-      return card;
+      this.setDb(0);
+      this.startMeter();
     },
 
     setDb(db) {
       this.gainNode.gain.value = this.dbToGain(db);
-      this.els.value.textContent = `${db > 0 ? '+' : ''}${db} dB`;
+
+      if (this.els.value) {
+        this.els.value.textContent = `${db > 0 ? '+' : ''}${db} dB`;
+      }
     },
 
     getDb() {
+      if (!this.analyser || !this.meterData) return -60;
+
       this.analyser.getFloatTimeDomainData(this.meterData);
 
       let peak = 0;
@@ -120,29 +130,29 @@
       const tick = () => {
         const db = this.getDb();
         const visibleDb = Math.max(-60, Math.min(0, db));
-
         const pct = this.dbToPercent(visibleDb);
 
-        this.els.overlay.style.width = `${100 - pct}%`;
-        this.els.db.textContent = `${Math.round(visibleDb)} dB`;
+        if (this.els.overlay) {
+          this.els.overlay.style.width = `${100 - pct}%`;
+        }
+
+        if (this.els.db) {
+          this.els.db.textContent = `${Math.round(visibleDb)} dB`;
+        }
 
         peakHold = Math.max(visibleDb, peakHold - 0.4);
         const peakPct = this.dbToPercent(peakHold);
-        this.els.peak.style.left = `${peakPct}%`;
+
+        if (this.els.peak) {
+          this.els.peak.style.left = `${peakPct}%`;
+        }
 
         this.meterAnim = requestAnimationFrame(tick);
       };
 
       tick();
-    },
-
-    init() {
-      this.createNodes();
-      const ui = this.createUI();
-      this.startMeter();
-      return ui;
     }
   };
 
-  AppModules.register(module);
+  ModuleRegistry.register(module);
 })();
