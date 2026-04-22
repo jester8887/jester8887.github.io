@@ -11,16 +11,26 @@ window.AudioEngine = {
   async loadBufferFromArrayBuffer(arrayBuffer) {
     await this.init();
 
+    // Kill any currently playing source before switching files
+    this.stop();
+
     AppState.audioBuffer =
-      await AppState.audioContext.decodeAudioData(arrayBuffer);
+      await AppState.audioContext.decodeAudioData(arrayBuffer.slice(0));
 
     AppState.pauseOffset = 0;
   },
 
   stop() {
     if (AppState.sourceNode) {
-      AppState.sourceNode.stop();
-      AppState.sourceNode.disconnect();
+      try {
+        AppState.sourceNode.onended = null;
+        AppState.sourceNode.stop();
+      } catch (e) {}
+
+      try {
+        AppState.sourceNode.disconnect();
+      } catch (e) {}
+
       AppState.sourceNode = null;
     }
 
@@ -32,6 +42,11 @@ window.AudioEngine = {
     if (!AppState.audioBuffer) return;
 
     const ctx = AppState.audioContext;
+
+    // Prevent accidental double-play stacking
+    if (AppState.sourceNode) {
+      this.stop();
+    }
 
     const source = ctx.createBufferSource();
     source.buffer = AppState.audioBuffer;
@@ -69,9 +84,10 @@ window.AudioEngine = {
     AppState.isPlaying = true;
 
     source.onended = () => {
-      if (!AppState.loop) {
+      if (AppState.sourceNode === source && !AppState.loop) {
         AppState.isPlaying = false;
         AppState.pauseOffset = 0;
+        AppState.sourceNode = null;
       }
     };
   },
