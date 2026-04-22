@@ -9,7 +9,7 @@
       card.className = 'effect-card';
       card.innerHTML = `
         <h3>
-          High Shelf EQ
+          High Shelf
           <label class="inline-toggle">
             <input type="checkbox" id="highshelf-enabled" />
             On
