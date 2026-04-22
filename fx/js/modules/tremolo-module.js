@@ -80,20 +80,20 @@
       return this.output;
     },
 
-    update() {
-      const enabled = this.els.enabled.checked;
-      const rate = enabled ? Number(this.els.rate.value) : 0.1;
-      const rawDepth = enabled ? Number(this.els.depth.value) : 0;
+update() {
+  const enabled = this.els.enabled.checked;
+  const rate = enabled ? Number(this.els.rate.value) : 0.1;
+  const rawDepth = enabled ? Number(this.els.depth.value) : 0;
 
-      const depth = Math.pow(rawDepth, 0.25);
+  const depth = Math.min(1, Math.pow(rawDepth, 0.25) * 4);
 
-      this.osc.frequency.value = rate;
-      this.depthNode.gain.value = depth / 2;
-      this.baseNode.offset.value = 1 - depth / 2;
+  this.osc.frequency.value = rate;
+  this.depthNode.gain.value = depth / 2;
+  this.baseNode.offset.value = 1 - depth / 2;
 
-      this.els.rateValue.textContent = `${rate.toFixed(1)} Hz`;
-      this.els.depthValue.textContent = `${Math.round(rawDepth * 100)}%`;
-    },
+  this.els.rateValue.textContent = `${rate.toFixed(1)} Hz`;
+  this.els.depthValue.textContent = `${Math.round(rawDepth * 100)}%`;
+},
 
     reset() {
       this.els.enabled.checked = false;
