@@ -123,7 +123,13 @@
       card.className = 'effect-card';
 
       card.innerHTML = `
-        <h3>Drive Stack</h3>
+        <h3>
+          Drive Stack
+          <label class="inline-toggle">
+            <input type="checkbox" id="distortion-enabled" />
+            On
+          </label>
+        </h3>
         <div class="controls">
           <div>
             <label for="distortion-overdrive">Overdrive</label>
@@ -227,6 +233,8 @@
       this.fuzzTrim.connect(this.outputGain);
       this.outputGain.connect(this.output);
 
+      this.els.enabled = document.getElementById('distortion-enabled');
+
       this.els.overdrive = document.getElementById('distortion-overdrive');
       this.els.overdriveValue = document.getElementById('distortion-overdrive-value');
 
@@ -244,6 +252,7 @@
       this.els.output.max = out.maxDb;
       this.els.output.value = out.defaultDb;
 
+      this.els.enabled.addEventListener('input', () => this.update());
       this.els.overdrive.addEventListener('input', () => this.update());
       this.els.distortion.addEventListener('input', () => this.update());
       this.els.fuzz.addEventListener('input', () => this.update());
@@ -261,10 +270,12 @@
     update() {
       if (!this.settings) return;
 
-      const od = Number(this.els.overdrive.value) / 100;
-      const dist = Number(this.els.distortion.value) / 100;
-      const fuzz = Number(this.els.fuzz.value) / 100;
-      const outDb = Number(this.els.output.value);
+      const enabled = this.els.enabled.checked;
+
+      const od = enabled ? Number(this.els.overdrive.value) / 100 : 0;
+      const dist = enabled ? Number(this.els.distortion.value) / 100 : 0;
+      const fuzz = enabled ? Number(this.els.fuzz.value) / 100 : 0;
+      const outDb = enabled ? Number(this.els.output.value) : 0;
 
       const ods = this.settings.overdrive;
       const ds = this.settings.distortion;
@@ -274,7 +285,7 @@
       this.odPre.gain.value = this.lerp(ods.preGainStart, ods.preGainEnd, od);
       this.odShaper.curve = od > 0 ? this.makeOverdriveCurve(od) : this.linearCurve;
       this.odShelf.frequency.value = ods.shelfFrequencyHz;
-      this.odShelf.gain.value = ods.shelfGainDb;
+      this.odShelf.gain.value = od > 0 ? ods.shelfGainDb : 0;
       this.odLP.frequency.value = this.lerp(ods.lpStartHz, ods.lpEndHz, od);
       this.odTrim.gain.value = this.lerp(ods.trimStart, ods.trimEnd, od);
 
@@ -288,19 +299,20 @@
       this.fuzzPre.gain.value = this.lerp(fs.preGainStart, fs.preGainEnd, fuzz);
       this.fuzzShaper.curve = fuzz > 0 ? this.makeFuzzCurve(fuzz) : this.linearCurve;
       this.fuzzShelf.frequency.value = fs.shelfFrequencyHz;
-      this.fuzzShelf.gain.value = fs.shelfGainDb;
+      this.fuzzShelf.gain.value = fuzz > 0 ? fs.shelfGainDb : 0;
       this.fuzzLP.frequency.value = this.lerp(fs.lpStartHz, fs.lpEndHz, fuzz);
       this.fuzzTrim.gain.value = this.lerp(fs.trimStart, fs.trimEnd, fuzz);
 
       this.outputGain.gain.value = this.dbToGain(outDb);
 
-      this.els.overdriveValue.textContent = `${Math.round(od * 100)}%`;
-      this.els.distortionValue.textContent = `${Math.round(dist * 100)}%`;
-      this.els.fuzzValue.textContent = `${Math.round(fuzz * 100)}%`;
+      this.els.overdriveValue.textContent = `${Math.round(Number(this.els.overdrive.value))}%`;
+      this.els.distortionValue.textContent = `${Math.round(Number(this.els.distortion.value))}%`;
+      this.els.fuzzValue.textContent = `${Math.round(Number(this.els.fuzz.value))}%`;
       this.els.outputValue.textContent = this.formatDb(outDb);
     },
 
     reset() {
+      this.els.enabled.checked = false;
       this.els.overdrive.value = 0;
       this.els.distortion.value = 0;
       this.els.fuzz.value = 0;
