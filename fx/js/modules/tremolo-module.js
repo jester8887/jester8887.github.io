@@ -5,9 +5,22 @@
     gainNode: null,
     output: null,
     osc: null,
+    lfoShaper: null,
     depthNode: null,
     baseNode: null,
     els: {},
+
+    createLfoCurve(shape = 0.35) {
+      const samples = 1024;
+      const curve = new Float32Array(samples);
+
+      for (let i = 0; i < samples; i++) {
+        const x = (i * 2) / (samples - 1) - 1;
+        curve[i] = Math.sign(x) * Math.pow(Math.abs(x), shape);
+      }
+
+      return curve;
+    },
 
     createUI() {
       const card = document.createElement('div');
@@ -48,13 +61,16 @@
       this.output = ctx.createGain();
 
       this.osc = ctx.createOscillator();
+      this.lfoShaper = ctx.createWaveShaper();
       this.depthNode = ctx.createGain();
       this.baseNode = ctx.createConstantSource();
 
-      // Rounded-but-choppy feel
       this.osc.type = 'triangle';
+      this.lfoShaper.curve = this.createLfoCurve(0.35);
+      this.lfoShaper.oversample = '4x';
 
-      this.osc.connect(this.depthNode);
+      this.osc.connect(this.lfoShaper);
+      this.lfoShaper.connect(this.depthNode);
       this.depthNode.connect(this.gainNode.gain);
       this.baseNode.connect(this.gainNode.gain);
 
@@ -87,10 +103,12 @@
       const rate = enabled ? Number(this.els.rate.value) : 0.1;
       const rawDepth = enabled ? Number(this.els.depth.value) : 0;
 
-      // Shaped depth: more time at extremes = “rounded chopper”
-      const depth = Math.min(1, Math.pow(rawDepth, 0.4));
+      // Stronger depth response
+      const depth = Math.min(1, Math.pow(rawDepth, 0.22));
 
       this.osc.frequency.value = rate;
+
+      // Full tremolo range: 0 to 1 at max depth
       this.depthNode.gain.value = depth / 2;
       this.baseNode.offset.value = 1 - depth / 2;
 
