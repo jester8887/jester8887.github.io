@@ -1,5 +1,4 @@
 window.UploadManager = {
-
   init() {
     DOM.uploadInput.addEventListener('change', async (e) => {
       const file = e.target.files[0];
@@ -17,6 +16,10 @@ window.UploadManager = {
 
       Utils.setActiveSource(file.name);
       Utils.setStatus("Uploaded file ready");
+
+      if (window.LibraryManager && LibraryManager.render) {
+        LibraryManager.render();
+      }
     });
   }
 };
