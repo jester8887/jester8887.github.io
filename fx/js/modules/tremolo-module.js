@@ -5,22 +5,9 @@
     gainNode: null,
     output: null,
     osc: null,
-    lfoShaper: null,
     depthNode: null,
     baseNode: null,
     els: {},
-
-    createLfoCurve(shape = 0.35) {
-      const samples = 1024;
-      const curve = new Float32Array(samples);
-
-      for (let i = 0; i < samples; i++) {
-        const x = (i * 2) / (samples - 1) - 1;
-        curve[i] = Math.sign(x) * Math.pow(Math.abs(x), shape);
-      }
-
-      return curve;
-    },
 
     createUI() {
       const card = document.createElement('div');
@@ -37,14 +24,14 @@
           <div>
             <label for="tremolo-rate">Rate</label>
             <div class="slider-row">
-              <input type="range" id="tremolo-rate" min="0.1" max="20" step="0.1" value="5" />
+              <input type="range" id="tremolo-rate" min="0.1" max="20" step="0.1" value="3.2" />
               <div class="value" id="tremolo-rate-value"></div>
             </div>
           </div>
           <div>
             <label for="tremolo-depth">Depth</label>
             <div class="slider-row">
-              <input type="range" id="tremolo-depth" min="0" max="1" step="0.01" value="0.5" />
+              <input type="range" id="tremolo-depth" min="0" max="1" step="0.01" value="1" />
               <div class="value" id="tremolo-depth-value"></div>
             </div>
           </div>
@@ -61,16 +48,12 @@
       this.output = ctx.createGain();
 
       this.osc = ctx.createOscillator();
-      this.lfoShaper = ctx.createWaveShaper();
       this.depthNode = ctx.createGain();
       this.baseNode = ctx.createConstantSource();
 
-      this.osc.type = 'triangle';
-      this.lfoShaper.curve = this.createLfoCurve(0.35);
-      this.lfoShaper.oversample = '4x';
+      this.osc.type = 'sine';
 
-      this.osc.connect(this.lfoShaper);
-      this.lfoShaper.connect(this.depthNode);
+      this.osc.connect(this.depthNode);
       this.depthNode.connect(this.gainNode.gain);
       this.baseNode.connect(this.gainNode.gain);
 
@@ -103,14 +86,23 @@
       const rate = enabled ? Number(this.els.rate.value) : 0.1;
       const rawDepth = enabled ? Number(this.els.depth.value) : 0;
 
-      // Stronger depth response
-      const depth = Math.min(1, Math.pow(rawDepth, 0.22));
+      // Make the slider feel aggressive early
+      const depth = Math.pow(rawDepth, 0.35);
 
-      this.osc.frequency.value = rate;
+      // At full depth, dip almost to silence
+      const minFloor = 0.0;
 
-      // Full tremolo range: 0 to 1 at max depth
-      this.depthNode.gain.value = depth / 2;
-      this.baseNode.offset.value = 1 - depth / 2;
+      // LFO output is -1 to 1
+      // We solve for base and amp so gain ranges from minGain to 1
+      const minGain = 1 - depth * (1 - minFloor);
+      const maxGain = 1;
+
+      const amp = (maxGain - minGain) / 2;
+      const base = (maxGain + minGain) / 2;
+
+      this.osc.frequency.setValueAtTime(rate, AppState.audioContext.currentTime);
+      this.depthNode.gain.setValueAtTime(amp, AppState.audioContext.currentTime);
+      this.baseNode.offset.setValueAtTime(base, AppState.audioContext.currentTime);
 
       this.els.rateValue.textContent = `${rate.toFixed(1)} Hz`;
       this.els.depthValue.textContent = `${Math.round(rawDepth * 100)}%`;
@@ -118,8 +110,8 @@
 
     reset() {
       this.els.enabled.checked = false;
-      this.els.rate.value = 5;
-      this.els.depth.value = 0.5;
+      this.els.rate.value = 3.2;
+      this.els.depth.value = 1;
       this.update();
     }
   };
