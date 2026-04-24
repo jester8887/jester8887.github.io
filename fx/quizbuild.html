@@ -76,6 +76,30 @@
       min-width: 260px;
     }
 
+    .preset-builder {
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) auto auto auto;
+      gap: 10px;
+      align-items: center;
+      max-width: 860px;
+    }
+
+    .preset-builder input[type="text"] {
+      height: 42px;
+    }
+
+    .preset-builder button {
+      height: 42px;
+      white-space: nowrap;
+    }
+
+    .preset-status {
+      font-size: 12px;
+      color: var(--muted);
+      min-height: 16px;
+    }
+
+
     .status-block {
       display: grid;
       gap: 8px;
@@ -222,6 +246,50 @@
       text-transform: capitalize;
     }
 
+    .library-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .library-grid-button {
+      width: 100%;
+      min-height: 72px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 4px;
+      text-align: left;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--panel-2);
+      color: var(--text);
+      padding: 12px;
+    }
+
+    .library-grid-button:hover {
+      border-color: var(--accent);
+    }
+
+    .library-grid-button.active {
+      background: rgba(99, 179, 255, 0.1);
+      border-color: rgba(99, 179, 255, 0.45);
+      box-shadow: inset 0 0 0 1px rgba(99, 179, 255, 0.15);
+    }
+
+    .library-grid-title {
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    .library-grid-meta {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: capitalize;
+      line-height: 1.2;
+    }
+
     .effects-header {
       display: flex;
       justify-content: space-between;
@@ -309,6 +377,196 @@
       line-height: 1.45;
     }
 
+    .master-card {
+      order: -999;
+    }
+
+    .meter-wrap {
+      margin-top: 10px;
+    }
+
+    .meter-ruler {
+      position: relative;
+      height: 14px;
+      font-size: 10px;
+      color: #ccc;
+    }
+
+    .meter-ruler span {
+      position: absolute;
+      transform: translateX(-50%);
+    }
+
+    .zone {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+    }
+
+    .green {
+      left: 0%;
+      width: 66.6%;
+      background: #123c12;
+    }
+
+    .yellow {
+      left: 66.6%;
+      width: 16.6%;
+      background: #5c5c12;
+    }
+
+    .orange {
+      left: 83.3%;
+      width: 8.3%;
+      background: #6b3c12;
+    }
+
+    .red {
+      left: 91.6%;
+      width: 8.3%;
+      background: #6b1212;
+    }
+
+    .overlay {
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.8);
+    }
+
+    .peak {
+      position: absolute;
+      width: 2px;
+      top: 0;
+      bottom: 0;
+      background: white;
+    }
+
+    .meter-readout {
+      font-size: 11px;
+      margin-top: 4px;
+    }
+
+    .transport-master-host {
+      min-height: 0;
+    }
+
+    .transport-master {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px 16px;
+    }
+
+    .transport-master h3 {
+      margin: 0 0 12px;
+      font-size: 17px;
+    }
+
+    .transport-master .master-top-row {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .transport-master .master-top-row label {
+      margin: 0;
+      white-space: nowrap;
+    }
+
+    .transport-master .master-value {
+      font-size: 13px;
+      color: var(--text);
+      min-width: 52px;
+      text-align: right;
+    }
+
+    .transport-master .meter-wrap {
+      display: grid;
+      gap: 6px;
+    }
+
+    .transport-master .meter-ruler {
+      position: relative;
+      height: 14px;
+      font-size: 10px;
+      color: #ccc;
+    }
+
+    .transport-master .meter-ruler span {
+      position: absolute;
+      transform: translateX(-50%);
+    }
+
+    .transport-master .meter-ruler span:last-child {
+      transform: translateX(-100%);
+    }
+
+    .transport-master .master-meter {
+      position: relative;
+      height: 16px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: #111;
+      border: 1px solid #444;
+    }
+
+    .transport-master .zone {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+    }
+
+    .transport-master .green {
+      left: 0%;
+      width: 66.6667%;
+      background: #123c12;
+    }
+
+    .transport-master .yellow {
+      left: 66.6667%;
+      width: 16.6667%;
+      background: #5c5c12;
+    }
+
+    .transport-master .orange {
+      left: 83.3333%;
+      width: 8.3333%;
+      background: #6b3c12;
+    }
+
+    .transport-master .red {
+      left: 91.6667%;
+      width: 8.3333%;
+      background: #6b1212;
+    }
+
+    .transport-master .overlay {
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.8);
+    }
+
+    .transport-master .peak {
+      position: absolute;
+      width: 2px;
+      top: 0;
+      bottom: 0;
+      background: white;
+    }
+
+    .transport-master .meter-readout {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
     @media (max-width: 1100px) {
       .layout {
         grid-template-columns: 1fr;
@@ -326,8 +584,29 @@
         grid-template-columns: repeat(2, minmax(120px, 1fr));
       }
 
+      .preset-builder {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .preset-builder input[type="text"] {
+        grid-column: 1 / -1;
+      }
+
       .transport-right {
         min-width: 0;
+      }
+
+      .transport-master .master-top-row {
+        grid-template-columns: 1fr;
+        align-items: start;
+      }
+
+      .transport-master .master-value {
+        text-align: left;
+      }
+
+      .library-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
 
@@ -336,222 +615,21 @@
         grid-template-columns: 1fr 1fr;
       }
 
+      .preset-builder {
+        grid-template-columns: 1fr;
+      }
+
+      .preset-builder input[type="text"] {
+        grid-column: auto;
+      }
+
       .effects-header {
         flex-direction: column;
         align-items: flex-start;
       }
-    }
-    .master-card {
-  order: -999;
-}
 
-.meter-wrap {
-  margin-top: 10px;
-}
-
-.meter-ruler {
-  position: relative;
-  height: 14px;
-  font-size: 10px;
-  color: #ccc;
-}
-
-.meter-ruler span {
-  position: absolute;
-  transform: translateX(-50%);
-}
-
-.meter {
-  position: relative;
-  height: 16px;
-  border-radius: 999px;
-  overflow: hidden;
-  background: #111;
-  border: 1px solid #444;
-}
-
-.zone {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-}
-
-.green { left:0%; width:66.6%; background:#123c12; }
-.yellow { left:66.6%; width:16.6%; background:#5c5c12; }
-.orange { left:83.3%; width:8.3%; background:#6b3c12; }
-.red { left:91.6%; width:8.3%; background:#6b1212; }
-
-.overlay {
-  position: absolute;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  width: 100%;
-  background: rgba(0,0,0,0.8);
-}
-
-.peak {
-  position: absolute;
-  width: 2px;
-  top: 0;
-  bottom: 0;
-  background: white;
-}
-
-.meter-readout {
-  font-size: 11px;
-  margin-top: 4px;
-}
-.transport-master-host {
-  min-height: 0;
-}
-
-.transport-master {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 14px 16px;
-}
-
-.transport-master h3 {
-  margin: 0 0 12px;
-  font-size: 17px;
-}
-
-.transport-master .master-top-row {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  gap: 10px;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.transport-master .master-top-row label {
-  margin: 0;
-  white-space: nowrap;
-}
-
-.transport-master .master-value {
-  font-size: 13px;
-  color: var(--text);
-  min-width: 52px;
-  text-align: right;
-}
-
-.transport-master .meter-wrap {
-  display: grid;
-  gap: 6px;
-}
-
-.transport-master .meter-ruler {
-  position: relative;
-  height: 14px;
-  font-size: 10px;
-  color: #ccc;
-}
-
-.transport-master .meter-ruler span {
-  position: absolute;
-  transform: translateX(-50%);
-}
-
-.transport-master .meter-ruler span:last-child {
-  transform: translateX(-100%);
-}
-
-.transport-master .master-meter {
-  position: relative;
-  height: 16px;
-  border-radius: 999px;
-  overflow: hidden;
-  background: #111;
-  border: 1px solid #444;
-}
-
-.transport-master .zone {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-}
-
-.transport-master .green { left: 0%; width: 66.6667%; background: #123c12; }
-.transport-master .yellow { left: 66.6667%; width: 16.6667%; background: #5c5c12; }
-.transport-master .orange { left: 83.3333%; width: 8.3333%; background: #6b3c12; }
-.transport-master .red { left: 91.6667%; width: 8.3333%; background: #6b1212; }
-
-.transport-master .overlay {
-  position: absolute;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  width: 100%;
-  background: rgba(0, 0, 0, 0.8);
-}
-
-.transport-master .peak {
-  position: absolute;
-  width: 2px;
-  top: 0;
-  bottom: 0;
-  background: white;
-}
-
-.transport-master .meter-readout {
-  font-size: 11px;
-  color: var(--muted);
-}
-
-@media (max-width: 1100px) {
-  .transport-master .master-top-row {
-    grid-template-columns: 1fr;
-    align-items: start;
-  }
-
-  .transport-master .master-value {
-    text-align: left;
-  }
-}
-    
-  
-    .preset-row {
-      margin-top: 12px;
-      display: grid;
-      grid-template-columns: minmax(240px, 1.4fr) auto minmax(220px, 1fr) auto;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .preset-row label {
-      display: none;
-    }
-
-    .preset-row input[type="text"] {
-      min-width: 0;
-    }
-
-    .preset-code {
-      font-family: Menlo, Consolas, Monaco, monospace;
-      font-size: 12px;
-    }
-
-    .preset-status {
-      margin-top: 8px;
-      min-height: 18px;
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    @media (max-width: 1000px) {
-      .preset-row {
-        grid-template-columns: 1fr 120px;
-      }
-
-      .preset-row .preset-code {
-        grid-column: 1 / -1;
-      }
-
-      .preset-row .preset-load {
-        grid-column: 1 / -1;
+      .library-grid {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -559,7 +637,7 @@
 <body>
   <header>
     <h1>Audio Workshop Demo</h1>
-    <p>Select a built-in sound or upload your own file, then audition exactly one effect module at a time.</p>
+    <p>Choose a built-in source or upload your own file, then experiment with effect settings in real time.</p>
 
     <div class="transport-bar">
       <div class="transport-left">
@@ -570,2034 +648,244 @@
           <button id="resetBtn" type="button">Reset FX</button>
         </div>
 
-        <div class="preset-row">
-          <input id="generatedPresetCode" class="preset-code" type="text" readonly placeholder="Generated preset code" />
-          <button id="copyPresetCodeBtn" type="button">Copy</button>
-          <input id="loadPresetCode" class="preset-load" type="text" placeholder="Paste preset code here" />
-          <button id="loadPresetCodeBtn" type="button">Load</button>
+        <div class="preset-builder" aria-label="Preset builder">
+          <input type="text" id="presetCodeInput" placeholder="Paste preset code here..." autocomplete="off" />
+          <button id="loadPresetBtn" type="button">Load Preset</button>
+          <button id="generatePresetBtn" type="button">Generate Code</button>
+          <button id="copyPresetBtn" type="button">Copy Code</button>
         </div>
-        <div id="presetStatus" class="preset-status"></div>
+        <div class="preset-status" id="presetStatusText"></div>
 
-        <div class="status-block">
-          <div id="statusText" class="status">Idle.</div>
-          <div id="activeSourceText" class="active-source">No source selected.</div>
-          <label class="loop-wrap">
-            <input id="loopToggle" type="checkbox" />
-            Loop playback
-          </label>
-        </div>
+
+        <div id="masterOutputHost" class="transport-master-host"></div>
       </div>
 
       <div class="transport-right">
-        <div class="transport-master-host" id="transportMasterHost"></div>
+        <label class="loop-wrap">
+          <input type="checkbox" id="loopToggle" />
+          <span>Loop playback</span>
+        </label>
+
+        <div class="status-block">
+          <div class="active-source" id="activeSourceText">Active source: none loaded</div>
+          <div class="status" id="statusText">Loading source library...</div>
+          <div class="meter">
+            <div class="meter-fill" id="meterFill"></div>
+          </div>
+        </div>
       </div>
     </div>
   </header>
 
   <main class="layout">
     <section class="panel">
-      <h2>Sources</h2>
+      <h2>Source</h2>
+
       <div class="source-actions">
         <div class="row">
+          <label for="categoryFilter">Filter by category</label>
+          <select id="categoryFilter">
+            <option value="all">All categories</option>
+          </select>
+        </div>
+
+        <div class="row">
+          <label for="searchInput">Search library</label>
+          <input type="text" id="searchInput" placeholder="Type part of a source name..." />
+        </div>
+
+        <div class="row">
           <label for="uploadInput">Upload your own audio file</label>
-          <input id="uploadInput" type="file" accept="audio/*" />
+          <input type="file" id="uploadInput" accept="audio/*" />
         </div>
       </div>
-      <div id="libraryList" class="library"></div>
-      <p class="note">Uploaded files are available for the current session only. Selecting a new source stops the prior one so only one audio stream is active.</p>
+
+      <div class="library" id="libraryList"></div>
+
+      <div class="note">
+        Built-in sources and uploads share one active playback source. Uploading a file should replace the active source.
+      </div>
     </section>
 
-    <section class="panel">
+    <section>
       <div class="effects-header">
-        <h2>Effect Modules</h2>
-        <div class="effects-help">This page is set up for one active module at a time.</div>
+        <h2>Effects</h2>
+        <div class="effects-help">Modules are injected by JavaScript. Swap a module by editing or replacing its JS file.</div>
       </div>
-      <div id="effectsContainer" class="effects-grid"></div>
+
+      <div id="effectsContainer" class="effects-grid">
+        <div class="module-placeholder">
+          Effect modules have not loaded yet.
+        </div>
+      </div>
     </section>
   </main>
 
-  <script>
-    window.AppState = {
-      audioContext: null,
-      sourceNode: null,
-      playingNode: null,
-      selectedItem: null,
-      uploadedFile: null,
-      currentObjectUrl: null,
-      modules: [],
-      library: [],
-      transport: {
-        isPlaying: false,
-        startedAt: 0,
-        pausedAt: 0
-      }
-    };
-
-    window.ModuleRegistry = {
-      register(module) {
-        window.AppState.modules.push(module);
-      }
-    };
-
-    function stopCurrentPlayback() {
-      const state = window.AppState;
-      if (state.playingNode) {
-        try {
-          state.playingNode.onended = null;
-          state.playingNode.stop();
-        } catch (error) {}
-        try {
-          state.playingNode.disconnect();
-        } catch (error) {}
-        state.playingNode = null;
-      }
-
-      state.transport.isPlaying = false;
-      state.transport.startedAt = 0;
-      state.transport.pausedAt = 0;
-      updateStatus('Stopped.');
-    }
-
-    function updateStatus(text) {
-      const el = document.getElementById('statusText');
-      if (el) el.textContent = text;
-    }
-
-    function updateActiveSource(text) {
-      const el = document.getElementById('activeSourceText');
-      if (el) el.textContent = text;
-    }
-
-    async function ensureAudioContext() {
-      if (!window.AppState.audioContext) {
-        window.AppState.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      }
-      if (window.AppState.audioContext.state === 'suspended') {
-        await window.AppState.audioContext.resume();
-      }
-      return window.AppState.audioContext;
-    }
-
-    async function fetchArrayBuffer(url) {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error('Could not load audio file.');
-      }
-      return response.arrayBuffer();
-    }
-
-    async function decodeSelectedSource() {
-      const ctx = await ensureAudioContext();
-      const item = window.AppState.selectedItem;
-
-      if (!item) {
-        throw new Error('No source selected.');
-      }
-
-      if (item.category === 'uploaded' && item.fileObject) {
-        return await item.fileObject.arrayBuffer();
-      }
-
-      return await fetchArrayBuffer(item.file);
-    }
-
-    function buildEffectsChain(sourceNode) {
-      let node = sourceNode;
-
-      window.AppState.modules.forEach(module => {
-        if (typeof module.connect === 'function') {
-          node = module.connect(node);
-        }
-      });
-
-      node.connect(window.AppState.audioContext.destination);
-      return node;
-    }
-
-    async function playSelectedSource() {
-      const state = window.AppState;
-      if (!state.selectedItem) {
-        updateStatus('Choose a source first.');
-        return;
-      }
-
-      const ctx = await ensureAudioContext();
-      stopCurrentPlayback();
-
-      const bufferData = await decodeSelectedSource();
-      const audioBuffer = await ctx.decodeAudioData(bufferData.slice(0));
-
-      const source = ctx.createBufferSource();
-      source.buffer = audioBuffer;
-      source.loop = document.getElementById('loopToggle').checked;
-
-      state.sourceNode = source;
-      buildEffectsChain(source);
-
-      const offset = state.transport.pausedAt || 0;
-      source.start(0, offset);
-      state.transport.startedAt = ctx.currentTime - offset;
-      state.transport.pausedAt = 0;
-      state.transport.isPlaying = true;
-      state.playingNode = source;
-
-      source.onended = () => {
-        if (state.playingNode === source && !source.loop) {
-          state.transport.isPlaying = false;
-          state.transport.startedAt = 0;
-          state.transport.pausedAt = 0;
-          state.playingNode = null;
-          updateStatus('Playback ended.');
-        }
-      };
-
-      updateStatus('Playing.');
-    }
-
-    function pauseSelectedSource() {
-      const state = window.AppState;
-      if (!state.transport.isPlaying || !state.playingNode || !state.audioContext) {
-        updateStatus('Nothing is playing.');
-        return;
-      }
-
-      const ctx = state.audioContext;
-      state.transport.pausedAt = ctx.currentTime - state.transport.startedAt;
-      stopCurrentPlayback();
-      updateStatus('Paused.');
-    }
-
-    async function loadLibrary() {
-      const response = await fetch('json/audio-library.json');
-      if (!response.ok) {
-        throw new Error('Could not load audio library.');
-      }
-      const data = await response.json();
-      window.AppState.library = Array.isArray(data) ? data : [];
-      renderLibrary();
-    }
-
-    function renderLibrary() {
-      const list = document.getElementById('libraryList');
-      if (!list) return;
-      list.innerHTML = '';
-
-      window.AppState.library.forEach(item => {
-        const row = document.createElement('div');
-        row.className = 'library-item' + (window.AppState.selectedItem === item ? ' active' : '');
-
-        const left = document.createElement('div');
-        left.innerHTML = `
-          <div class="library-item-title">${item.title || 'Untitled'}</div>
-          <div class="library-item-meta">${item.category || 'library'}</div>
-        `;
-
-        const right = document.createElement('button');
-        right.type = 'button';
-        right.textContent = 'Load';
-        right.addEventListener('click', async () => {
-          await window.LibraryManager.loadItem(item);
-        });
-
-        row.appendChild(left);
-        row.appendChild(right);
-        list.appendChild(row);
-      });
-    }
-
-    window.LibraryManager = {
-      async loadItem(item) {
-        stopCurrentPlayback();
-        window.AppState.selectedItem = item;
-        renderLibrary();
-        updateActiveSource('Selected source: ' + (item.title || 'Untitled'));
-        updateStatus('Source loaded.');
-      }
-    };
-
-    function initTransport() {
-      document.getElementById('playBtn').addEventListener('click', () => {
-        playSelectedSource().catch(error => {
-          updateStatus(error.message || 'Could not play source.');
-        });
-      });
-
-      document.getElementById('pauseBtn').addEventListener('click', () => {
-        pauseSelectedSource();
-      });
-
-      document.getElementById('stopBtn').addEventListener('click', () => {
-        stopCurrentPlayback();
-      });
-
-      document.getElementById('resetBtn').addEventListener('click', () => {
-        window.AppState.modules.forEach(module => {
-          if (typeof module.reset === 'function') {
-            module.reset();
-          }
-        });
-        updateStatus('Effects reset.');
-      });
-
-      document.getElementById('uploadInput').addEventListener('change', event => {
-        const file = event.target.files && event.target.files[0];
-        if (!file) return;
-
-        stopCurrentPlayback();
-
-        const item = {
-          title: file.name,
-          file: '',
-          category: 'uploaded',
-          fileObject: file
-        };
-
-        window.AppState.selectedItem = item;
-        renderLibrary();
-        updateActiveSource('Selected uploaded file: ' + file.name);
-        updateStatus('Uploaded source ready.');
-      });
-    }
-
-    function createMasterModule() {
-      const module = {
-        id: 'master',
-        input: null,
-        output: null,
-        meterAnalyser: null,
-        meterData: null,
-        peakHold: 0,
-        peakDb: -60,
-        animationFrame: null,
-        els: {},
-
-        dbToLinear(db) {
-          return Math.pow(10, db / 20);
-        },
-
-        linearToDb(value) {
-          if (value <= 0.000001) return -60;
-          return 20 * Math.log10(value);
-        },
-
-        createUI() {
-          const card = document.createElement('div');
-          card.className = 'transport-master';
-          card.innerHTML = `
-            <h3>Master Output</h3>
-            <div class="master-top-row">
-              <label for="master-slider">Level</label>
-              <input type="range" id="master-slider" min="-60" max="0" step="1" value="0" />
-              <div class="master-value" id="master-value">0 dB</div>
-            </div>
-            <div class="meter-wrap">
-              <div class="meter-ruler">
-                <span style="left:0%">-60</span>
-                <span style="left:16.6667%">-50</span>
-                <span style="left:33.3333%">-40</span>
-                <span style="left:50%">-30</span>
-                <span style="left:66.6667%">-20</span>
-                <span style="left:83.3333%">-10</span>
-                <span style="left:100%">0</span>
-              </div>
-              <div class="master-meter">
-                <div class="zone green"></div>
-                <div class="zone yellow"></div>
-                <div class="zone orange"></div>
-                <div class="zone red"></div>
-                <div class="overlay" id="master-meter-overlay"></div>
-                <div class="peak" id="master-meter-peak"></div>
-              </div>
-              <div class="meter-readout" id="master-meter-readout">Peak: -60.0 dB</div>
-            </div>
-          `;
-          return card;
-        },
-
-        init() {
-          const ctx = window.AppState.audioContext;
-          this.input = ctx.createGain();
-          this.output = ctx.createGain();
-          this.meterAnalyser = ctx.createAnalyser();
-          this.meterAnalyser.fftSize = 2048;
-          this.meterData = new Float32Array(this.meterAnalyser.fftSize);
-
-          this.input.connect(this.output);
-          this.output.connect(this.meterAnalyser);
-
-          this.els.slider = document.getElementById('master-slider');
-          this.els.value = document.getElementById('master-value');
-          this.els.overlay = document.getElementById('master-meter-overlay');
-          this.els.peak = document.getElementById('master-meter-peak');
-          this.els.readout = document.getElementById('master-meter-readout');
-
-          this.els.slider.addEventListener('input', () => this.update());
-          this.update();
-          this.startMeter();
-        },
-
-        connect(inputNode) {
-          inputNode.connect(this.input);
-          return this.output;
-        },
-
-        update() {
-          const db = Number(this.els.slider.value);
-          const linear = this.dbToLinear(db);
-          this.output.gain.setValueAtTime(linear, window.AppState.audioContext.currentTime);
-          this.els.value.textContent = `${db} dB`;
-        },
-
-        startMeter() {
-          const tick = () => {
-            if (this.meterAnalyser && this.meterData) {
-              this.meterAnalyser.getFloatTimeDomainData(this.meterData);
-              let peak = 0;
-              for (let i = 0; i < this.meterData.length; i++) {
-                const abs = Math.abs(this.meterData[i]);
-                if (abs > peak) peak = abs;
-              }
-
-              const db = this.linearToDb(peak);
-              this.peakDb = Math.max(db, this.peakDb - 0.8);
-
-              const clampedDb = Math.max(-60, Math.min(0, db));
-              const pct = ((clampedDb + 60) / 60) * 100;
-              const overlayWidth = 100 - pct;
-
-              const peakPct = ((Math.max(-60, Math.min(0, this.peakDb)) + 60) / 60) * 100;
-
-              if (this.els.overlay) this.els.overlay.style.width = `${overlayWidth}%`;
-              if (this.els.peak) this.els.peak.style.left = `${peakPct}%`;
-              if (this.els.readout) this.els.readout.textContent = `Peak: ${db.toFixed(1)} dB`;
-            }
-
-            this.animationFrame = requestAnimationFrame(tick);
-          };
-
-          tick();
-        },
-
-        reset() {
-          this.els.slider.value = 0;
-          this.update();
-        }
-      };
-
-      return module;
-    }
-
-    function attachMasterModule() {
-      const master = createMasterModule();
-      window.ModuleRegistry.register(master);
-      const host = document.getElementById('transportMasterHost');
-      host.innerHTML = '';
-      host.appendChild(master.createUI());
-      master.init();
-    }
-
-    function createPlaceholderModule(id, title) {
-      const module = {
-        id,
-        createUI() {
-          const card = document.createElement('div');
-          card.className = 'module-placeholder';
-          card.innerHTML = `
-            <strong>${title}</strong>
-            <div class="note">Reserved for future implementation on this page. Preset codes can recognize this module, but it is not live yet.</div>
-          `;
-          return card;
-        },
-        init() {},
-        connect(inputNode) {
-          return inputNode;
-        },
-        reset() {}
-      };
-      return module;
-    }
-
-    (function () {
-      const module = {
-        id: 'lowpass',
-        input: null,
-        filter: null,
-        output: null,
-        els: {},
-
-        createUI() {
-          const card = document.createElement('div');
-          card.className = 'effect-card';
-          card.innerHTML = `
-            <h3>
-              Low Pass
-              <label class="inline-toggle">
-                <input type="checkbox" id="lowpass-enabled" />
-                On
-              </label>
-            </h3>
-            <div class="controls">
-              <div>
-                <label for="lowpass-frequency">Cutoff</label>
-                <div class="slider-row">
-                  <input type="range" id="lowpass-frequency" min="40" max="18000" step="1" value="18000" />
-                  <div class="value" id="lowpass-frequency-value"></div>
-                </div>
-              </div>
-            </div>
-          `;
-          return card;
-        },
-
-        init() {
-          const ctx = window.AppState.audioContext;
-          this.input = ctx.createGain();
-          this.filter = ctx.createBiquadFilter();
-          this.output = ctx.createGain();
-
-          this.filter.type = 'lowpass';
-          this.input.connect(this.filter);
-          this.filter.connect(this.output);
-
-          this.els.enabled = document.getElementById('lowpass-enabled');
-          this.els.frequency = document.getElementById('lowpass-frequency');
-          this.els.frequencyValue = document.getElementById('lowpass-frequency-value');
-
-          this.els.enabled.addEventListener('input', () => this.update());
-          this.els.frequency.addEventListener('input', () => this.update());
-
-          this.update();
-        },
-
-        connect(inputNode) {
-          inputNode.connect(this.input);
-          return this.output;
-        },
-
-        update() {
-          const enabled = this.els.enabled.checked;
-          const value = Number(this.els.frequency.value);
-          this.filter.frequency.value = enabled ? value : 22050;
-          this.els.frequencyValue.textContent = `${Math.round(value)} Hz`;
-        },
-
-        reset() {
-          this.els.enabled.checked = false;
-          this.els.frequency.value = 18000;
-          this.update();
-        }
-      };
-
-      window.ModuleRegistry.register(module);
-    })();
-
-    (function () {
-      const module = {
-        id: 'highpass',
-        input: null,
-        filter: null,
-        output: null,
-        els: {},
-
-        createUI() {
-          const card = document.createElement('div');
-          card.className = 'effect-card';
-          card.innerHTML = `
-            <h3>
-              High Pass
-              <label class="inline-toggle">
-                <input type="checkbox" id="highpass-enabled" />
-                On
-              </label>
-            </h3>
-            <div class="controls">
-              <div>
-                <label for="highpass-frequency">Cutoff</label>
-                <div class="slider-row">
-                  <input type="range" id="highpass-frequency" min="20" max="8000" step="1" value="20" />
-                  <div class="value" id="highpass-frequency-value"></div>
-                </div>
-              </div>
-            </div>
-          `;
-          return card;
-        },
-
-        init() {
-          const ctx = window.AppState.audioContext;
-          this.input = ctx.createGain();
-          this.filter = ctx.createBiquadFilter();
-          this.output = ctx.createGain();
-
-          this.filter.type = 'highpass';
-          this.input.connect(this.filter);
-          this.filter.connect(this.output);
-
-          this.els.enabled = document.getElementById('highpass-enabled');
-          this.els.frequency = document.getElementById('highpass-frequency');
-          this.els.frequencyValue = document.getElementById('highpass-frequency-value');
-
-          this.els.enabled.addEventListener('input', () => this.update());
-          this.els.frequency.addEventListener('input', () => this.update());
-
-          this.update();
-        },
-
-        connect(inputNode) {
-          inputNode.connect(this.input);
-          return this.output;
-        },
-
-        update() {
-          const enabled = this.els.enabled.checked;
-          const value = Number(this.els.frequency.value);
-          this.filter.frequency.value = enabled ? value : 20;
-          this.els.frequencyValue.textContent = `${Math.round(value)} Hz`;
-        },
-
-        reset() {
-          this.els.enabled.checked = false;
-          this.els.frequency.value = 20;
-          this.update();
-        }
-      };
-
-      window.ModuleRegistry.register(module);
-    })();
-
-    (function () {
-      const module = {
-        id: 'bandpass',
-        input: null,
-        filter: null,
-        output: null,
-        els: {},
-
-        createUI() {
-          const card = document.createElement('div');
-          card.className = 'effect-card';
-          card.innerHTML = `
-            <h3>
-              Band Pass
-              <label class="inline-toggle">
-                <input type="checkbox" id="bandpass-enabled" />
-                On
-              </label>
-            </h3>
-            <div class="controls">
-              <div>
-                <label for="bandpass-frequency">Center</label>
-                <div class="slider-row">
-                  <input type="range" id="bandpass-frequency" min="80" max="8000" step="1" value="1200" />
-                  <div class="value" id="bandpass-frequency-value"></div>
-                </div>
-              </div>
-              <div>
-                <label for="bandpass-q">Q</label>
-                <div class="slider-row">
-                  <input type="range" id="bandpass-q" min="0.1" max="10" step="0.1" value="1" />
-                  <div class="value" id="bandpass-q-value"></div>
-                </div>
-              </div>
-            </div>
-          `;
-          return card;
-        },
-
-        init() {
-          const ctx = window.AppState.audioContext;
-          this.input = ctx.createGain();
-          this.filter = ctx.createBiquadFilter();
-          this.output = ctx.createGain();
-
-          this.filter.type = 'bandpass';
-          this.input.connect(this.filter);
-          this.filter.connect(this.output);
-
-          this.els.enabled = document.getElementById('bandpass-enabled');
-          this.els.frequency = document.getElementById('bandpass-frequency');
-          this.els.frequencyValue = document.getElementById('bandpass-frequency-value');
-          this.els.q = document.getElementById('bandpass-q');
-          this.els.qValue = document.getElementById('bandpass-q-value');
-
-          this.els.enabled.addEventListener('input', () => this.update());
-          this.els.frequency.addEventListener('input', () => this.update());
-          this.els.q.addEventListener('input', () => this.update());
-
-          this.update();
-        },
-
-        connect(inputNode) {
-          inputNode.connect(this.input);
-          return this.output;
-        },
-
-        update() {
-          const enabled = this.els.enabled.checked;
-          const freq = Number(this.els.frequency.value);
-          const q = Number(this.els.q.value);
-
-          this.filter.frequency.value = freq;
-          this.filter.Q.value = enabled ? q : 0.0001;
-
-          this.els.frequencyValue.textContent = `${Math.round(freq)} Hz`;
-          this.els.qValue.textContent = q.toFixed(1);
-        },
-
-        reset() {
-          this.els.enabled.checked = false;
-          this.els.frequency.value = 1200;
-          this.els.q.value = 1;
-          this.update();
-        }
-      };
-
-      window.ModuleRegistry.register(module);
-    })();
-
-    (function () {
-      const module = {
-        id: 'bandreject',
-        input: null,
-        filter: null,
-        output: null,
-        els: {},
-
-        createUI() {
-          const card = document.createElement('div');
-          card.className = 'effect-card';
-          card.innerHTML = `
-            <h3>
-              Band Reject
-              <label class="inline-toggle">
-                <input type="checkbox" id="bandreject-enabled" />
-                On
-              </label>
-            </h3>
-            <div class="controls">
-              <div>
-                <label for="bandreject-frequency">Center</label>
-                <div class="slider-row">
-                  <input type="range" id="bandreject-frequency" min="80" max="8000" step="1" value="1200" />
-                  <div class="value" id="bandreject-frequency-value"></div>
-                </div>
-              </div>
-              <div>
-                <label for="bandreject-q">Q</label>
-                <div class="slider-row">
-                  <input type="range" id="bandreject-q" min="0.1" max="10" step="0.1" value="1" />
-                  <div class="value" id="bandreject-q-value"></div>
-                </div>
-              </div>
-            </div>
-          `;
-          return card;
-        },
-
-        init() {
-          const ctx = window.AppState.audioContext;
-          this.input = ctx.createGain();
-          this.filter = ctx.createBiquadFilter();
-          this.output = ctx.createGain();
-
-          this.filter.type = 'notch';
-          this.input.connect(this.filter);
-          this.filter.connect(this.output);
-
-          this.els.enabled = document.getElementById('bandreject-enabled');
-          this.els.frequency = document.getElementById('bandreject-frequency');
-          this.els.frequencyValue = document.getElementById('bandreject-frequency-value');
-          this.els.q = document.getElementById('bandreject-q');
-          this.els.qValue = document.getElementById('bandreject-q-value');
-
-          this.els.enabled.addEventListener('input', () => this.update());
-          this.els.frequency.addEventListener('input', () => this.update());
-          this.els.q.addEventListener('input', () => this.update());
-
-          this.update();
-        },
-
-        connect(inputNode) {
-          inputNode.connect(this.input);
-          return this.output;
-        },
-
-        update() {
-          const enabled = this.els.enabled.checked;
-          const freq = Number(this.els.frequency.value);
-          const q = Number(this.els.q.value);
-
-          this.filter.frequency.value = freq;
-          this.filter.Q.value = enabled ? q : 0.0001;
-
-          this.els.frequencyValue.textContent = `${Math.round(freq)} Hz`;
-          this.els.qValue.textContent = q.toFixed(1);
-        },
-
-        reset() {
-          this.els.enabled.checked = false;
-          this.els.frequency.value = 1200;
-          this.els.q.value = 1;
-          this.update();
-        }
-      };
-
-      window.ModuleRegistry.register(module);
-    })();
-
-    (function () {
-      const module = {
-        id: 'lowshelf',
-        input: null,
-        filter: null,
-        output: null,
-        els: {},
-
-        createUI() {
-          const card = document.createElement('div');
-          card.className = 'effect-card';
-          card.innerHTML = `
-            <h3>
-              Low Shelf
-              <label class="inline-toggle">
-                <input type="checkbox" id="lowshelf-enabled" />
-                On
-              </label>
-            </h3>
-            <div class="controls">
-              <div>
-                <label for="lowshelf-frequency">Frequency</label>
-                <div class="slider-row">
-                  <input type="range" id="lowshelf-frequency" min="40" max="2000" step="1" value="200" />
-                  <div class="value" id="lowshelf-frequency-value"></div>
-                </div>
-              </div>
-              <div>
-                <label for="lowshelf-gain">Gain</label>
-                <div class="slider-row">
-                  <input type="range" id="lowshelf-gain" min="-18" max="18" step="1" value="0" />
-                  <div class="value" id="lowshelf-gain-value"></div>
-                </div>
-              </div>
-            </div>
-          `;
-          return card;
-        },
-
-        init() {
-          const ctx = window.AppState.audioContext;
-          this.input = ctx.createGain();
-          this.filter = ctx.createBiquadFilter();
-          this.output = ctx.createGain();
-
-          this.filter.type = 'lowshelf';
-          this.input.connect(this.filter);
-          this.filter.connect(this.output);
-
-          this.els.enabled = document.getElementById('lowshelf-enabled');
-          this.els.frequency = document.getElementById('lowshelf-frequency');
-          this.els.frequencyValue = document.getElementById('lowshelf-frequency-value');
-          this.els.gain = document.getElementById('lowshelf-gain');
-          this.els.gainValue = document.getElementById('lowshelf-gain-value');
-
-          this.els.enabled.addEventListener('input', () => this.update());
-          this.els.frequency.addEventListener('input', () => this.update());
-          this.els.gain.addEventListener('input', () => this.update());
-
-          this.update();
-        },
-
-        connect(inputNode) {
-          inputNode.connect(this.input);
-          return this.output;
-        },
-
-        update() {
-          const enabled = this.els.enabled.checked;
-          const freq = Number(this.els.frequency.value);
-          const gain = Number(this.els.gain.value);
-
-          this.filter.frequency.value = freq;
-          this.filter.gain.value = enabled ? gain : 0;
-
-          this.els.frequencyValue.textContent = `${Math.round(freq)} Hz`;
-          this.els.gainValue.textContent = `${gain} dB`;
-        },
-
-        reset() {
-          this.els.enabled.checked = false;
-          this.els.frequency.value = 200;
-          this.els.gain.value = 0;
-          this.update();
-        }
-      };
-
-      window.ModuleRegistry.register(module);
-    })();
-
-    (function () {
-      const module = {
-        id: 'highshelf',
-        input: null,
-        filter: null,
-        output: null,
-        els: {},
-
-        createUI() {
-          const card = document.createElement('div');
-          card.className = 'effect-card';
-          card.innerHTML = `
-            <h3>
-              High Shelf
-              <label class="inline-toggle">
-                <input type="checkbox" id="highshelf-enabled" />
-                On
-              </label>
-            </h3>
-            <div class="controls">
-              <div>
-                <label for="highshelf-frequency">Frequency</label>
-                <div class="slider-row">
-                  <input type="range" id="highshelf-frequency" min="400" max="12000" step="1" value="3000" />
-                  <div class="value" id="highshelf-frequency-value"></div>
-                </div>
-              </div>
-              <div>
-                <label for="highshelf-gain">Gain</label>
-                <div class="slider-row">
-                  <input type="range" id="highshelf-gain" min="-18" max="18" step="1" value="0" />
-                  <div class="value" id="highshelf-gain-value"></div>
-                </div>
-              </div>
-            </div>
-          `;
-          return card;
-        },
-
-        init() {
-          const ctx = window.AppState.audioContext;
-          this.input = ctx.createGain();
-          this.filter = ctx.createBiquadFilter();
-          this.output = ctx.createGain();
-
-          this.filter.type = 'highshelf';
-          this.input.connect(this.filter);
-          this.filter.connect(this.output);
-
-          this.els.enabled = document.getElementById('highshelf-enabled');
-          this.els.frequency = document.getElementById('highshelf-frequency');
-          this.els.frequencyValue = document.getElementById('highshelf-frequency-value');
-          this.els.gain = document.getElementById('highshelf-gain');
-          this.els.gainValue = document.getElementById('highshelf-gain-value');
-
-          this.els.enabled.addEventListener('input', () => this.update());
-          this.els.frequency.addEventListener('input', () => this.update());
-          this.els.gain.addEventListener('input', () => this.update());
-
-          this.update();
-        },
-
-        connect(inputNode) {
-          inputNode.connect(this.input);
-          return this.output;
-        },
-
-        update() {
-          const enabled = this.els.enabled.checked;
-          const freq = Number(this.els.frequency.value);
-          const gain = Number(this.els.gain.value);
-
-          this.filter.frequency.value = freq;
-          this.filter.gain.value = enabled ? gain : 0;
-
-          this.els.frequencyValue.textContent = `${Math.round(freq)} Hz`;
-          this.els.gainValue.textContent = `${gain} dB`;
-        },
-
-        reset() {
-          this.els.enabled.checked = false;
-          this.els.frequency.value = 3000;
-          this.els.gain.value = 0;
-          this.update();
-        }
-      };
-
-      window.ModuleRegistry.register(module);
-    })();
-
-    (function () {
-      const module = {
-        id: 'compressor',
-        input: null,
-        compressor: null,
-        output: null,
-        els: {},
-
-        createUI() {
-          const card = document.createElement('div');
-          card.className = 'effect-card';
-          card.innerHTML = `
-            <h3>
-              Compressor
-              <label class="inline-toggle">
-                <input type="checkbox" id="compressor-enabled" />
-                On
-              </label>
-            </h3>
-            <div class="controls">
-              <div>
-                <label for="compressor-threshold">Threshold</label>
-                <div class="slider-row">
-                  <input type="range" id="compressor-threshold" min="-60" max="0" step="1" value="-24" />
-                  <div class="value" id="compressor-threshold-value"></div>
-                </div>
-              </div>
-              <div>
-                <label for="compressor-ratio">Ratio</label>
-                <div class="slider-row">
-                  <input type="range" id="compressor-ratio" min="1" max="20" step="0.5" value="4" />
-                  <div class="value" id="compressor-ratio-value"></div>
-                </div>
-              </div>
-              <div>
-                <label for="compressor-attack">Attack</label>
-                <div class="slider-row">
-                  <input type="range" id="compressor-attack" min="0" max="1" step="0.01" value="0.01" />
-                  <div class="value" id="compressor-attack-value"></div>
-                </div>
-              </div>
-              <div>
-                <label for="compressor-release">Release</label>
-                <div class="slider-row">
-                  <input type="range" id="compressor-release" min="0.01" max="1" step="0.01" value="0.2" />
-                  <div class="value" id="compressor-release-value"></div>
-                </div>
-              </div>
-            </div>
-          `;
-          return card;
-        },
-
-        init() {
-          const ctx = window.AppState.audioContext;
-          this.input = ctx.createGain();
-          this.compressor = ctx.createDynamicsCompressor();
-          this.output = ctx.createGain();
-
-          this.input.connect(this.compressor);
-          this.compressor.connect(this.output);
-
-          this.els.enabled = document.getElementById('compressor-enabled');
-          this.els.threshold = document.getElementById('compressor-threshold');
-          this.els.thresholdValue = document.getElementById('compressor-threshold-value');
-          this.els.ratio = document.getElementById('compressor-ratio');
-          this.els.ratioValue = document.getElementById('compressor-ratio-value');
-          this.els.attack = document.getElementById('compressor-attack');
-          this.els.attackValue = document.getElementById('compressor-attack-value');
-          this.els.release = document.getElementById('compressor-release');
-          this.els.releaseValue = document.getElementById('compressor-release-value');
-
-          this.els.enabled.addEventListener('input', () => this.update());
-          this.els.threshold.addEventListener('input', () => this.update());
-          this.els.ratio.addEventListener('input', () => this.update());
-          this.els.attack.addEventListener('input', () => this.update());
-          this.els.release.addEventListener('input', () => this.update());
-
-          this.update();
-        },
-
-        connect(inputNode) {
-          inputNode.connect(this.input);
-          return this.output;
-        },
-
-        update() {
-          const enabled = this.els.enabled.checked;
-
-          this.compressor.threshold.value = enabled ? Number(this.els.threshold.value) : 0;
-          this.compressor.ratio.value = enabled ? Number(this.els.ratio.value) : 1;
-          this.compressor.attack.value = enabled ? Number(this.els.attack.value) : 0.003;
-          this.compressor.release.value = enabled ? Number(this.els.release.value) : 0.25;
-
-          this.els.thresholdValue.textContent = `${this.els.threshold.value} dB`;
-          this.els.ratioValue.textContent = `${this.els.ratio.value}:1`;
-          this.els.attackValue.textContent = `${Number(this.els.attack.value).toFixed(2)} s`;
-          this.els.releaseValue.textContent = `${Number(this.els.release.value).toFixed(2)} s`;
-        },
-
-        reset() {
-          this.els.enabled.checked = false;
-          this.els.threshold.value = -24;
-          this.els.ratio.value = 4;
-          this.els.attack.value = 0.01;
-          this.els.release.value = 0.2;
-          this.update();
-        }
-      };
-
-      window.ModuleRegistry.register(module);
-    })();
-
-    (function () {
-      const module = {
-        id: 'distortion',
-        input: null,
-        drive: null,
-        tone: null,
-        output: null,
-        shaper: null,
-        els: {},
-
-        makeCurve(amount) {
-          const samples = 44100;
-          const curve = new Float32Array(samples);
-          const deg = Math.PI / 180;
-          for (let i = 0; i < samples; ++i) {
-            const x = (i * 2) / samples - 1;
-            curve[i] = ((3 + amount) * x * 20 * deg) / (Math.PI + amount * Math.abs(x));
-          }
-          return curve;
-        },
-
-        createUI() {
-          const card = document.createElement('div');
-          card.className = 'effect-card';
-          card.innerHTML = `
-            <h3>
-              Distortion
-              <label class="inline-toggle">
-                <input type="checkbox" id="distortion-enabled" />
-                On
-              </label>
-            </h3>
-            <div class="controls">
-              <div>
-                <label for="distortion-drive">Drive</label>
-                <div class="slider-row">
-                  <input type="range" id="distortion-drive" min="0" max="100" step="1" value="30" />
-                  <div class="value" id="distortion-drive-value"></div>
-                </div>
-              </div>
-              <div>
-                <label for="distortion-tone">Tone</label>
-                <div class="slider-row">
-                  <input type="range" id="distortion-tone" min="400" max="6000" step="1" value="2500" />
-                  <div class="value" id="distortion-tone-value"></div>
-                </div>
-              </div>
-            </div>
-          `;
-          return card;
-        },
-
-        init() {
-          const ctx = window.AppState.audioContext;
-          this.input = ctx.createGain();
-          this.drive = ctx.createGain();
-          this.shaper = ctx.createWaveShaper();
-          this.tone = ctx.createBiquadFilter();
-          this.output = ctx.createGain();
-
-          this.tone.type = 'lowpass';
-
-          this.input.connect(this.drive);
-          this.drive.connect(this.shaper);
-          this.shaper.connect(this.tone);
-          this.tone.connect(this.output);
-
-          this.els.enabled = document.getElementById('distortion-enabled');
-          this.els.drive = document.getElementById('distortion-drive');
-          this.els.driveValue = document.getElementById('distortion-drive-value');
-          this.els.tone = document.getElementById('distortion-tone');
-          this.els.toneValue = document.getElementById('distortion-tone-value');
-
-          this.els.enabled.addEventListener('input', () => this.update());
-          this.els.drive.addEventListener('input', () => this.update());
-          this.els.tone.addEventListener('input', () => this.update());
-
-          this.update();
-        },
-
-        connect(inputNode) {
-          inputNode.connect(this.input);
-          return this.output;
-        },
-
-        update() {
-          const enabled = this.els.enabled.checked;
-          const drive = Number(this.els.drive.value);
-          const tone = Number(this.els.tone.value);
-
-          this.drive.gain.value = enabled ? 1 + drive / 8 : 1;
-          this.shaper.curve = enabled ? this.makeCurve(drive) : this.makeCurve(0);
-          this.shaper.oversample = '4x';
-          this.tone.frequency.value = tone;
-
-          this.els.driveValue.textContent = `${drive}`;
-          this.els.toneValue.textContent = `${Math.round(tone)} Hz`;
-        },
-
-        reset() {
-          this.els.enabled.checked = false;
-          this.els.drive.value = 30;
-          this.els.tone.value = 2500;
-          this.update();
-        }
-      };
-
-      window.ModuleRegistry.register(module);
-    })();
-
-    (function () {
-      const module = {
-        id: 'reverb',
-        input: null,
-        convolver: null,
-        wet: null,
-        dry: null,
-        output: null,
-        impulseCache: new Map(),
-        els: {},
-
-        generateImpulse(seconds) {
-          const ctx = window.AppState.audioContext;
-          const length = Math.max(1, Math.floor(ctx.sampleRate * seconds));
-          const buffer = ctx.createBuffer(2, length, ctx.sampleRate);
-
-          for (let ch = 0; ch < 2; ch++) {
-            const data = buffer.getChannelData(ch);
-            for (let i = 0; i < length; i++) {
-              const t = i / length;
-              const decay = Math.pow(1 - t, 2.8);
-              data[i] = (Math.random() * 2 - 1) * decay;
-            }
-          }
-
-          return buffer;
-        },
-
-        ensureImpulse(seconds) {
-          const key = seconds.toFixed(1);
-          if (!this.impulseCache.has(key)) {
-            this.impulseCache.set(key, this.generateImpulse(seconds));
-          }
-          return this.impulseCache.get(key);
-        },
-
-        createUI() {
-          const card = document.createElement('div');
-          card.className = 'effect-card';
-          card.innerHTML = `
-            <h3>
-              Reverb
-              <label class="inline-toggle">
-                <input type="checkbox" id="reverb-enabled" />
-                On
-              </label>
-            </h3>
-            <div class="controls">
-              <div>
-                <label for="reverb-length">Length</label>
-                <div class="slider-row">
-                  <input type="range" id="reverb-length" min="0.2" max="6" step="0.1" value="1.5" />
-                  <div class="value" id="reverb-length-value"></div>
-                </div>
-              </div>
-              <div>
-                <label for="reverb-mix">Dry/Wet</label>
-                <div class="slider-row">
-                  <input type="range" id="reverb-mix" min="0" max="1" step="0.01" value="0.35" />
-                  <div class="value" id="reverb-mix-value"></div>
-                </div>
-              </div>
-            </div>
-          `;
-          return card;
-        },
-
-        init() {
-          const ctx = window.AppState.audioContext;
-          this.input = ctx.createGain();
-          this.convolver = ctx.createConvolver();
-          this.wet = ctx.createGain();
-          this.dry = ctx.createGain();
-          this.output = ctx.createGain();
-
-          this.input.connect(this.dry);
-          this.input.connect(this.convolver);
-          this.convolver.connect(this.wet);
-          this.dry.connect(this.output);
-          this.wet.connect(this.output);
-
-          this.els.enabled = document.getElementById('reverb-enabled');
-          this.els.length = document.getElementById('reverb-length');
-          this.els.lengthValue = document.getElementById('reverb-length-value');
-          this.els.mix = document.getElementById('reverb-mix');
-          this.els.mixValue = document.getElementById('reverb-mix-value');
-
-          this.els.enabled.addEventListener('input', () => this.update());
-          this.els.length.addEventListener('input', () => this.update());
-          this.els.mix.addEventListener('input', () => this.update());
-
-          this.update();
-        },
-
-        connect(inputNode) {
-          inputNode.connect(this.input);
-          return this.output;
-        },
-
-        update() {
-          const enabled = this.els.enabled.checked;
-          const length = Number(this.els.length.value);
-          const mix = Number(this.els.mix.value);
-          this.convolver.buffer = this.ensureImpulse(length);
-
-          const wet = enabled ? mix : 0;
-          const dry = enabled ? 1 - mix : 1;
-
-          this.wet.gain.value = wet;
-          this.dry.gain.value = dry;
-
-          this.els.lengthValue.textContent = `${length.toFixed(1)} s`;
-          this.els.mixValue.textContent = `${Math.round(mix * 100)}%`;
-        },
-
-        reset() {
-          this.els.enabled.checked = false;
-          this.els.length.value = 1.5;
-          this.els.mix.value = 0.35;
-          this.update();
-        }
-      };
-
-      window.ModuleRegistry.register(module);
-    })();
-
-    (function () {
-      const module = {
-        id: 'delay',
-        input: null,
-        dry: null,
-        wet: null,
-        delayNode: null,
-        feedback: null,
-        output: null,
-        els: {},
-
-        createUI() {
-          const card = document.createElement('div');
-          card.className = 'effect-card';
-          card.innerHTML = `
-            <h3>
-              Delay
-              <label class="inline-toggle">
-                <input type="checkbox" id="delay-enabled" />
-                On
-              </label>
-            </h3>
-            <div class="controls">
-              <div>
-                <label for="delay-time">Time</label>
-                <div class="slider-row">
-                  <input type="range" id="delay-time" min="0.01" max="1" step="0.01" value="0.25" />
-                  <div class="value" id="delay-time-value"></div>
-                </div>
-              </div>
-              <div>
-                <label for="delay-mix">Mix</label>
-                <div class="slider-row">
-                  <input type="range" id="delay-mix" min="0" max="1" step="0.01" value="0.35" />
-                  <div class="value" id="delay-mix-value"></div>
-                </div>
-              </div>
-              <div>
-                <label for="delay-feedback">Feedback</label>
-                <div class="slider-row">
-                  <input type="range" id="delay-feedback" min="0" max="0.9" step="0.01" value="0.25" />
-                  <div class="value" id="delay-feedback-value"></div>
-                </div>
-              </div>
-            </div>
-          `;
-          return card;
-        },
-
-        init() {
-          const ctx = window.AppState.audioContext;
-          this.input = ctx.createGain();
-          this.dry = ctx.createGain();
-          this.wet = ctx.createGain();
-          this.delayNode = ctx.createDelay(2);
-          this.feedback = ctx.createGain();
-          this.output = ctx.createGain();
-
-          this.input.connect(this.dry);
-          this.input.connect(this.delayNode);
-          this.delayNode.connect(this.feedback);
-          this.feedback.connect(this.delayNode);
-          this.delayNode.connect(this.wet);
-
-          this.dry.connect(this.output);
-          this.wet.connect(this.output);
-
-          this.els.enabled = document.getElementById('delay-enabled');
-          this.els.time = document.getElementById('delay-time');
-          this.els.timeValue = document.getElementById('delay-time-value');
-          this.els.mix = document.getElementById('delay-mix');
-          this.els.mixValue = document.getElementById('delay-mix-value');
-          this.els.feedback = document.getElementById('delay-feedback');
-          this.els.feedbackValue = document.getElementById('delay-feedback-value');
-
-          this.els.enabled.addEventListener('input', () => this.update());
-          this.els.time.addEventListener('input', () => this.update());
-          this.els.mix.addEventListener('input', () => this.update());
-          this.els.feedback.addEventListener('input', () => this.update());
-
-          this.update();
-        },
-
-        connect(inputNode) {
-          inputNode.connect(this.input);
-          return this.output;
-        },
-
-        update() {
-          const enabled = this.els.enabled.checked;
-          const time = Number(this.els.time.value);
-          const mix = Number(this.els.mix.value);
-          const feedback = Number(this.els.feedback.value);
-
-          this.delayNode.delayTime.value = time;
-          this.feedback.gain.value = enabled ? feedback : 0;
-          this.wet.gain.value = enabled ? mix : 0;
-          this.dry.gain.value = enabled ? 1 - mix : 1;
-
-          this.els.timeValue.textContent = `${time.toFixed(2)} s`;
-          this.els.mixValue.textContent = `${Math.round(mix * 100)}%`;
-          this.els.feedbackValue.textContent = `${Math.round(feedback * 100)}%`;
-        },
-
-        reset() {
-          this.els.enabled.checked = false;
-          this.els.time.value = 0.25;
-          this.els.mix.value = 0.35;
-          this.els.feedback.value = 0.25;
-          this.update();
-        }
-      };
-
-      window.ModuleRegistry.register(module);
-    })();
-
-    (function () {
-      const module = {
-        id: 'vibrato',
-        input: null,
-        delayNode: null,
-        output: null,
-        osc: null,
-        depthNode: null,
-        els: {},
-
-        createUI() {
-          const card = document.createElement('div');
-          card.className = 'effect-card';
-          card.innerHTML = `
-            <h3>
-              Vibrato
-              <label class="inline-toggle">
-                <input type="checkbox" id="vibrato-enabled" />
-                On
-              </label>
-            </h3>
-            <div class="controls">
-              <div>
-                <label for="vibrato-rate">Rate</label>
-                <div class="slider-row">
-                  <input type="range" id="vibrato-rate" min="0.1" max="12" step="0.1" value="4" />
-                  <div class="value" id="vibrato-rate-value"></div>
-                </div>
-              </div>
-              <div>
-                <label for="vibrato-depth">Depth</label>
-                <div class="slider-row">
-                  <input type="range" id="vibrato-depth" min="0" max="0.02" step="0.0001" value="0.003" />
-                  <div class="value" id="vibrato-depth-value"></div>
-                </div>
-              </div>
-            </div>
-          `;
-          return card;
-        },
-
-        init() {
-          const ctx = window.AppState.audioContext;
-          this.input = ctx.createGain();
-          this.delayNode = ctx.createDelay(0.05);
-          this.output = ctx.createGain();
-          this.osc = ctx.createOscillator();
-          this.depthNode = ctx.createGain();
-
-          this.osc.type = 'sine';
-          this.input.connect(this.delayNode);
-          this.delayNode.connect(this.output);
-
-          this.osc.connect(this.depthNode);
-          this.depthNode.connect(this.delayNode.delayTime);
-          this.osc.start();
-
-          this.els.enabled = document.getElementById('vibrato-enabled');
-          this.els.rate = document.getElementById('vibrato-rate');
-          this.els.rateValue = document.getElementById('vibrato-rate-value');
-          this.els.depth = document.getElementById('vibrato-depth');
-          this.els.depthValue = document.getElementById('vibrato-depth-value');
-
-          this.els.enabled.addEventListener('input', () => this.update());
-          this.els.rate.addEventListener('input', () => this.update());
-          this.els.depth.addEventListener('input', () => this.update());
-
-          this.update();
-        },
-
-        connect(inputNode) {
-          inputNode.connect(this.input);
-          return this.output;
-        },
-
-        update() {
-          const enabled = this.els.enabled.checked;
-          const rate = Number(this.els.rate.value);
-          const depth = Number(this.els.depth.value);
-
-          this.osc.frequency.value = enabled ? rate : 0.1;
-          this.depthNode.gain.value = enabled ? depth : 0;
-          this.delayNode.delayTime.value = enabled ? 0.01 : 0;
-
-          this.els.rateValue.textContent = `${rate.toFixed(1)} Hz`;
-          this.els.depthValue.textContent = `${(depth * 1000).toFixed(1)} ms`;
-        },
-
-        reset() {
-          this.els.enabled.checked = false;
-          this.els.rate.value = 4;
-          this.els.depth.value = 0.003;
-          this.update();
-        }
-      };
-
-      window.ModuleRegistry.register(module);
-    })();
-
-    (function () {
-      const module = {
-        id: 'tremolo',
-        input: null,
-        gainNode: null,
-        output: null,
-
-        osc: null,
-        shaper: null,
-        modDepth: null,
-        modBase: null,
-
-        els: {},
-
-        createRoundedSquareCurve(amount = 6, samples = 2048) {
-          const curve = new Float32Array(samples);
-
-          for (let i = 0; i < samples; i++) {
-            const x = (i / (samples - 1)) * 2 - 1;
-            const y = Math.tanh(amount * x) / Math.tanh(amount);
-            curve[i] = y;
-          }
-
-          return curve;
-        },
-
-        createUI() {
-          const card = document.createElement('div');
-          card.className = 'effect-card';
-          card.innerHTML = `
-            <h3>
-              Tremolo
-              <label class="inline-toggle">
-                <input type="checkbox" id="tremolo-enabled" />
-                On
-              </label>
-            </h3>
-            <div class="controls">
-              <div>
-                <label for="tremolo-rate">Rate</label>
-                <div class="slider-row">
-                  <input type="range" id="tremolo-rate" min="0.1" max="20" step="0.1" value="2.5" />
-                  <div class="value" id="tremolo-rate-value"></div>
-                </div>
-              </div>
-              <div>
-                <label for="tremolo-depth">Depth</label>
-                <div class="slider-row">
-                  <input type="range" id="tremolo-depth" min="0" max="1" step="0.01" value="1" />
-                  <div class="value" id="tremolo-depth-value"></div>
-                </div>
-              </div>
-            </div>
-          `;
-          return card;
-        },
-
-        init() {
-          const ctx = window.AppState.audioContext;
-
-          this.input = ctx.createGain();
-          this.gainNode = ctx.createGain();
-          this.output = ctx.createGain();
-
-          this.osc = ctx.createOscillator();
-          this.shaper = ctx.createWaveShaper();
-          this.modDepth = ctx.createGain();
-          this.modBase = ctx.createConstantSource();
-
-          this.osc.type = 'sine';
-          this.shaper.curve = this.createRoundedSquareCurve(7, 2048);
-          this.shaper.oversample = '4x';
-
-          this.osc.connect(this.shaper);
-          this.shaper.connect(this.modDepth);
-          this.modDepth.connect(this.gainNode.gain);
-          this.modBase.connect(this.gainNode.gain);
-
-          this.input.connect(this.gainNode);
-          this.gainNode.connect(this.output);
-
-          this.osc.start();
-          this.modBase.start();
-
-          this.els.enabled = document.getElementById('tremolo-enabled');
-          this.els.rate = document.getElementById('tremolo-rate');
-          this.els.rateValue = document.getElementById('tremolo-rate-value');
-          this.els.depth = document.getElementById('tremolo-depth');
-          this.els.depthValue = document.getElementById('tremolo-depth-value');
-
-          this.els.enabled.addEventListener('input', () => this.update());
-          this.els.rate.addEventListener('input', () => this.update());
-          this.els.depth.addEventListener('input', () => this.update());
-
-          this.update();
-        },
-
-        connect(inputNode) {
-          inputNode.connect(this.input);
-          return this.output;
-        },
-
-        update() {
-          const ctx = window.AppState.audioContext;
-          const now = ctx.currentTime;
-
-          const enabled = this.els.enabled.checked;
-          const rate = enabled ? Number(this.els.rate.value) : 0.1;
-          const rawDepth = enabled ? Number(this.els.depth.value) : 0;
-
-          const depth = Math.pow(rawDepth, 0.28);
-          const minGain = 0.0;
-          const maxGain = 1.0;
-          const actualMin = maxGain - depth * (maxGain - minGain);
-
-          const amount = (maxGain - actualMin) / 2;
-          const base = (maxGain + actualMin) / 2;
-
-          this.osc.frequency.cancelScheduledValues(now);
-          this.modDepth.gain.cancelScheduledValues(now);
-          this.modBase.offset.cancelScheduledValues(now);
-
-          this.osc.frequency.setTargetAtTime(rate, now, 0.01);
-          this.modDepth.gain.setTargetAtTime(amount, now, 0.01);
-          this.modBase.offset.setTargetAtTime(base, now, 0.01);
-
-          this.els.rateValue.textContent = `${rate.toFixed(1)} Hz`;
-          this.els.depthValue.textContent = `${Math.round(rawDepth * 100)}%`;
-        },
-
-        reset() {
-          this.els.enabled.checked = false;
-          this.els.rate.value = 2.5;
-          this.els.depth.value = 1;
-          this.update();
-        }
-      };
-
-      window.ModuleRegistry.register(module);
-    })();
-
-    function renderEffects() {
-      const container = document.getElementById('effectsContainer');
-      container.innerHTML = '';
-
-      window.AppState.modules
-        .filter(module => module.id !== 'master')
-        .forEach(module => {
-          container.appendChild(module.createUI());
-        });
-
-      window.AppState.modules
-        .filter(module => module.id !== 'master')
-        .forEach(module => {
-          if (typeof module.init === 'function') {
-            module.init();
-          }
-        });
-
-      enforceSingleActiveModule();
-    }
-
-    function enforceSingleActiveModule() {
-      const toggles = Array.from(document.querySelectorAll('#effectsContainer input[type="checkbox"][id$="-enabled"]'));
-
-      toggles.forEach(toggle => {
-        toggle.addEventListener('change', () => {
-          if (!toggle.checked) return;
-          toggles.forEach(other => {
-            if (other === toggle) return;
-            if (other.checked) {
-              other.checked = false;
-              other.dispatchEvent(new Event('input', { bubbles: true }));
-              other.dispatchEvent(new Event('change', { bubbles: true }));
-            }
-          });
-        });
-      });
-    }
-
-    async function bootstrap() {
-      await ensureAudioContext();
-      attachMasterModule();
-
-      window.ModuleRegistry.register(createPlaceholderModule('chorus', 'Chorus'));
-      window.ModuleRegistry.register(createPlaceholderModule('flanger', 'Flanger'));
-      window.ModuleRegistry.register(createPlaceholderModule('noisegate', 'Noise Gate'));
-
-      renderEffects();
-      initTransport();
-      await loadLibrary();
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-      bootstrap().catch(error => {
-        updateStatus(error.message || 'Could not initialize the page.');
-      });
-    });
-  </script>
+  <script src="js/app-state.js"></script>
+  <script src="js/dom-elements.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/module-registry.js"></script>
+  <script src="js/audio-engine.js"></script>
+  <script src="js/library-manager.js"></script>
+  <script src="js/upload-manager.js"></script>
+  <script src="js/transport-controls.js"></script>
+  <script src="js/meter.js"></script>
+  <script src="js/reset-fx.js"></script>
+
+  <script src="js/modules/master-module.js"></script>
+  <script src="js/modules/lowpass-module.js"></script>
+  <script src="js/modules/highpass-module.js"></script>
+  <script src="js/modules/bandpass-module.js"></script>
+  <script src="js/modules/notch-module.js"></script>
+  <script src="js/modules/lowshelf-module.js"></script>
+  <script src="js/modules/highshelf-module.js"></script>
+  <script src="js/modules/compressor-module.js"></script>
+  <script src="js/modules/distortion-module.js"></script>
+  <script src="js/modules/delay-module.js"></script>
+  <script src="js/modules/reverb-module.js"></script>
+  <script src="js/modules/tremolo-module.js"></script>
+  <script src="js/modules/vibrato-module.js"></script>
+
+  <script src="js/main.js"></script>
 
   <script>
     (function () {
-      const RESERVED_SCHEMAS = {
-        chorus: {
-          enabled: '0',
-          rate: '1.8',
-          depth: '0.45',
-          mix: '0.5',
-          delay: '0.022'
-        },
-        flanger: {
-          enabled: '0',
-          rate: '2',
-          depth: '0.55',
-          feedback: '0.35',
-          mix: '0.5'
-        },
-        noisegate: {
-          enabled: '0',
-          threshold: '-35',
-          attack: '0.01',
-          release: '0.08'
-        }
+      const presetEls = {
+        input: null,
+        loadBtn: null,
+        generateBtn: null,
+        copyBtn: null,
+        status: null
       };
 
-      function slugify(value) {
-        return String(value || '')
-          .trim()
-          .toLowerCase()
-          .replace(/\.[^/.]+$/, '')
-          .replace(/[^a-z0-9]+/g, '-')
-          .replace(/^-+|-+$/g, '') || 'none';
+      function getPresetElements() {
+        presetEls.input = document.getElementById('presetCodeInput');
+        presetEls.loadBtn = document.getElementById('loadPresetBtn');
+        presetEls.generateBtn = document.getElementById('generatePresetBtn');
+        presetEls.copyBtn = document.getElementById('copyPresetBtn');
+        presetEls.status = document.getElementById('presetStatusText');
+        return presetEls.input && presetEls.loadBtn && presetEls.generateBtn && presetEls.copyBtn;
       }
 
-      function getPresetEls() {
-        return {
-          output: document.getElementById('generatedPresetCode'),
-          load: document.getElementById('loadPresetCode'),
-          copy: document.getElementById('copyPresetCodeBtn'),
-          loadBtn: document.getElementById('loadPresetCodeBtn'),
-          status: document.getElementById('presetStatus')
-        };
+      function setPresetStatus(message, isError) {
+        if (!presetEls.status) return;
+        presetEls.status.textContent = message || '';
+        presetEls.status.style.color = isError ? 'var(--danger)' : 'var(--muted)';
       }
 
-      function setPresetStatus(text, tone) {
-        const els = getPresetEls();
-        if (!els.status) return;
-        els.status.textContent = text || '';
-        const colors = {
-          muted: 'var(--muted)',
-          success: 'var(--success)',
-          warn: 'var(--warn)',
-          danger: 'var(--danger)'
-        };
-        els.status.style.color = colors[tone || 'muted'] || colors.muted;
+      function encodePresetObject(preset) {
+        return btoa(unescape(encodeURIComponent(JSON.stringify(preset))));
       }
 
-      function getImplementedModuleIds() {
-        return (window.AppState?.modules || [])
-          .map(m => m.id)
-          .filter(id => id && id !== 'master');
-      }
+      function decodePresetCode(code) {
+        const trimmed = String(code || '').trim();
+        if (!trimmed) throw new Error('Paste a preset code first.');
 
-      function getSelectedFileCode() {
-        const item = window.AppState?.selectedItem;
-        if (!item) return 'none';
-        if (item.category === 'uploaded') return 'upload';
-        return slugify(item.title || item.file || 'none');
-      }
-
-      function findLibraryItemByCode(code) {
-        const library = window.AppState?.library || [];
-        return library.find(item => slugify(item.title || item.file || '') === code) || null;
-      }
-
-      function getActiveModuleId() {
-        const checked = document.querySelector('#effectsContainer input[type="checkbox"][id$="-enabled"]:checked');
-        if (!checked) return 'none';
-        return checked.id.replace(/-enabled$/, '');
-      }
-
-      function getModuleControlValues(moduleId) {
-        const checkbox = document.getElementById(moduleId + '-enabled');
-        const card = checkbox ? checkbox.closest('.effect-card') : null;
-        if (!card) return {};
-        const controls = {};
-        const inputs = card.querySelectorAll('input, select, textarea');
-        inputs.forEach(input => {
-          if (!input.id || input.type === 'file' || input.id.endsWith('-value')) return;
-          const key = input.id.replace(moduleId + '-', '');
-          if (input.type === 'checkbox') {
-            controls[key] = input.checked ? '1' : '0';
-          } else {
-            controls[key] = String(input.value);
-          }
-        });
-        return controls;
-      }
-
-      function serializePreset() {
-        const parts = [];
-        const masterSlider = document.getElementById('master-slider');
-        const activeModule = getActiveModuleId();
-
-        parts.push('v=1');
-        parts.push('file=' + encodeURIComponent(getSelectedFileCode()));
-        parts.push('master=' + encodeURIComponent(masterSlider ? masterSlider.value : '0'));
-        parts.push('module=' + encodeURIComponent(activeModule));
-
-        if (activeModule !== 'none') {
-          const controls = getModuleControlValues(activeModule);
-          Object.keys(controls)
-            .sort((a, b) => {
-              if (a === 'enabled') return -1;
-              if (b === 'enabled') return 1;
-              return a.localeCompare(b);
-            })
-            .forEach(key => {
-              parts.push(encodeURIComponent(key) + '=' + encodeURIComponent(controls[key]));
-            });
-        }
-
-        return parts.join(';');
-      }
-
-      function refreshPresetCode() {
-        const els = getPresetEls();
-        if (!els.output) return;
-        els.output.value = serializePreset();
-      }
-
-      function parsePreset(code) {
-        const parsed = {};
-        String(code || '')
-          .split(';')
-          .map(part => part.trim())
-          .filter(Boolean)
-          .forEach(part => {
-            const eq = part.indexOf('=');
-            if (eq === -1) return;
-            const key = decodeURIComponent(part.slice(0, eq));
-            const value = decodeURIComponent(part.slice(eq + 1));
-            parsed[key] = value;
-          });
-        return parsed;
-      }
-
-      function setInputValue(input, value) {
-        if (!input) return;
-        if (input.type === 'checkbox') {
-          input.checked = value === '1' || value === 'true' || value === true;
-          input.dispatchEvent(new Event('change', { bubbles: true }));
-          input.dispatchEvent(new Event('input', { bubbles: true }));
-          return;
-        }
-        input.value = value;
-        input.dispatchEvent(new Event('input', { bubbles: true }));
-        input.dispatchEvent(new Event('change', { bubbles: true }));
-      }
-
-      async function applyPreset(code) {
-        const preset = parsePreset(code);
-
-        if (!preset.v) {
-          throw new Error('Missing preset version');
-        }
-        if (preset.v !== '1') {
-          throw new Error('Unsupported preset version: ' + preset.v);
-        }
-
-        if (window.AppState?.modules) {
-          window.AppState.modules.forEach(module => {
-            if (typeof module.reset === 'function') {
-              module.reset();
-            }
-          });
-        }
-
-        const masterSlider = document.getElementById('master-slider');
-        if (masterSlider && typeof preset.master !== 'undefined') {
-          setInputValue(masterSlider, preset.master);
-        }
-
-        if (preset.file && preset.file !== 'none' && preset.file !== 'upload') {
-          const item = findLibraryItemByCode(preset.file);
-          if (!item) {
-            setPresetStatus('Preset loaded, but library source "' + preset.file + '" was not found.', 'warn');
-          } else if (window.LibraryManager?.loadItem) {
-            await window.LibraryManager.loadItem(item);
-          }
-        } else if (preset.file === 'upload') {
-          setPresetStatus('Preset references an uploaded file. Load that file manually, then reapply if needed.', 'warn');
-        }
-
-        const moduleId = preset.module || 'none';
-        const implemented = getImplementedModuleIds();
-        const isImplemented = implemented.includes(moduleId);
-        const isReserved = Object.prototype.hasOwnProperty.call(RESERVED_SCHEMAS, moduleId);
-
-        if (moduleId !== 'none' && isImplemented) {
-          const enabled = document.getElementById(moduleId + '-enabled');
-          if (enabled) {
-            enabled.checked = true;
-            enabled.dispatchEvent(new Event('change', { bubbles: true }));
-            enabled.dispatchEvent(new Event('input', { bubbles: true }));
-          }
-
-          Object.keys(preset).forEach(key => {
-            if (['v', 'file', 'master', 'module'].includes(key)) return;
-            const input = document.getElementById(moduleId + '-' + key);
-            if (!input) return;
-            setInputValue(input, preset[key]);
-          });
-
-          if (enabled) {
-            enabled.dispatchEvent(new Event('input', { bubbles: true }));
-          }
-
-          setPresetStatus('Preset loaded for ' + moduleId + '.', 'success');
-        } else if (moduleId !== 'none' && isReserved) {
-          setPresetStatus('Preset uses reserved future module "' + moduleId + '", which is recognized but not implemented on this page yet.', 'warn');
-        } else if (moduleId !== 'none') {
-          setPresetStatus('Preset references unknown module "' + moduleId + '".', 'danger');
-        } else {
-          setPresetStatus('Preset loaded.', 'success');
-        }
-
-        refreshPresetCode();
-      }
-
-      function bindPresetUI() {
-        const els = getPresetEls();
-        if (!els.output || !els.load || !els.copy || !els.loadBtn) return;
-
-        els.copy.addEventListener('click', async () => {
+        try {
+          return JSON.parse(decodeURIComponent(escape(atob(trimmed))));
+        } catch (base64Error) {
           try {
-            await navigator.clipboard.writeText(els.output.value);
-          } catch (error) {
-            els.output.focus();
-            els.output.select();
-            document.execCommand('copy');
+            return JSON.parse(trimmed);
+          } catch (jsonError) {
+            throw new Error('That preset code is not valid.');
           }
-          const original = els.copy.textContent;
-          els.copy.textContent = 'Copied!';
-          setPresetStatus('Preset code copied to clipboard.', 'success');
-          setTimeout(() => {
-            els.copy.textContent = original;
-          }, 1200);
-        });
+        }
+      }
 
-        els.loadBtn.addEventListener('click', async () => {
-          const code = els.load.value.trim();
-          if (!code) {
-            setPresetStatus('Paste a preset code first.', 'warn');
+      function collectPreset() {
+        const preset = {
+          version: 1,
+          createdAt: new Date().toISOString(),
+          controls: {}
+        };
+
+        document.querySelectorAll('#effectsContainer input, #effectsContainer select').forEach((el) => {
+          if (!el.id) return;
+
+          if (el.type === 'checkbox') {
+            preset.controls[el.id] = { type: 'checkbox', value: el.checked };
             return;
           }
-          try {
-            await applyPreset(code);
-          } catch (error) {
-            setPresetStatus(error.message || 'Could not load preset.', 'danger');
-          }
+
+          preset.controls[el.id] = { type: el.type || el.tagName.toLowerCase(), value: el.value };
         });
 
-        els.load.addEventListener('keydown', event => {
-          if (event.key !== 'Enter') return;
-          event.preventDefault();
-          els.loadBtn.click();
-        });
-
-        document.addEventListener('input', event => {
-          if (event.target && event.target.id === 'loadPresetCode') return;
-          refreshPresetCode();
-        }, true);
-
-        document.addEventListener('change', event => {
-          if (event.target && event.target.id === 'loadPresetCode') return;
-          refreshPresetCode();
-        }, true);
-
-        const originalLoadItem = window.LibraryManager?.loadItem?.bind(window.LibraryManager);
-        if (originalLoadItem) {
-          window.LibraryManager.loadItem = async function (item) {
-            await originalLoadItem(item);
-            refreshPresetCode();
-          };
-        }
-
-        const uploadInput = document.getElementById('uploadInput');
-        if (uploadInput) {
-          uploadInput.addEventListener('change', () => {
-            setTimeout(refreshPresetCode, 300);
-          });
-        }
-
-        const resetBtn = document.getElementById('resetBtn');
-        if (resetBtn) {
-          resetBtn.addEventListener('click', () => {
-            setTimeout(() => {
-              setPresetStatus('Effects reset.', 'muted');
-              refreshPresetCode();
-            }, 0);
-          });
-        }
-
-        refreshPresetCode();
-        setPresetStatus('Readable preset code is live. v=1 supports current modules and reserves chorus, flanger, and noisegate for future use.', 'muted');
+        return preset;
       }
 
-      window.addEventListener('DOMContentLoaded', bindPresetUI);
+      function triggerControlChange(el) {
+        el.dispatchEvent(new Event('input', { bubbles: true }));
+        el.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+
+      function applyPreset(preset) {
+        if (!preset || !preset.controls || typeof preset.controls !== 'object') {
+          throw new Error('Preset code does not contain any controls.');
+        }
+
+        let appliedCount = 0;
+
+        Object.keys(preset.controls).forEach((id) => {
+          const el = document.getElementById(id);
+          if (!el) return;
+
+          const saved = preset.controls[id];
+          if (el.type === 'checkbox') {
+            el.checked = Boolean(saved.value);
+          } else {
+            el.value = saved.value;
+          }
+
+          triggerControlChange(el);
+          appliedCount += 1;
+        });
+
+        return appliedCount;
+      }
+
+      function generatePresetCode() {
+        const preset = collectPreset();
+        const code = encodePresetObject(preset);
+        presetEls.input.value = code;
+        setPresetStatus('Preset code generated.');
+        return code;
+      }
+
+      async function copyPresetCode() {
+        const code = presetEls.input.value.trim() || generatePresetCode();
+
+        try {
+          await navigator.clipboard.writeText(code);
+          setPresetStatus('Preset code copied to clipboard.');
+        } catch (err) {
+          presetEls.input.focus();
+          presetEls.input.select();
+          setPresetStatus('Could not auto-copy. The code is selected so you can copy it manually.', true);
+        }
+      }
+
+      function loadPresetCode() {
+        try {
+          const preset = decodePresetCode(presetEls.input.value);
+          const appliedCount = applyPreset(preset);
+          setPresetStatus(`Preset loaded. ${appliedCount} setting${appliedCount === 1 ? '' : 's'} applied.`);
+        } catch (err) {
+          setPresetStatus(err.message, true);
+        }
+      }
+
+      function initPresetBuilder() {
+        if (!getPresetElements()) return;
+        presetEls.generateBtn.addEventListener('click', generatePresetCode);
+        presetEls.copyBtn.addEventListener('click', copyPresetCode);
+        presetEls.loadBtn.addEventListener('click', loadPresetCode);
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initPresetBuilder);
+      } else {
+        initPresetBuilder();
+      }
     })();
   </script>
 
