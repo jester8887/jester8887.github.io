@@ -1,18 +1,20 @@
 (function () {
   const module = {
-    id: 'chorus',
+    id: 'flanger',
     enabled: false,
 
     input: null,
     output: null,
     delay: null,
-    lfo: null,
-    lfoGain: null,
+    feedback: null,
     wet: null,
     dry: null,
+    lfo: null,
+    lfoGain: null,
 
-    depth: 0.003,   // seconds
-    rate: 1.2,      // Hz
+    rate: 0.35,
+    depth: 0.002,
+    feedbackAmount: 0.35,
     mix: 0.5,
 
     els: {},
@@ -23,33 +25,39 @@
 
       card.innerHTML = `
         <h3>
-          Chorus
+          Flanger
           <label class="inline-toggle">
-            <input type="checkbox" id="chorus-enabled"/>
+            <input type="checkbox" id="flanger-enabled" />
             On
           </label>
         </h3>
 
         <div class="slider-row">
           Rate
-          <input type="range" id="chorus-rate" min="0.1" max="5" step="0.1" value="1.2"/>
+          <input type="range" id="flanger-rate" min="0.05" max="5" step="0.05" value="0.35" />
         </div>
 
         <div class="slider-row">
           Depth
-          <input type="range" id="chorus-depth" min="0.001" max="0.01" step="0.001" value="0.003"/>
+          <input type="range" id="flanger-depth" min="0.0005" max="0.006" step="0.0001" value="0.002" />
+        </div>
+
+        <div class="slider-row">
+          Feedback
+          <input type="range" id="flanger-feedback" min="0" max="0.85" step="0.01" value="0.35" />
         </div>
 
         <div class="slider-row">
           Mix
-          <input type="range" id="chorus-mix" min="0" max="1" step="0.01" value="0.5"/>
+          <input type="range" id="flanger-mix" min="0" max="1" step="0.01" value="0.5" />
         </div>
       `;
 
-      this.els.enabled = card.querySelector('#chorus-enabled');
-      this.els.rate = card.querySelector('#chorus-rate');
-      this.els.depth = card.querySelector('#chorus-depth');
-      this.els.mix = card.querySelector('#chorus-mix');
+      this.els.enabled = card.querySelector('#flanger-enabled');
+      this.els.rate = card.querySelector('#flanger-rate');
+      this.els.depth = card.querySelector('#flanger-depth');
+      this.els.feedback = card.querySelector('#flanger-feedback');
+      this.els.mix = card.querySelector('#flanger-mix');
 
       this.els.enabled.addEventListener('change', () => {
         this.enabled = this.els.enabled.checked;
@@ -63,6 +71,11 @@
       this.els.depth.addEventListener('input', () => {
         this.depth = parseFloat(this.els.depth.value);
         if (this.lfoGain) this.lfoGain.gain.value = this.depth;
+      });
+
+      this.els.feedback.addEventListener('input', () => {
+        this.feedbackAmount = parseFloat(this.els.feedback.value);
+        if (this.feedback) this.feedback.gain.value = this.feedbackAmount;
       });
 
       this.els.mix.addEventListener('input', () => {
@@ -83,13 +96,10 @@
       this.output = ctx.createGain();
 
       this.delay = ctx.createDelay();
-      this.delay.delayTime.value = 0.02;
+      this.delay.delayTime.value = 0.004;
 
-      this.lfo = ctx.createOscillator();
-      this.lfo.frequency.value = this.rate;
-
-      this.lfoGain = ctx.createGain();
-      this.lfoGain.gain.value = this.depth;
+      this.feedback = ctx.createGain();
+      this.feedback.gain.value = this.feedbackAmount;
 
       this.wet = ctx.createGain();
       this.dry = ctx.createGain();
@@ -97,18 +107,25 @@
       this.wet.gain.value = this.mix;
       this.dry.gain.value = 1 - this.mix;
 
-      // modulation
+      this.lfo = ctx.createOscillator();
+      this.lfo.frequency.value = this.rate;
+
+      this.lfoGain = ctx.createGain();
+      this.lfoGain.gain.value = this.depth;
+
       this.lfo.connect(this.lfoGain);
       this.lfoGain.connect(this.delay.delayTime);
 
-      // routing
-      this.input.connect(this.delay);
       this.input.connect(this.dry);
+      this.input.connect(this.delay);
+
+      this.delay.connect(this.feedback);
+      this.feedback.connect(this.delay);
 
       this.delay.connect(this.wet);
 
-      this.wet.connect(this.output);
       this.dry.connect(this.output);
+      this.wet.connect(this.output);
 
       this.lfo.start();
     },
