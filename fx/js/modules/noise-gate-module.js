@@ -7,7 +7,7 @@
     output: null,
     gainNode: null,
     analyser: null,
-    dry: null, // bypass path
+    dry: null,
 
     threshold: 0.03,
     attack: 0.02,
@@ -90,16 +90,15 @@
       this.input = ctx.createGain();
       this.output = ctx.createGain();
       this.gainNode = ctx.createGain();
-      this.analyser = ctx.createAnalyser();
       this.dry = ctx.createGain();
+      this.analyser = ctx.createAnalyser();
 
-      this.gainNode.gain.value = 1;
+      this.gainNode.gain.value = 0;
       this.dry.gain.value = 1;
 
       this.analyser.fftSize = 1024;
       this.data = new Uint8Array(this.analyser.fftSize);
 
-      // routing
       this.input.connect(this.analyser);
       this.input.connect(this.gainNode);
       this.input.connect(this.dry);
@@ -116,12 +115,15 @@
 
       const now = AppState.audioContext.currentTime;
 
+      this.gainNode.gain.cancelScheduledValues(now);
+      this.dry.gain.cancelScheduledValues(now);
+
       if (this.enabled) {
-        this.gainNode.gain.setValueAtTime(1, now);
         this.dry.gain.setValueAtTime(0, now);
+        this.gainNode.gain.setValueAtTime(1, now);
       } else {
-        this.gainNode.gain.setValueAtTime(0, now);
         this.dry.gain.setValueAtTime(1, now);
+        this.gainNode.gain.setValueAtTime(0, now);
       }
     },
 
