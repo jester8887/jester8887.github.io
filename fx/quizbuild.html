@@ -76,6 +76,30 @@
       min-width: 260px;
     }
 
+    .preset-builder {
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) auto auto auto;
+      gap: 10px;
+      align-items: center;
+      max-width: 860px;
+    }
+
+    .preset-builder input[type="text"] {
+      height: 42px;
+    }
+
+    .preset-builder button {
+      height: 42px;
+      white-space: nowrap;
+    }
+
+    .preset-status {
+      font-size: 12px;
+      color: var(--muted);
+      min-height: 16px;
+    }
+
+
     .status-block {
       display: grid;
       gap: 8px;
@@ -222,6 +246,50 @@
       text-transform: capitalize;
     }
 
+    .library-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .library-grid-button {
+      width: 100%;
+      min-height: 72px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 4px;
+      text-align: left;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--panel-2);
+      color: var(--text);
+      padding: 12px;
+    }
+
+    .library-grid-button:hover {
+      border-color: var(--accent);
+    }
+
+    .library-grid-button.active {
+      background: rgba(99, 179, 255, 0.1);
+      border-color: rgba(99, 179, 255, 0.45);
+      box-shadow: inset 0 0 0 1px rgba(99, 179, 255, 0.15);
+    }
+
+    .library-grid-title {
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    .library-grid-meta {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: capitalize;
+      line-height: 1.2;
+    }
+
     .effects-header {
       display: flex;
       justify-content: space-between;
@@ -309,6 +377,196 @@
       line-height: 1.45;
     }
 
+    .master-card {
+      order: -999;
+    }
+
+    .meter-wrap {
+      margin-top: 10px;
+    }
+
+    .meter-ruler {
+      position: relative;
+      height: 14px;
+      font-size: 10px;
+      color: #ccc;
+    }
+
+    .meter-ruler span {
+      position: absolute;
+      transform: translateX(-50%);
+    }
+
+    .zone {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+    }
+
+    .green {
+      left: 0%;
+      width: 66.6%;
+      background: #123c12;
+    }
+
+    .yellow {
+      left: 66.6%;
+      width: 16.6%;
+      background: #5c5c12;
+    }
+
+    .orange {
+      left: 83.3%;
+      width: 8.3%;
+      background: #6b3c12;
+    }
+
+    .red {
+      left: 91.6%;
+      width: 8.3%;
+      background: #6b1212;
+    }
+
+    .overlay {
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.8);
+    }
+
+    .peak {
+      position: absolute;
+      width: 2px;
+      top: 0;
+      bottom: 0;
+      background: white;
+    }
+
+    .meter-readout {
+      font-size: 11px;
+      margin-top: 4px;
+    }
+
+    .transport-master-host {
+      min-height: 0;
+    }
+
+    .transport-master {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px 16px;
+    }
+
+    .transport-master h3 {
+      margin: 0 0 12px;
+      font-size: 17px;
+    }
+
+    .transport-master .master-top-row {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .transport-master .master-top-row label {
+      margin: 0;
+      white-space: nowrap;
+    }
+
+    .transport-master .master-value {
+      font-size: 13px;
+      color: var(--text);
+      min-width: 52px;
+      text-align: right;
+    }
+
+    .transport-master .meter-wrap {
+      display: grid;
+      gap: 6px;
+    }
+
+    .transport-master .meter-ruler {
+      position: relative;
+      height: 14px;
+      font-size: 10px;
+      color: #ccc;
+    }
+
+    .transport-master .meter-ruler span {
+      position: absolute;
+      transform: translateX(-50%);
+    }
+
+    .transport-master .meter-ruler span:last-child {
+      transform: translateX(-100%);
+    }
+
+    .transport-master .master-meter {
+      position: relative;
+      height: 16px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: #111;
+      border: 1px solid #444;
+    }
+
+    .transport-master .zone {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+    }
+
+    .transport-master .green {
+      left: 0%;
+      width: 66.6667%;
+      background: #123c12;
+    }
+
+    .transport-master .yellow {
+      left: 66.6667%;
+      width: 16.6667%;
+      background: #5c5c12;
+    }
+
+    .transport-master .orange {
+      left: 83.3333%;
+      width: 8.3333%;
+      background: #6b3c12;
+    }
+
+    .transport-master .red {
+      left: 91.6667%;
+      width: 8.3333%;
+      background: #6b1212;
+    }
+
+    .transport-master .overlay {
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.8);
+    }
+
+    .transport-master .peak {
+      position: absolute;
+      width: 2px;
+      top: 0;
+      bottom: 0;
+      background: white;
+    }
+
+    .transport-master .meter-readout {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
     @media (max-width: 1100px) {
       .layout {
         grid-template-columns: 1fr;
@@ -326,8 +584,29 @@
         grid-template-columns: repeat(2, minmax(120px, 1fr));
       }
 
+      .preset-builder {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .preset-builder input[type="text"] {
+        grid-column: 1 / -1;
+      }
+
       .transport-right {
         min-width: 0;
+      }
+
+      .transport-master .master-top-row {
+        grid-template-columns: 1fr;
+        align-items: start;
+      }
+
+      .transport-master .master-value {
+        text-align: left;
+      }
+
+      .library-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
 
@@ -336,258 +615,50 @@
         grid-template-columns: 1fr 1fr;
       }
 
+      .preset-builder {
+        grid-template-columns: 1fr;
+      }
+
+      .preset-builder input[type="text"] {
+        grid-column: auto;
+      }
+
       .effects-header {
         flex-direction: column;
         align-items: flex-start;
       }
-    }
-    .master-card {
-  order: -999;
-}
 
-.meter-wrap {
-  margin-top: 10px;
-}
-
-.meter-ruler {
-  position: relative;
-  height: 14px;
-  font-size: 10px;
-  color: #ccc;
-}
-
-.meter-ruler span {
-  position: absolute;
-  transform: translateX(-50%);
-}
-
-.meter {
-  position: relative;
-  height: 16px;
-  border-radius: 999px;
-  overflow: hidden;
-  background: #111;
-  border: 1px solid #444;
-}
-
-.zone {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-}
-
-.green { left:0%; width:66.6%; background:#123c12; }
-.yellow { left:66.6%; width:16.6%; background:#5c5c12; }
-.orange { left:83.3%; width:8.3%; background:#6b3c12; }
-.red { left:91.6%; width:8.3%; background:#6b1212; }
-
-.overlay {
-  position: absolute;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  width: 100%;
-  background: rgba(0,0,0,0.8);
-}
-
-.peak {
-  position: absolute;
-  width: 2px;
-  top: 0;
-  bottom: 0;
-  background: white;
-}
-
-.meter-readout {
-  font-size: 11px;
-  margin-top: 4px;
-}
-.transport-master-host {
-  min-height: 0;
-}
-
-.transport-master {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 14px 16px;
-}
-
-.transport-master h3 {
-  margin: 0 0 12px;
-  font-size: 17px;
-}
-
-.transport-master .master-top-row {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  gap: 10px;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.transport-master .master-top-row label {
-  margin: 0;
-  white-space: nowrap;
-}
-
-.transport-master .master-value {
-  font-size: 13px;
-  color: var(--text);
-  min-width: 52px;
-  text-align: right;
-}
-
-.transport-master .meter-wrap {
-  display: grid;
-  gap: 6px;
-}
-
-.transport-master .meter-ruler {
-  position: relative;
-  height: 14px;
-  font-size: 10px;
-  color: #ccc;
-}
-
-.transport-master .meter-ruler span {
-  position: absolute;
-  transform: translateX(-50%);
-}
-
-.transport-master .meter-ruler span:last-child {
-  transform: translateX(-100%);
-}
-
-.transport-master .master-meter {
-  position: relative;
-  height: 16px;
-  border-radius: 999px;
-  overflow: hidden;
-  background: #111;
-  border: 1px solid #444;
-}
-
-.transport-master .zone {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-}
-
-.transport-master .green { left: 0%; width: 66.6667%; background: #123c12; }
-.transport-master .yellow { left: 66.6667%; width: 16.6667%; background: #5c5c12; }
-.transport-master .orange { left: 83.3333%; width: 8.3333%; background: #6b3c12; }
-.transport-master .red { left: 91.6667%; width: 8.3333%; background: #6b1212; }
-
-.transport-master .overlay {
-  position: absolute;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  width: 100%;
-  background: rgba(0, 0, 0, 0.8);
-}
-
-.transport-master .peak {
-  position: absolute;
-  width: 2px;
-  top: 0;
-  bottom: 0;
-  background: white;
-}
-
-.transport-master .meter-readout {
-  font-size: 11px;
-  color: var(--muted);
-}
-
-@media (max-width: 1100px) {
-  .transport-master .master-top-row {
-    grid-template-columns: 1fr;
-    align-items: start;
-  }
-
-  .transport-master .master-value {
-    text-align: left;
-  }
-}
-    
-  
-    .preset-row {
-      margin-top: 12px;
-      display: grid;
-      grid-template-columns: minmax(240px, 1.4fr) auto minmax(220px, 1fr) auto;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .preset-row label {
-      display: none;
-    }
-
-    .preset-row input[type="text"] {
-      min-width: 0;
-    }
-
-    .preset-code {
-      font-family: Menlo, Consolas, Monaco, monospace;
-      font-size: 12px;
-    }
-
-    .preset-status {
-      margin-top: 8px;
-      min-height: 18px;
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .preset-inline-wrap {
-      display: grid;
-      gap: 8px;
-      align-items: center;
-    }
-
-    @media (max-width: 1100px) {
-      .preset-row {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-
-    @media (max-width: 700px) {
-      .preset-row {
+      .library-grid {
         grid-template-columns: 1fr;
       }
     }
-
   </style>
 </head>
 <body>
   <header>
     <h1>Audio Workshop Demo</h1>
     <p>Choose a built-in source or upload your own file, then experiment with effect settings in real time.</p>
-    
-    <div class="transport-left">
-      <div class="transport-buttons">
-        <button id="playBtn" type="button">Play</button>
-        <button id="pauseBtn" type="button">Pause</button>
-        <button id="stopBtn" type="button">Stop</button>
-        <button id="resetBtn" type="button">Reset FX</button>
-      </div>
 
-      <div class="preset-inline-wrap">
-        <div class="preset-row">
-          <label for="generatedPresetCode">Generated Code</label>
-          <input type="text" id="generatedPresetCode" class="preset-code" readonly value="v=1;file=none;master=0;module=none" />
-          <button id="copyPresetCodeBtn" type="button">Copy</button>
-          <label for="loadPresetCode">Load Code</label>
-          <input type="text" id="loadPresetCode" class="preset-code" placeholder="Paste preset code here..." />
-          <button id="loadPresetCodeBtn" type="button">Load</button>
+    <div class="transport-bar">
+      <div class="transport-left">
+        <div class="transport-buttons">
+          <button id="playBtn" type="button">Play</button>
+          <button id="pauseBtn" type="button">Pause</button>
+          <button id="stopBtn" type="button">Stop</button>
+          <button id="resetBtn" type="button">Reset FX</button>
         </div>
-        <div id="presetStatus" class="preset-status"></div>
-      </div>
 
-    <div id="masterOutputHost" class="transport-master-host"></div>
-  </div>
+        <div class="preset-builder" aria-label="Preset builder">
+          <input type="text" id="presetCodeInput" placeholder="Paste preset code here..." autocomplete="off" />
+          <button id="loadPresetBtn" type="button">Load Preset</button>
+          <button id="generatePresetBtn" type="button">Generate Code</button>
+          <button id="copyPresetBtn" type="button">Copy Code</button>
+        </div>
+        <div class="preset-status" id="presetStatusText"></div>
+
+
+        <div id="masterOutputHost" class="transport-master-host"></div>
+      </div>
 
       <div class="transport-right">
         <label class="loop-wrap">
@@ -679,295 +750,142 @@
 
   <script>
     (function () {
-      const RESERVED_SCHEMAS = {
-        chorus: ['enabled', 'rate', 'depth', 'mix', 'delay'],
-        flanger: ['enabled', 'rate', 'depth', 'feedback', 'mix'],
-        noisegate: ['enabled', 'threshold', 'attack', 'release']
+      const presetEls = {
+        input: null,
+        loadBtn: null,
+        generateBtn: null,
+        copyBtn: null,
+        status: null
       };
 
-      function slugify(text) {
-        return String(text || '')
-          .toLowerCase()
-          .replace(/\.[a-z0-9]+$/i, '')
-          .replace(/[^a-z0-9]+/g, '-')
-          .replace(/^-+|-+$/g, '');
+      function getPresetElements() {
+        presetEls.input = document.getElementById('presetCodeInput');
+        presetEls.loadBtn = document.getElementById('loadPresetBtn');
+        presetEls.generateBtn = document.getElementById('generatePresetBtn');
+        presetEls.copyBtn = document.getElementById('copyPresetBtn');
+        presetEls.status = document.getElementById('presetStatusText');
+        return presetEls.input && presetEls.loadBtn && presetEls.generateBtn && presetEls.copyBtn;
       }
 
-      function getPresetEls() {
-        return {
-          output: document.getElementById('generatedPresetCode'),
-          load: document.getElementById('loadPresetCode'),
-          copy: document.getElementById('copyPresetCodeBtn'),
-          loadBtn: document.getElementById('loadPresetCodeBtn'),
-          status: document.getElementById('presetStatus')
-        };
+      function setPresetStatus(message, isError) {
+        if (!presetEls.status) return;
+        presetEls.status.textContent = message || '';
+        presetEls.status.style.color = isError ? 'var(--danger)' : 'var(--muted)';
       }
 
-      function setPresetStatus(text, tone) {
-        const els = getPresetEls();
-        if (!els.status) return;
-        els.status.textContent = text || '';
-        const colors = {
-          muted: 'var(--muted)',
-          success: 'var(--success)',
-          warn: 'var(--warn)',
-          danger: 'var(--danger)'
-        };
-        els.status.style.color = colors[tone || 'muted'] || colors.muted;
+      function encodePresetObject(preset) {
+        return btoa(unescape(encodeURIComponent(JSON.stringify(preset))));
       }
 
-      function getImplementedModuleIds() {
-        return (window.AppState?.modules || [])
-          .map(m => m.id)
-          .filter(id => id && id !== 'master');
-      }
+      function decodePresetCode(code) {
+        const trimmed = String(code || '').trim();
+        if (!trimmed) throw new Error('Paste a preset code first.');
 
-      function getSelectedFileCode() {
-        const item = window.AppState?.selectedItem;
-        if (!item) return 'none';
-        if (item.category === 'uploaded') return 'upload';
-        return slugify(item.title || item.file || 'none');
-      }
-
-      function findLibraryItemByCode(code) {
-        const library = window.AppState?.library || [];
-        return library.find(item => slugify(item.title || item.file || '') === code) || null;
-      }
-
-      function getActiveModuleId() {
-        const checked = document.querySelector('#effectsContainer input[type="checkbox"][id$="-enabled"]:checked');
-        if (!checked) return 'none';
-        return checked.id.replace(/-enabled$/, '');
-      }
-
-      function getModuleControlValues(moduleId) {
-        const checkbox = document.getElementById(moduleId + '-enabled');
-        const card = checkbox ? checkbox.closest('.effect-card') : null;
-        if (!card) return {};
-        const controls = {};
-        const inputs = card.querySelectorAll('input, select, textarea');
-        inputs.forEach(input => {
-          if (!input.id || input.type === 'file' || input.id.endsWith('-value')) return;
-          const key = input.id.replace(moduleId + '-', '');
-          if (input.type === 'checkbox') {
-            controls[key] = input.checked ? '1' : '0';
-          } else {
-            controls[key] = String(input.value);
-          }
-        });
-        return controls;
-      }
-
-      function serializePreset() {
-        const parts = [];
-        const masterSlider = document.getElementById('master-slider');
-        const activeModule = getActiveModuleId();
-
-        parts.push('v=1');
-        parts.push('file=' + encodeURIComponent(getSelectedFileCode()));
-        parts.push('master=' + encodeURIComponent(masterSlider ? masterSlider.value : '0'));
-        parts.push('module=' + encodeURIComponent(activeModule));
-
-        if (activeModule !== 'none') {
-          const controls = getModuleControlValues(activeModule);
-          Object.keys(controls)
-            .sort((a, b) => {
-              if (a === 'enabled') return -1;
-              if (b === 'enabled') return 1;
-              return a.localeCompare(b);
-            })
-            .forEach(key => {
-              parts.push(encodeURIComponent(key) + '=' + encodeURIComponent(controls[key]));
-            });
-        }
-
-        return parts.join(';');
-      }
-
-      function refreshPresetCode() {
-        const els = getPresetEls();
-        if (!els.output) return;
-        els.output.value = serializePreset();
-      }
-
-      function parsePreset(code) {
-        const parsed = {};
-        String(code || '')
-          .split(';')
-          .map(part => part.trim())
-          .filter(Boolean)
-          .forEach(part => {
-            const eq = part.indexOf('=');
-            if (eq === -1) return;
-            const key = decodeURIComponent(part.slice(0, eq));
-            const value = decodeURIComponent(part.slice(eq + 1));
-            parsed[key] = value;
-          });
-        return parsed;
-      }
-
-      function setInputValue(input, value) {
-        if (!input) return;
-        if (input.type === 'checkbox') {
-          input.checked = value === '1' || value === 'true' || value === true;
-          input.dispatchEvent(new Event('change', { bubbles: true }));
-          input.dispatchEvent(new Event('input', { bubbles: true }));
-          return;
-        }
-        input.value = value;
-        input.dispatchEvent(new Event('input', { bubbles: true }));
-        input.dispatchEvent(new Event('change', { bubbles: true }));
-      }
-
-      async function applyPreset(code) {
-        const preset = parsePreset(code);
-
-        if (!preset.v) {
-          throw new Error('Missing preset version');
-        }
-        if (preset.v !== '1') {
-          throw new Error('Unsupported preset version: ' + preset.v);
-        }
-
-        if (window.AppState?.modules) {
-          window.AppState.modules.forEach(module => {
-            if (typeof module.reset === 'function') {
-              module.reset();
-            }
-          });
-        }
-
-        const masterSlider = document.getElementById('master-slider');
-        if (masterSlider && typeof preset.master !== 'undefined') {
-          setInputValue(masterSlider, preset.master);
-        }
-
-        if (preset.file && preset.file !== 'none' && preset.file !== 'upload') {
-          const item = findLibraryItemByCode(preset.file);
-          if (!item) {
-            setPresetStatus('Preset loaded, but library source "' + preset.file + '" was not found.', 'warn');
-          } else if (window.LibraryManager?.loadItem) {
-            await window.LibraryManager.loadItem(item);
-          }
-        } else if (preset.file === 'upload') {
-          setPresetStatus('Preset references an uploaded file. Load that file manually, then reapply if needed.', 'warn');
-        }
-
-        const moduleId = preset.module || 'none';
-        const implemented = getImplementedModuleIds();
-        const isImplemented = implemented.includes(moduleId);
-        const isReserved = Object.prototype.hasOwnProperty.call(RESERVED_SCHEMAS, moduleId);
-
-        if (moduleId !== 'none' && isImplemented) {
-          const enabled = document.getElementById(moduleId + '-enabled');
-          if (enabled) {
-            enabled.checked = true;
-            enabled.dispatchEvent(new Event('change', { bubbles: true }));
-            enabled.dispatchEvent(new Event('input', { bubbles: true }));
-          }
-
-          Object.keys(preset).forEach(key => {
-            if (['v', 'file', 'master', 'module'].includes(key)) return;
-            const input = document.getElementById(moduleId + '-' + key);
-            if (!input) return;
-            setInputValue(input, preset[key]);
-          });
-
-          if (enabled) {
-            enabled.dispatchEvent(new Event('input', { bubbles: true }));
-          }
-
-          setPresetStatus('Preset loaded for ' + moduleId + '.', 'success');
-        } else if (moduleId !== 'none' && isReserved) {
-          setPresetStatus('Preset uses reserved future module "' + moduleId + '", which is recognized but not implemented on this page yet.', 'warn');
-        } else if (moduleId !== 'none') {
-          setPresetStatus('Preset references unknown module "' + moduleId + '".', 'danger');
-        } else {
-          setPresetStatus('Preset loaded.', 'success');
-        }
-
-        refreshPresetCode();
-      }
-
-      function bindPresetUI() {
-        const els = getPresetEls();
-        if (!els.output || !els.load || !els.copy || !els.loadBtn) return;
-
-        els.copy.addEventListener('click', async () => {
+        try {
+          return JSON.parse(decodeURIComponent(escape(atob(trimmed))));
+        } catch (base64Error) {
           try {
-            await navigator.clipboard.writeText(els.output.value);
-          } catch (error) {
-            els.output.focus();
-            els.output.select();
-            document.execCommand('copy');
+            return JSON.parse(trimmed);
+          } catch (jsonError) {
+            throw new Error('That preset code is not valid.');
           }
-          const original = els.copy.textContent;
-          els.copy.textContent = 'Copied!';
-          setPresetStatus('Preset code copied to clipboard.', 'success');
-          setTimeout(() => {
-            els.copy.textContent = original;
-          }, 1200);
-        });
+        }
+      }
 
-        els.loadBtn.addEventListener('click', async () => {
-          const code = els.load.value.trim();
-          if (!code) {
-            setPresetStatus('Paste a preset code first.', 'warn');
+      function collectPreset() {
+        const preset = {
+          version: 1,
+          createdAt: new Date().toISOString(),
+          controls: {}
+        };
+
+        document.querySelectorAll('#effectsContainer input, #effectsContainer select').forEach((el) => {
+          if (!el.id) return;
+
+          if (el.type === 'checkbox') {
+            preset.controls[el.id] = { type: 'checkbox', value: el.checked };
             return;
           }
-          try {
-            await applyPreset(code);
-          } catch (error) {
-            setPresetStatus(error.message || 'Could not load preset.', 'danger');
-          }
+
+          preset.controls[el.id] = { type: el.type || el.tagName.toLowerCase(), value: el.value };
         });
 
-        els.load.addEventListener('keydown', event => {
-          if (event.key !== 'Enter') return;
-          event.preventDefault();
-          els.loadBtn.click();
-        });
-
-        document.addEventListener('input', event => {
-          if (event.target && event.target.id === 'loadPresetCode') return;
-          refreshPresetCode();
-        }, true);
-
-        document.addEventListener('change', event => {
-          if (event.target && event.target.id === 'loadPresetCode') return;
-          refreshPresetCode();
-        }, true);
-
-        const originalLoadItem = window.LibraryManager?.loadItem?.bind(window.LibraryManager);
-        if (originalLoadItem) {
-          window.LibraryManager.loadItem = async function (item) {
-            await originalLoadItem(item);
-            refreshPresetCode();
-          };
-        }
-
-        const uploadInput = document.getElementById('uploadInput');
-        if (uploadInput) {
-          uploadInput.addEventListener('change', () => {
-            setTimeout(refreshPresetCode, 300);
-          });
-        }
-
-        const resetBtn = document.getElementById('resetBtn');
-        if (resetBtn) {
-          resetBtn.addEventListener('click', () => {
-            setTimeout(() => {
-              setPresetStatus('Effects reset.', 'muted');
-              refreshPresetCode();
-            }, 0);
-          });
-        }
-
-        refreshPresetCode();
-        setPresetStatus('Readable preset code is live. v=1 supports current modules and reserves chorus, flanger, and noisegate for future use.', 'muted');
+        return preset;
       }
 
-      window.addEventListener('DOMContentLoaded', bindPresetUI);
+      function triggerControlChange(el) {
+        el.dispatchEvent(new Event('input', { bubbles: true }));
+        el.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+
+      function applyPreset(preset) {
+        if (!preset || !preset.controls || typeof preset.controls !== 'object') {
+          throw new Error('Preset code does not contain any controls.');
+        }
+
+        let appliedCount = 0;
+
+        Object.keys(preset.controls).forEach((id) => {
+          const el = document.getElementById(id);
+          if (!el) return;
+
+          const saved = preset.controls[id];
+          if (el.type === 'checkbox') {
+            el.checked = Boolean(saved.value);
+          } else {
+            el.value = saved.value;
+          }
+
+          triggerControlChange(el);
+          appliedCount += 1;
+        });
+
+        return appliedCount;
+      }
+
+      function generatePresetCode() {
+        const preset = collectPreset();
+        const code = encodePresetObject(preset);
+        presetEls.input.value = code;
+        setPresetStatus('Preset code generated.');
+        return code;
+      }
+
+      async function copyPresetCode() {
+        const code = presetEls.input.value.trim() || generatePresetCode();
+
+        try {
+          await navigator.clipboard.writeText(code);
+          setPresetStatus('Preset code copied to clipboard.');
+        } catch (err) {
+          presetEls.input.focus();
+          presetEls.input.select();
+          setPresetStatus('Could not auto-copy. The code is selected so you can copy it manually.', true);
+        }
+      }
+
+      function loadPresetCode() {
+        try {
+          const preset = decodePresetCode(presetEls.input.value);
+          const appliedCount = applyPreset(preset);
+          setPresetStatus(`Preset loaded. ${appliedCount} setting${appliedCount === 1 ? '' : 's'} applied.`);
+        } catch (err) {
+          setPresetStatus(err.message, true);
+        }
+      }
+
+      function initPresetBuilder() {
+        if (!getPresetElements()) return;
+        presetEls.generateBtn.addEventListener('click', generatePresetCode);
+        presetEls.copyBtn.addEventListener('click', copyPresetCode);
+        presetEls.loadBtn.addEventListener('click', loadPresetCode);
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initPresetBuilder);
+      } else {
+        initPresetBuilder();
+      }
     })();
   </script>
 
