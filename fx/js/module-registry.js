@@ -74,9 +74,15 @@ window.ModuleRegistry = {
         if (!other.checked) return;
 
         other.checked = false;
+
+        // Important: support old modules that listen for input
         other.dispatchEvent(new Event('input', { bubbles: true }));
+
+        // Important: support new modules that listen for change
+        other.dispatchEvent(new Event('change', { bubbles: true }));
       });
 
+      // Support old modules that update on input when manually checked
       target.dispatchEvent(new Event('input', { bubbles: true }));
     });
   }
