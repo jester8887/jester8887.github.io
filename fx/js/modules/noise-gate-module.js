@@ -30,18 +30,23 @@
           </label>
         </h3>
 
-        <div class="slider-row">
-          Threshold
+        <div class="controls">
+          <label class="slider-row">
+            <span>Threshold</span>
+            <span class="value" id="noise-gate-threshold-value">0.030</span>
+          </label>
           <input type="range" id="noise-gate-threshold" min="0.005" max="0.2" step="0.005" value="0.03" />
-        </div>
 
-        <div class="slider-row">
-          Release
+          <label class="slider-row">
+            <span>Release</span>
+            <span class="value" id="noise-gate-release-value">0.18 s</span>
+          </label>
           <input type="range" id="noise-gate-release" min="0.05" max="1.2" step="0.01" value="0.18" />
-        </div>
 
-        <div class="slider-row">
-          Floor
+          <label class="slider-row">
+            <span>Floor</span>
+            <span class="value" id="noise-gate-floor-value">2%</span>
+          </label>
           <input type="range" id="noise-gate-floor" min="0" max="0.2" step="0.01" value="0.02" />
         </div>
       `;
@@ -51,20 +56,27 @@
       this.els.release = card.querySelector('#noise-gate-release');
       this.els.floor = card.querySelector('#noise-gate-floor');
 
+      this.els.thresholdValue = card.querySelector('#noise-gate-threshold-value');
+      this.els.releaseValue = card.querySelector('#noise-gate-release-value');
+      this.els.floorValue = card.querySelector('#noise-gate-floor-value');
+
       this.els.enabled.addEventListener('change', () => {
         this.enabled = this.els.enabled.checked;
       });
 
       this.els.threshold.addEventListener('input', () => {
         this.threshold = parseFloat(this.els.threshold.value);
+        this.els.thresholdValue.textContent = this.threshold.toFixed(3);
       });
 
       this.els.release.addEventListener('input', () => {
         this.release = parseFloat(this.els.release.value);
+        this.els.releaseValue.textContent = `${this.release.toFixed(2)} s`;
       });
 
       this.els.floor.addEventListener('input', () => {
         this.floor = parseFloat(this.els.floor.value);
+        this.els.floorValue.textContent = `${Math.round(this.floor * 100)}%`;
       });
 
       return card;
@@ -78,6 +90,7 @@
       this.gainNode = ctx.createGain();
       this.analyser = ctx.createAnalyser();
 
+      this.gainNode.gain.value = 1;
       this.analyser.fftSize = 1024;
       this.data = new Uint8Array(this.analyser.fftSize);
 
@@ -89,9 +102,14 @@
     },
 
     startGate() {
-      const ctx = AppState.audioContext;
-
       const update = () => {
+        if (!this.analyser || !this.gainNode || !this.data || !AppState.audioContext) {
+          this.animationId = requestAnimationFrame(update);
+          return;
+        }
+
+        const ctx = AppState.audioContext;
+
         this.analyser.getByteTimeDomainData(this.data);
 
         let sum = 0;
@@ -113,7 +131,9 @@
         this.animationId = requestAnimationFrame(update);
       };
 
-      update();
+      if (!this.animationId) {
+        update();
+      }
     },
 
     connect(source) {
