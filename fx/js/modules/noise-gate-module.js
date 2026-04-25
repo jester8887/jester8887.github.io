@@ -62,6 +62,7 @@
 
       this.els.enabled.addEventListener('change', () => {
         this.enabled = this.els.enabled.checked;
+        this.updateBypass();
       });
 
       this.els.threshold.addEventListener('input', () => {
@@ -99,6 +100,19 @@
       this.gainNode.connect(this.output);
 
       this.startGate();
+      this.updateBypass();
+    },
+
+    updateBypass() {
+      if (!this.gainNode || !AppState.audioContext) return;
+
+      const ctx = AppState.audioContext;
+      const now = ctx.currentTime;
+
+      if (!this.enabled) {
+        this.gainNode.gain.cancelScheduledValues(now);
+        this.gainNode.gain.setValueAtTime(1, now);
+      }
     },
 
     startGate() {
@@ -109,6 +123,14 @@
         }
 
         const ctx = AppState.audioContext;
+        const now = ctx.currentTime;
+
+        if (!this.enabled) {
+          this.gainNode.gain.cancelScheduledValues(now);
+          this.gainNode.gain.setValueAtTime(1, now);
+          this.animationId = requestAnimationFrame(update);
+          return;
+        }
 
         this.analyser.getByteTimeDomainData(this.data);
 
@@ -121,10 +143,10 @@
         const rms = Math.sqrt(sum / this.data.length);
         const targetGain = rms >= this.threshold ? 1 : this.floor;
 
-        this.gainNode.gain.cancelScheduledValues(ctx.currentTime);
+        this.gainNode.gain.cancelScheduledValues(now);
         this.gainNode.gain.setTargetAtTime(
           targetGain,
-          ctx.currentTime,
+          now,
           targetGain === 1 ? this.attack : this.release
         );
 
