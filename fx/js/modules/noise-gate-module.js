@@ -7,6 +7,7 @@
     output: null,
     gainNode: null,
     analyser: null,
+    dry: null, // bypass path
 
     threshold: 0.03,
     attack: 0.02,
@@ -90,28 +91,37 @@
       this.output = ctx.createGain();
       this.gainNode = ctx.createGain();
       this.analyser = ctx.createAnalyser();
+      this.dry = ctx.createGain();
 
       this.gainNode.gain.value = 1;
+      this.dry.gain.value = 1;
+
       this.analyser.fftSize = 1024;
       this.data = new Uint8Array(this.analyser.fftSize);
 
+      // routing
       this.input.connect(this.analyser);
       this.input.connect(this.gainNode);
+      this.input.connect(this.dry);
+
       this.gainNode.connect(this.output);
+      this.dry.connect(this.output);
 
       this.startGate();
       this.updateBypass();
     },
 
     updateBypass() {
-      if (!this.gainNode || !AppState.audioContext) return;
+      if (!this.gainNode || !this.dry || !AppState.audioContext) return;
 
-      const ctx = AppState.audioContext;
-      const now = ctx.currentTime;
+      const now = AppState.audioContext.currentTime;
 
-      if (!this.enabled) {
-        this.gainNode.gain.cancelScheduledValues(now);
+      if (this.enabled) {
         this.gainNode.gain.setValueAtTime(1, now);
+        this.dry.gain.setValueAtTime(0, now);
+      } else {
+        this.gainNode.gain.setValueAtTime(0, now);
+        this.dry.gain.setValueAtTime(1, now);
       }
     },
 
@@ -122,15 +132,13 @@
           return;
         }
 
-        const ctx = AppState.audioContext;
-        const now = ctx.currentTime;
-
         if (!this.enabled) {
-          this.gainNode.gain.cancelScheduledValues(now);
-          this.gainNode.gain.setValueAtTime(1, now);
           this.animationId = requestAnimationFrame(update);
           return;
         }
+
+        const ctx = AppState.audioContext;
+        const now = ctx.currentTime;
 
         this.analyser.getByteTimeDomainData(this.data);
 
