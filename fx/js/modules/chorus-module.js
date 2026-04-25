@@ -62,6 +62,7 @@
 
       this.els.enabled.addEventListener('change', () => {
         this.enabled = this.els.enabled.checked;
+        this.updateBypass();
       });
 
       this.els.rate.addEventListener('input', () => {
@@ -85,11 +86,7 @@
       this.els.mix.addEventListener('input', () => {
         this.mix = parseFloat(this.els.mix.value);
         this.els.mixValue.textContent = `${Math.round(this.mix * 100)}%`;
-
-        if (this.wet && this.dry) {
-          this.wet.gain.setValueAtTime(this.mix, AppState.audioContext.currentTime);
-          this.dry.gain.setValueAtTime(1 - this.mix, AppState.audioContext.currentTime);
-        }
+        this.updateBypass();
       });
 
       return card;
@@ -114,8 +111,8 @@
       this.wet = ctx.createGain();
       this.dry = ctx.createGain();
 
-      this.wet.gain.value = this.mix;
-      this.dry.gain.value = 1 - this.mix;
+      this.wet.gain.value = 0;
+      this.dry.gain.value = 1;
 
       this.lfo.connect(this.lfoGain);
       this.lfoGain.connect(this.delay.delayTime);
@@ -129,6 +126,21 @@
       this.wet.connect(this.output);
 
       this.lfo.start();
+      this.updateBypass();
+    },
+
+    updateBypass() {
+      if (!this.wet || !this.dry || !AppState.audioContext) return;
+
+      const now = AppState.audioContext.currentTime;
+
+      if (this.enabled) {
+        this.wet.gain.setValueAtTime(this.mix, now);
+        this.dry.gain.setValueAtTime(1 - this.mix, now);
+      } else {
+        this.wet.gain.setValueAtTime(0, now);
+        this.dry.gain.setValueAtTime(1, now);
+      }
     },
 
     connect(source) {
