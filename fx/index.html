@@ -1,182 +1,109 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Audio Workshop</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: #111;
-      color: #eee;
-    }
-
-    header {
-      padding: 12px 16px;
-      background: #222;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    h1 {
-      margin: 0;
-      font-size: 20px;
-    }
-
-    #modules {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 12px;
-      padding: 12px;
-    }
-
-    .effect-card {
-      background: #1a1a1a;
-      border-radius: 8px;
-      padding: 10px;
-    }
-
-    .effect-card h3 {
-      margin: 0 0 8px 0;
-      font-size: 16px;
-    }
-
-    .slider-row {
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 6px;
-    }
-
-    input[type="range"] {
-      width: 100%;
-    }
-
-    .inline-toggle {
-      float: right;
-      font-size: 12px;
-    }
-
-    #playerBar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: #000;
-      padding: 10px;
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-    }
-
-    button {
-      cursor: pointer;
-    }
-  </style>
-</head>
 <body>
+  <header>
+    <h1>Audio Workshop Demo</h1>
+    <p>Choose a built-in source or upload your own file, then experiment with effect settings in real time.</p>
 
-<header>
-  <h1>Audio Workshop</h1>
-  <button onclick="App.reset()">Reset</button>
-</header>
+    <div class="transport-bar">
+      <div class="transport-left">
+        <div class="transport-buttons">
+          <button id="playBtn" type="button">Play</button>
+          <button id="pauseBtn" type="button">Pause</button>
+          <button id="stopBtn" type="button">Stop</button>
+          <button id="resetBtn" type="button">Reset FX</button>
+        </div>
 
-<div id="modules"></div>
+        <div id="masterOutputHost" class="transport-master-host"></div>
+      </div>
 
-<div id="playerBar">
-  <button onclick="App.play()">Play</button>
-  <button onclick="App.stop()">Stop</button>
-</div>
+      <div class="transport-right">
+        <label class="loop-wrap">
+          <input type="checkbox" id="loopToggle" />
+          <span>Loop playback</span>
+        </label>
 
-<script>
-const AppState = {
-  audioContext: null,
-  source: null,
-  modules: []
-};
+        <div class="status-block">
+          <div class="active-source" id="activeSourceText">Active source: none loaded</div>
+          <div class="status" id="statusText">Loading source library...</div>
+          <div class="meter">
+            <div class="meter-fill" id="meterFill"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
 
-const ModuleRegistry = {
-  modules: [],
-  register(module) {
-    this.modules.push(module);
-  },
-  initAll() {
-    const container = document.getElementById('modules');
-    this.modules.forEach(m => {
-      if (m.createUI) {
-        const ui = m.createUI();
-        container.appendChild(ui);
-      }
-      if (m.init) m.init();
-      AppState.modules.push(m);
-    });
-  }
-};
+  <main class="layout">
+    <section class="panel">
+      <h2>Source</h2>
 
-const App = {
-  async init() {
-    AppState.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    ModuleRegistry.initAll();
-  },
+      <div class="source-actions">
+        <div class="row">
+          <label for="categoryFilter">Filter by category</label>
+          <select id="categoryFilter">
+            <option value="all">All categories</option>
+          </select>
+        </div>
 
-  async play() {
-    const ctx = AppState.audioContext;
+        <div class="row">
+          <label for="searchInput">Search library</label>
+          <input type="text" id="searchInput" placeholder="Type part of a source name..." />
+        </div>
 
-    if (!ctx) return;
+        <div class="row">
+          <label for="uploadInput">Upload your own audio file</label>
+          <input type="file" id="uploadInput" accept="audio/*" />
+        </div>
+      </div>
 
-    const response = await fetch('audio/sample.mp3');
-    const arrayBuffer = await response.arrayBuffer();
-    const buffer = await ctx.decodeAudioData(arrayBuffer);
+      <div class="library" id="libraryList"></div>
 
-    const source = ctx.createBufferSource();
-    source.buffer = buffer;
+      <div class="note">
+        Built-in sources and uploads share one active playback source. Uploading a file should replace the active source.
+      </div>
+    </section>
 
-    let chain = source;
+    <section>
+      <div class="effects-header">
+        <h2>Effects</h2>
+        <div class="effects-help">Modules are injected by JavaScript. Swap a module by editing or replacing its JS file.</div>
+      </div>
 
-    AppState.modules.forEach(m => {
-      if (m.enabled && m.connect) {
-        chain = m.connect(chain);
-      }
-    });
+      <div id="effectsContainer" class="effects-grid">
+        <div class="module-placeholder">
+          Effect modules have not loaded yet.
+        </div>
+      </div>
+    </section>
+  </main>
 
-    chain.connect(ctx.destination);
+  <script src="js/app-state.js"></script>
+  <script src="js/dom-elements.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/module-registry.js"></script>
+  <script src="js/audio-engine.js"></script>
+  <script src="js/library-manager.js"></script>
+  <script src="js/upload-manager.js"></script>
+  <script src="js/transport-controls.js"></script>
+  <script src="js/meter.js"></script>
+  <script src="js/reset-fx.js"></script>
 
-    source.start();
-    AppState.source = source;
-  },
+  <script src="js/modules/master-module.js"></script>
+  <script src="js/modules/lowpass-module.js"></script>
+  <script src="js/modules/highpass-module.js"></script>
+  <script src="js/modules/bandpass-module.js"></script>
+  <script src="js/modules/notch-module.js"></script>
+  <script src="js/modules/lowshelf-module.js"></script>
+  <script src="js/modules/highshelf-module.js"></script>
+  <script src="js/modules/compressor-module.js"></script>
+  <script src="js/modules/distortion-module.js"></script>
+  <script src="js/modules/delay-module.js"></script>
+  <script src="js/modules/reverb-module.js"></script>
+  <script src="js/modules/tremolo-module.js"></script>
+  <script src="js/modules/vibrato-module.js"></script>
+  <script src="js/modules/chorus-module.js"></script>
+  <script src="js/modules/flanger-module.js"></script>
+  <script src="js/modules/noise-gate-module.js"></script>
 
-  stop() {
-    if (AppState.source) {
-      AppState.source.stop();
-      AppState.source = null;
-    }
-  },
-
-  reset() {
-    location.reload();
-  }
-};
-
-window.addEventListener('DOMContentLoaded', () => {
-  App.init();
-});
-</script>
-
-<!-- EXISTING MODULES -->
-<script src="js/modules/filter-module.js"></script>
-<script src="js/modules/compressor-module.js"></script>
-<script src="js/modules/distortion-module.js"></script>
-<script src="js/modules/reverb-module.js"></script>
-<script src="js/modules/delay-module.js"></script>
-<script src="js/modules/tremolo-module.js"></script>
-<script src="js/modules/vibrato-module.js"></script>
-
-<!-- NEW MODULES -->
-<script src="js/modules/chorus-module.js"></script>
-<script src="js/modules/flanger-module.js"></script>
-<script src="js/modules/noise-gate-module.js"></script>
-
+  <script src="js/main.js"></script>
 </body>
 </html>
