@@ -72,6 +72,7 @@
 
       this.els.enabled.addEventListener('change', () => {
         this.enabled = this.els.enabled.checked;
+        this.updateBypass();
       });
 
       this.els.rate.addEventListener('input', () => {
@@ -95,20 +96,13 @@
       this.els.feedback.addEventListener('input', () => {
         this.feedbackAmount = parseFloat(this.els.feedback.value);
         this.els.feedbackValue.textContent = `${Math.round(this.feedbackAmount * 100)}%`;
-
-        if (this.feedback) {
-          this.feedback.gain.setValueAtTime(this.feedbackAmount, AppState.audioContext.currentTime);
-        }
+        this.updateBypass();
       });
 
       this.els.mix.addEventListener('input', () => {
         this.mix = parseFloat(this.els.mix.value);
         this.els.mixValue.textContent = `${Math.round(this.mix * 100)}%`;
-
-        if (this.wet && this.dry) {
-          this.wet.gain.setValueAtTime(this.mix, AppState.audioContext.currentTime);
-          this.dry.gain.setValueAtTime(1 - this.mix, AppState.audioContext.currentTime);
-        }
+        this.updateBypass();
       });
 
       return card;
@@ -124,13 +118,13 @@
       this.delay.delayTime.value = 0.004;
 
       this.feedback = ctx.createGain();
-      this.feedback.gain.value = this.feedbackAmount;
+      this.feedback.gain.value = 0;
 
       this.wet = ctx.createGain();
       this.dry = ctx.createGain();
 
-      this.wet.gain.value = this.mix;
-      this.dry.gain.value = 1 - this.mix;
+      this.wet.gain.value = 0;
+      this.dry.gain.value = 1;
 
       this.lfo = ctx.createOscillator();
       this.lfo.type = 'sine';
@@ -153,6 +147,23 @@
       this.wet.connect(this.output);
 
       this.lfo.start();
+      this.updateBypass();
+    },
+
+    updateBypass() {
+      if (!this.wet || !this.dry || !this.feedback || !AppState.audioContext) return;
+
+      const now = AppState.audioContext.currentTime;
+
+      if (this.enabled) {
+        this.wet.gain.setValueAtTime(this.mix, now);
+        this.dry.gain.setValueAtTime(1 - this.mix, now);
+        this.feedback.gain.setValueAtTime(this.feedbackAmount, now);
+      } else {
+        this.wet.gain.setValueAtTime(0, now);
+        this.dry.gain.setValueAtTime(1, now);
+        this.feedback.gain.setValueAtTime(0, now);
+      }
     },
 
     connect(source) {
