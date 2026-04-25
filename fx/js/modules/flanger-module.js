@@ -32,23 +32,29 @@
           </label>
         </h3>
 
-        <div class="slider-row">
-          Rate
+        <div class="controls">
+          <label class="slider-row">
+            <span>Rate</span>
+            <span class="value" id="flanger-rate-value">0.35 Hz</span>
+          </label>
           <input type="range" id="flanger-rate" min="0.05" max="5" step="0.05" value="0.35" />
-        </div>
 
-        <div class="slider-row">
-          Depth
+          <label class="slider-row">
+            <span>Depth</span>
+            <span class="value" id="flanger-depth-value">2 ms</span>
+          </label>
           <input type="range" id="flanger-depth" min="0.0005" max="0.006" step="0.0001" value="0.002" />
-        </div>
 
-        <div class="slider-row">
-          Feedback
+          <label class="slider-row">
+            <span>Feedback</span>
+            <span class="value" id="flanger-feedback-value">35%</span>
+          </label>
           <input type="range" id="flanger-feedback" min="0" max="0.85" step="0.01" value="0.35" />
-        </div>
 
-        <div class="slider-row">
-          Mix
+          <label class="slider-row">
+            <span>Mix</span>
+            <span class="value" id="flanger-mix-value">50%</span>
+          </label>
           <input type="range" id="flanger-mix" min="0" max="1" step="0.01" value="0.5" />
         </div>
       `;
@@ -59,30 +65,49 @@
       this.els.feedback = card.querySelector('#flanger-feedback');
       this.els.mix = card.querySelector('#flanger-mix');
 
+      this.els.rateValue = card.querySelector('#flanger-rate-value');
+      this.els.depthValue = card.querySelector('#flanger-depth-value');
+      this.els.feedbackValue = card.querySelector('#flanger-feedback-value');
+      this.els.mixValue = card.querySelector('#flanger-mix-value');
+
       this.els.enabled.addEventListener('change', () => {
         this.enabled = this.els.enabled.checked;
       });
 
       this.els.rate.addEventListener('input', () => {
         this.rate = parseFloat(this.els.rate.value);
-        if (this.lfo) this.lfo.frequency.value = this.rate;
+        this.els.rateValue.textContent = `${this.rate.toFixed(2)} Hz`;
+
+        if (this.lfo) {
+          this.lfo.frequency.setValueAtTime(this.rate, AppState.audioContext.currentTime);
+        }
       });
 
       this.els.depth.addEventListener('input', () => {
         this.depth = parseFloat(this.els.depth.value);
-        if (this.lfoGain) this.lfoGain.gain.value = this.depth;
+        this.els.depthValue.textContent = `${(this.depth * 1000).toFixed(1)} ms`;
+
+        if (this.lfoGain) {
+          this.lfoGain.gain.setValueAtTime(this.depth, AppState.audioContext.currentTime);
+        }
       });
 
       this.els.feedback.addEventListener('input', () => {
         this.feedbackAmount = parseFloat(this.els.feedback.value);
-        if (this.feedback) this.feedback.gain.value = this.feedbackAmount;
+        this.els.feedbackValue.textContent = `${Math.round(this.feedbackAmount * 100)}%`;
+
+        if (this.feedback) {
+          this.feedback.gain.setValueAtTime(this.feedbackAmount, AppState.audioContext.currentTime);
+        }
       });
 
       this.els.mix.addEventListener('input', () => {
         this.mix = parseFloat(this.els.mix.value);
+        this.els.mixValue.textContent = `${Math.round(this.mix * 100)}%`;
+
         if (this.wet && this.dry) {
-          this.wet.gain.value = this.mix;
-          this.dry.gain.value = 1 - this.mix;
+          this.wet.gain.setValueAtTime(this.mix, AppState.audioContext.currentTime);
+          this.dry.gain.setValueAtTime(1 - this.mix, AppState.audioContext.currentTime);
         }
       });
 
@@ -95,7 +120,7 @@
       this.input = ctx.createGain();
       this.output = ctx.createGain();
 
-      this.delay = ctx.createDelay();
+      this.delay = ctx.createDelay(0.02);
       this.delay.delayTime.value = 0.004;
 
       this.feedback = ctx.createGain();
@@ -108,6 +133,7 @@
       this.dry.gain.value = 1 - this.mix;
 
       this.lfo = ctx.createOscillator();
+      this.lfo.type = 'sine';
       this.lfo.frequency.value = this.rate;
 
       this.lfoGain = ctx.createGain();
@@ -121,7 +147,6 @@
 
       this.delay.connect(this.feedback);
       this.feedback.connect(this.delay);
-
       this.delay.connect(this.wet);
 
       this.dry.connect(this.output);
