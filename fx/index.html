@@ -1,1 +1,182 @@
-<!-- Updated index with chorus, flanger, noise gate modules loaded -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Audio Workshop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #111;
+      color: #eee;
+    }
+
+    header {
+      padding: 12px 16px;
+      background: #222;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    #modules {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 12px;
+      padding: 12px;
+    }
+
+    .effect-card {
+      background: #1a1a1a;
+      border-radius: 8px;
+      padding: 10px;
+    }
+
+    .effect-card h3 {
+      margin: 0 0 8px 0;
+      font-size: 16px;
+    }
+
+    .slider-row {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 6px;
+    }
+
+    input[type="range"] {
+      width: 100%;
+    }
+
+    .inline-toggle {
+      float: right;
+      font-size: 12px;
+    }
+
+    #playerBar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #000;
+      padding: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    button {
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Audio Workshop</h1>
+  <button onclick="App.reset()">Reset</button>
+</header>
+
+<div id="modules"></div>
+
+<div id="playerBar">
+  <button onclick="App.play()">Play</button>
+  <button onclick="App.stop()">Stop</button>
+</div>
+
+<script>
+const AppState = {
+  audioContext: null,
+  source: null,
+  modules: []
+};
+
+const ModuleRegistry = {
+  modules: [],
+  register(module) {
+    this.modules.push(module);
+  },
+  initAll() {
+    const container = document.getElementById('modules');
+    this.modules.forEach(m => {
+      if (m.createUI) {
+        const ui = m.createUI();
+        container.appendChild(ui);
+      }
+      if (m.init) m.init();
+      AppState.modules.push(m);
+    });
+  }
+};
+
+const App = {
+  async init() {
+    AppState.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    ModuleRegistry.initAll();
+  },
+
+  async play() {
+    const ctx = AppState.audioContext;
+
+    if (!ctx) return;
+
+    const response = await fetch('audio/sample.mp3');
+    const arrayBuffer = await response.arrayBuffer();
+    const buffer = await ctx.decodeAudioData(arrayBuffer);
+
+    const source = ctx.createBufferSource();
+    source.buffer = buffer;
+
+    let chain = source;
+
+    AppState.modules.forEach(m => {
+      if (m.enabled && m.connect) {
+        chain = m.connect(chain);
+      }
+    });
+
+    chain.connect(ctx.destination);
+
+    source.start();
+    AppState.source = source;
+  },
+
+  stop() {
+    if (AppState.source) {
+      AppState.source.stop();
+      AppState.source = null;
+    }
+  },
+
+  reset() {
+    location.reload();
+  }
+};
+
+window.addEventListener('DOMContentLoaded', () => {
+  App.init();
+});
+</script>
+
+<!-- EXISTING MODULES -->
+<script src="js/modules/filter-module.js"></script>
+<script src="js/modules/compressor-module.js"></script>
+<script src="js/modules/distortion-module.js"></script>
+<script src="js/modules/reverb-module.js"></script>
+<script src="js/modules/delay-module.js"></script>
+<script src="js/modules/tremolo-module.js"></script>
+<script src="js/modules/vibrato-module.js"></script>
+
+<!-- NEW MODULES -->
+<script src="js/modules/chorus-module.js"></script>
+<script src="js/modules/flanger-module.js"></script>
+<script src="js/modules/noise-gate-module.js"></script>
+
+</body>
+</html>
