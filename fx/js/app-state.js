@@ -1,3 +1,5 @@
+// Global shared state
+
 window.AppState = {
   audioContext: null,
   audioBuffer: null,
