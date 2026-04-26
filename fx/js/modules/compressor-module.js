@@ -52,7 +52,7 @@
             top: 0;
             bottom: 0;
             width: 0%;
-            background: linear-gradient(90deg, var(--danger), var(--warn), var(--accent));
+            background: linear-gradient(90deg, var(--accent), var(--warn), var(--danger));
             transition: width 0.06s linear;
           }
 
@@ -102,7 +102,7 @@
         <div class="compressor-gr-wrap">
           <div class="compressor-gr-label-row">
             <label>Gain Reduction</label>
-            <div class="compressor-gr-readout" id="compressor-gr-readout">0.0 dB</div>
+            <div class="compressor-gr-readout" id="compressor-gr-readout"></div>
           </div>
 
           <div class="compressor-gr-meter">
@@ -215,6 +215,8 @@
     },
 
     startGainReductionMeter() {
+      this.stopGainReductionMeter();
+
       const tick = () => {
         this.updateGainReductionMeter();
         this.meterAnimationId = requestAnimationFrame(tick);
@@ -223,12 +225,19 @@
       tick();
     },
 
+    stopGainReductionMeter() {
+      if (this.meterAnimationId) {
+        cancelAnimationFrame(this.meterAnimationId);
+        this.meterAnimationId = null;
+      }
+    },
+
     updateGainReductionMeter() {
       if (!this.els.grFill || !this.els.grReadout || !this.compressor) return;
 
       if (!this.els.enabled.checked) {
         this.els.grFill.style.width = "0%";
-        this.els.grReadout.textContent = "0.0 dB";
+        this.els.grReadout.textContent = "";
         return;
       }
 
@@ -240,7 +249,7 @@
       this.els.grFill.style.width = `${width}%`;
       this.els.grReadout.textContent = amount > 0.05
         ? `${reductionDb.toFixed(1)} dB`
-        : "0.0 dB";
+        : "";
     },
 
     update() {
