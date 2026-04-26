@@ -1,5 +1,3 @@
-// Global shared state
-
 window.AppState = {
   audioContext: null,
   audioBuffer: null,
@@ -9,6 +7,11 @@ window.AppState = {
   isPlaying: false,
   loop: false,
   selectedItem: null,
+
+  library: [],
+
+  uploadedItem: null,
+  uploadedArrayBuffer: null,
 
   fx: {},
 
