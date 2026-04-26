@@ -579,17 +579,213 @@
     }
 
     @media (max-width: 700px) {
+      header {
+        padding: 8px 10px 8px;
+        position: sticky;
+        top: 0;
+      }
+
+      header h1 {
+        font-size: 19px;
+        margin: 0 0 2px;
+        line-height: 1.1;
+      }
+
+      header p {
+        font-size: 11px;
+        line-height: 1.2;
+        max-width: 100%;
+      }
+
+      .transport-bar {
+        margin-top: 7px;
+        gap: 7px;
+      }
+
+      .transport-left {
+        gap: 6px;
+      }
+
       .transport-buttons {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 5px;
+      }
+
+      .transport-buttons button {
+        min-height: 32px;
+        padding: 6px 4px;
+        font-size: 12px;
+        border-radius: 8px;
+      }
+
+      .transport-right {
+        gap: 5px;
+      }
+
+      .loop-wrap {
+        display: none;
+      }
+
+      .status-block {
+        gap: 4px;
+      }
+
+      .active-source {
+        display: none;
+      }
+
+      .status {
+        display: none;
+      }
+
+      .meter {
+        display: none;
+      }
+
+      .transport-master {
+        padding: 7px 9px;
+        border-radius: 10px;
+      }
+
+      .transport-master h3 {
+        display: none;
+      }
+
+      .transport-master .master-top-row {
+        grid-template-columns: 44px 1fr 40px;
+        gap: 6px;
+        align-items: center;
+        margin-bottom: 5px;
+      }
+
+      .transport-master .master-top-row label {
+        font-size: 11px;
+      }
+
+      .transport-master .master-value {
+        font-size: 11px;
+        min-width: 40px;
+        text-align: right;
+      }
+
+      .transport-master input[type="range"] {
+        margin: 0;
+      }
+
+      .transport-master .meter-wrap {
+        gap: 3px;
+      }
+
+      .transport-master .meter-ruler {
+        height: 10px;
+        font-size: 8px;
+      }
+
+      .transport-master .master-meter {
+        height: 11px;
+      }
+
+      .transport-master .meter-readout {
+        display: none;
+      }
+
+      .layout {
+        padding: 10px;
+        gap: 10px;
+      }
+
+      .panel {
+        padding: 10px;
+        border-radius: 12px;
+      }
+
+      .panel h2,
+      .effects-header h2 {
+        font-size: 17px;
+        margin-bottom: 8px;
+      }
+
+      .source-actions {
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+
+      .row {
+        gap: 4px;
+      }
+
+      label {
+        font-size: 11px;
+      }
+
+      input[type="text"],
+      select,
+      input[type="file"],
+      button {
+        padding: 8px 9px;
+        font-size: 13px;
+        border-radius: 8px;
+      }
+
+      .library {
+        max-height: none;
+      }
+
+      .library-grid {
+        grid-template-columns: 1fr;
+        gap: 7px;
+      }
+
+      .library-grid-button {
+        min-height: 52px;
+        padding: 9px;
+        border-radius: 10px;
+      }
+
+      .library-grid-title {
+        font-size: 13px;
+      }
+
+      .library-grid-meta {
+        font-size: 11px;
       }
 
       .effects-header {
         flex-direction: column;
         align-items: flex-start;
+        gap: 5px;
+        margin-bottom: 8px;
       }
 
-      .library-grid {
-        grid-template-columns: 1fr;
+      .effects-grid {
+        gap: 10px;
+      }
+
+      .effect-card {
+        padding: 10px;
+        border-radius: 12px;
+      }
+
+      .effect-card h3 {
+        font-size: 15px;
+        margin-bottom: 8px;
+      }
+
+      .effect-card .controls {
+        gap: 8px;
+      }
+
+      .slider-row {
+        gap: 6px;
+      }
+
+      .slider-row .value {
+        min-width: 58px;
+        font-size: 11px;
+      }
+
+      .inline-toggle {
+        font-size: 12px;
       }
     }
   </style>
