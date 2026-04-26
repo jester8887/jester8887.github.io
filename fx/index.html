@@ -581,8 +581,9 @@
     @media (max-width: 700px) {
       header {
         padding: 8px 10px 8px;
-        position: sticky;
-        top: 0;
+        position: static;
+        top: auto;
+        backdrop-filter: none;
       }
 
       header h1 {
@@ -603,7 +604,13 @@
       }
 
       .transport-left {
+        position: sticky;
+        top: 0;
+        z-index: 30;
         gap: 6px;
+        background: linear-gradient(180deg, #0f1115 90%, transparent);
+        padding: 6px 0 8px;
+        border-bottom: 1px solid var(--border);
       }
 
       .transport-buttons {
