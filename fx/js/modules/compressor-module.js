@@ -8,6 +8,10 @@
     output: null,
     els: {},
 
+    dbToGain(db) {
+      return Math.pow(10, db / 20);
+    },
+
     createUI() {
       const card = document.createElement('div');
       card.className = 'effect-card';
@@ -51,7 +55,7 @@
           <div>
             <label for="compressor-makeup">Makeup Gain</label>
             <div class="slider-row">
-              <input type="range" id="compressor-makeup" min="0" max="2" step="0.01" value="1" />
+              <input type="range" id="compressor-makeup" min="-20" max="20" step="0.1" value="0" />
               <div class="value" id="compressor-makeup-value"></div>
             </div>
           </div>
@@ -88,7 +92,7 @@
       this.els.makeup = document.getElementById('compressor-makeup');
       this.els.makeupValue = document.getElementById('compressor-makeup-value');
 
-      this.els.enabled.addEventListener('input', () => this.update());
+      this.els.enabled.addEventListener('change', () => this.update());
       this.els.threshold.addEventListener('input', () => this.update());
       this.els.ratio.addEventListener('input', () => this.update());
       this.els.attack.addEventListener('input', () => this.update());
@@ -109,7 +113,8 @@
       const ratio = Number(this.els.ratio.value);
       const attack = Number(this.els.attack.value);
       const release = Number(this.els.release.value);
-      const makeup = enabled ? Number(this.els.makeup.value) : 1;
+      const makeupDb = Number(this.els.makeup.value);
+      const makeupGain = this.dbToGain(makeupDb);
 
       this.compressor.threshold.value = threshold;
       this.compressor.ratio.value = ratio;
@@ -117,13 +122,13 @@
       this.compressor.release.value = release;
 
       this.bypassGain.gain.value = enabled ? 0 : 1;
-      this.wetGain.gain.value = enabled ? makeup : 0;
+      this.wetGain.gain.value = enabled ? makeupGain : 0;
 
       this.els.thresholdValue.textContent = `${Math.round(threshold)} dB`;
       this.els.ratioValue.textContent = `${ratio.toFixed(1)}:1`;
       this.els.attackValue.textContent = `${attack.toFixed(3)} s`;
       this.els.releaseValue.textContent = `${release.toFixed(3)} s`;
-      this.els.makeupValue.textContent = `${makeup.toFixed(2)}x`;
+      this.els.makeupValue.textContent = `${makeupDb.toFixed(1)} dB`;
     },
 
     reset() {
@@ -132,7 +137,7 @@
       this.els.ratio.value = 4;
       this.els.attack.value = 0.003;
       this.els.release.value = 0.25;
-      this.els.makeup.value = 1;
+      this.els.makeup.value = 0;
       this.update();
     }
   };
