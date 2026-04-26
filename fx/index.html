@@ -578,223 +578,196 @@
       }
     }
 
-    @media (max-width: 700px) {
-      header {
-        padding: 8px 10px 8px;
-        position: static;
-        top: auto;
-        backdrop-filter: none;
-      }
+   @media (max-width: 700px) {
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    padding: 8px 10px;
+    backdrop-filter: none;
+  }
 
-      header h1 {
-        font-size: 19px;
-        margin: 0 0 2px;
-        line-height: 1.1;
-      }
+  header h1 {
+    font-size: 19px;
+    margin: 0 0 2px;
+    line-height: 1.1;
+  }
 
-      header p {
-        font-size: 11px;
-        line-height: 1.2;
-        max-width: 100%;
-      }
+  header p {
+    display: none;
+  }
 
-      .transport-bar {
-        margin-top: 7px;
-        gap: 7px;
-      }
+  .transport-bar {
+    margin-top: 7px;
+    gap: 7px;
+  }
 
-      .transport-left {
-        position: sticky;
-        top: 0;
-        z-index: 30;
-        gap: 6px;
-        background: linear-gradient(180deg, #0f1115 90%, transparent);
-        padding: 6px 0 8px;
-        border-bottom: 1px solid var(--border);
-      }
+  .transport-left {
+    gap: 6px;
+  }
 
-      .transport-buttons {
-        grid-template-columns: repeat(4, 1fr);
-        gap: 5px;
-      }
+  .transport-buttons {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+  }
 
-      .transport-buttons button {
-        min-height: 32px;
-        padding: 6px 4px;
-        font-size: 12px;
-        border-radius: 8px;
-      }
+  .transport-buttons button {
+    min-height: 32px;
+    padding: 6px 4px;
+    font-size: 12px;
+    border-radius: 8px;
+  }
 
-      .transport-right {
-        gap: 5px;
-      }
+  .transport-right {
+    display: none;
+  }
 
-      .loop-wrap {
-        display: none;
-      }
+  .transport-master {
+    padding: 7px 9px;
+    border-radius: 10px;
+  }
 
-      .status-block {
-        gap: 4px;
-      }
+  .transport-master h3 {
+    display: none;
+  }
 
-      .active-source {
-        display: none;
-      }
+  .transport-master .master-top-row {
+    grid-template-columns: 44px 1fr 40px;
+    gap: 6px;
+    align-items: center;
+    margin-bottom: 5px;
+  }
 
-      .status {
-        display: none;
-      }
+  .transport-master .master-top-row label {
+    font-size: 11px;
+  }
 
-      .meter {
-        display: none;
-      }
+  .transport-master .master-value {
+    font-size: 11px;
+    min-width: 40px;
+    text-align: right;
+  }
 
-      .transport-master {
-        padding: 7px 9px;
-        border-radius: 10px;
-      }
+  .transport-master input[type="range"] {
+    margin: 0;
+  }
 
-      .transport-master h3 {
-        display: none;
-      }
+  .transport-master .meter-wrap {
+    gap: 3px;
+  }
 
-      .transport-master .master-top-row {
-        grid-template-columns: 44px 1fr 40px;
-        gap: 6px;
-        align-items: center;
-        margin-bottom: 5px;
-      }
+  .transport-master .meter-ruler {
+    height: 10px;
+    font-size: 8px;
+  }
 
-      .transport-master .master-top-row label {
-        font-size: 11px;
-      }
+  .transport-master .master-meter {
+    height: 11px;
+  }
 
-      .transport-master .master-value {
-        font-size: 11px;
-        min-width: 40px;
-        text-align: right;
-      }
+  .transport-master .meter-readout {
+    display: none;
+  }
 
-      .transport-master input[type="range"] {
-        margin: 0;
-      }
+  .layout {
+    padding: 10px;
+    gap: 10px;
+  }
 
-      .transport-master .meter-wrap {
-        gap: 3px;
-      }
+  .panel {
+    padding: 10px;
+    border-radius: 12px;
+  }
 
-      .transport-master .meter-ruler {
-        height: 10px;
-        font-size: 8px;
-      }
+  .panel h2,
+  .effects-header h2 {
+    font-size: 17px;
+    margin-bottom: 8px;
+  }
 
-      .transport-master .master-meter {
-        height: 11px;
-      }
+  .source-actions {
+    gap: 8px;
+    margin-bottom: 10px;
+  }
 
-      .transport-master .meter-readout {
-        display: none;
-      }
+  .row {
+    gap: 4px;
+  }
 
-      .layout {
-        padding: 10px;
-        gap: 10px;
-      }
+  label {
+    font-size: 11px;
+  }
 
-      .panel {
-        padding: 10px;
-        border-radius: 12px;
-      }
+  input[type="text"],
+  select,
+  input[type="file"],
+  button {
+    padding: 8px 9px;
+    font-size: 13px;
+    border-radius: 8px;
+  }
 
-      .panel h2,
-      .effects-header h2 {
-        font-size: 17px;
-        margin-bottom: 8px;
-      }
+  .library {
+    max-height: none;
+  }
 
-      .source-actions {
-        gap: 8px;
-        margin-bottom: 10px;
-      }
+  .library-grid {
+    grid-template-columns: 1fr;
+    gap: 7px;
+  }
 
-      .row {
-        gap: 4px;
-      }
+  .library-grid-button {
+    min-height: 52px;
+    padding: 9px;
+    border-radius: 10px;
+  }
 
-      label {
-        font-size: 11px;
-      }
+  .library-grid-title {
+    font-size: 13px;
+  }
 
-      input[type="text"],
-      select,
-      input[type="file"],
-      button {
-        padding: 8px 9px;
-        font-size: 13px;
-        border-radius: 8px;
-      }
+  .library-grid-meta {
+    font-size: 11px;
+  }
 
-      .library {
-        max-height: none;
-      }
+  .effects-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+    margin-bottom: 8px;
+  }
 
-      .library-grid {
-        grid-template-columns: 1fr;
-        gap: 7px;
-      }
+  .effects-grid {
+    gap: 10px;
+  }
 
-      .library-grid-button {
-        min-height: 52px;
-        padding: 9px;
-        border-radius: 10px;
-      }
+  .effect-card {
+    padding: 10px;
+    border-radius: 12px;
+  }
 
-      .library-grid-title {
-        font-size: 13px;
-      }
+  .effect-card h3 {
+    font-size: 15px;
+    margin-bottom: 8px;
+  }
 
-      .library-grid-meta {
-        font-size: 11px;
-      }
+  .effect-card .controls {
+    gap: 8px;
+  }
 
-      .effects-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 5px;
-        margin-bottom: 8px;
-      }
+  .slider-row {
+    gap: 6px;
+  }
 
-      .effects-grid {
-        gap: 10px;
-      }
+  .slider-row .value {
+    min-width: 58px;
+    font-size: 11px;
+  }
 
-      .effect-card {
-        padding: 10px;
-        border-radius: 12px;
-      }
-
-      .effect-card h3 {
-        font-size: 15px;
-        margin-bottom: 8px;
-      }
-
-      .effect-card .controls {
-        gap: 8px;
-      }
-
-      .slider-row {
-        gap: 6px;
-      }
-
-      .slider-row .value {
-        min-width: 58px;
-        font-size: 11px;
-      }
-
-      .inline-toggle {
-        font-size: 12px;
-      }
-    }
+  .inline-toggle {
+    font-size: 12px;
+  }
+}
   </style>
 </head>
 <body>
