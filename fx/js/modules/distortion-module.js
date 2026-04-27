@@ -48,7 +48,7 @@
     linearCurve: null,
     els: {},
 
-    defaultSettings: {
+defaultSettings: {
   output: {
     minDb: -20,
     maxDb: 20,
@@ -57,36 +57,36 @@
 
   mix: {
     dryWhenEnabled: 0.06,
-    wetWhenEnabled: 1.0
+    wetWhenEnabled: 1
   },
 
   overdrive: {
-    hpStartHz: 85,
-    hpEndHz: 135,
+    hpStartHz: 95,
+    hpEndHz: 150,
 
-    midFreqHz: 620,
+    midFreqHz: 456,
     midQ: 0.9,
     midGainStartDb: 0,
-    midGainEndDb: 2.5,
+    midGainEndDb: 4.6,
 
     preGainStartDb: 0,
-    preGainEndDb: 15,
+    preGainEndDb: 19.1,
 
-    curveDriveStart: 1.1,
-    curveDriveEnd: 3.6,
+    curveDriveStart: 1.05,
+    curveDriveEnd: 4,
     curveAsymStart: 0.97,
-    curveAsymEnd: 0.74,
+    curveAsymEnd: 0.64,
     curveBiasStart: 0,
-    curveBiasEnd: 0.055,
-    curveSoftnessStart: 0.98,
-    curveSoftnessEnd: 0.86,
+    curveBiasEnd: 0.045,
+    curveSoftnessStart: 0.99,
+    curveSoftnessEnd: 0.88,
 
-    toneFreqHz: 1400,
+    toneFreqHz: 858,
     toneGainStartDb: 0,
-    toneGainEndDb: -4,
+    toneGainEndDb: -10.7,
 
-    lpStartHz: 7200,
-    lpEndHz: 3600,
+    lpStartHz: 5200,
+    lpEndHz: 1800,
 
     trimStartDb: 0,
     trimEndDb: -6
@@ -125,11 +125,11 @@
   },
 
   fuzz: {
-    hpStartHz: 100,
-    hpEndHz: 190,
+    hpStartHz: 137,
+    hpEndHz: 209,
 
     midFreqHz: 1100,
-    midQ: 1.0,
+    midQ: 1,
     midGainStartDb: 0,
     midGainEndDb: 2,
 
@@ -141,16 +141,16 @@
     curveAsymStart: 0.82,
     curveAsymEnd: 0.38,
     curveBiasStart: 0.03,
-    curveBiasEnd: 0.26,
+    curveBiasEnd: 0.297,
     curvePowerStart: 0.9,
-    curvePowerEnd: 0.42,
+    curvePowerEnd: 0.3,
 
-    toneFreqHz: 2600,
+    toneFreqHz: 3406,
     toneGainStartDb: 0,
-    toneGainEndDb: 1.5,
+    toneGainEndDb: 3.7,
 
     lpStartHz: 9000,
-    lpEndHz: 7200,
+    lpEndHz: 9673,
 
     trimStartDb: 0,
     trimEndDb: -16
