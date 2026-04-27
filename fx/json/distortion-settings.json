@@ -4,56 +4,44 @@
     "maxDb": 20,
     "defaultDb": 0
   },
-
   "mix": {
     "dryWhenEnabled": 0.06,
-    "wetWhenEnabled": 1.0
+    "wetWhenEnabled": 1
   },
-
   "overdrive": {
-    "hpStartHz": 85,
-    "hpEndHz": 135,
-
-    "midFreqHz": 620,
+    "hpStartHz": 95,
+    "hpEndHz": 150,
+    "midFreqHz": 456,
     "midQ": 0.9,
     "midGainStartDb": 0,
-    "midGainEndDb": 2.5,
-
+    "midGainEndDb": 4.6,
     "preGainStartDb": 0,
-    "preGainEndDb": 15,
-
-    "curveDriveStart": 1.1,
-    "curveDriveEnd": 3.6,
+    "preGainEndDb": 19.1,
+    "curveDriveStart": 1.05,
+    "curveDriveEnd": 4,
     "curveAsymStart": 0.97,
-    "curveAsymEnd": 0.74,
+    "curveAsymEnd": 0.64,
     "curveBiasStart": 0,
-    "curveBiasEnd": 0.055,
-    "curveSoftnessStart": 0.98,
-    "curveSoftnessEnd": 0.86,
-
-    "toneFreqHz": 1400,
+    "curveBiasEnd": 0.045,
+    "curveSoftnessStart": 0.99,
+    "curveSoftnessEnd": 0.88,
+    "toneFreqHz": 858,
     "toneGainStartDb": 0,
-    "toneGainEndDb": -4,
-
-    "lpStartHz": 7200,
-    "lpEndHz": 3600,
-
+    "toneGainEndDb": -10.7,
+    "lpStartHz": 5200,
+    "lpEndHz": 1800,
     "trimStartDb": 0,
     "trimEndDb": -6
   },
-
   "distortion": {
     "hpStartHz": 70,
     "hpEndHz": 120,
-
     "midFreqHz": 900,
     "midQ": 0.8,
     "midGainStartDb": 0,
     "midGainEndDb": 2,
-
     "preGainStartDb": 0,
     "preGainEndDb": 22,
-
     "curveDriveStart": 1.35,
     "curveDriveEnd": 8.5,
     "curveAsymStart": 0.94,
@@ -62,50 +50,39 @@
     "curveBiasEnd": 0.055,
     "curveFoldStart": 0.03,
     "curveFoldEnd": 0.15,
-
     "toneFreqHz": 2200,
     "toneGainStartDb": 0,
     "toneGainEndDb": -2.5,
-
     "lpStartHz": 8500,
     "lpEndHz": 5000,
-
     "trimStartDb": 0,
     "trimEndDb": -10
   },
-
   "fuzz": {
-    "hpStartHz": 100,
-    "hpEndHz": 190,
-
+    "hpStartHz": 137,
+    "hpEndHz": 209,
     "midFreqHz": 1100,
-    "midQ": 1.0,
+    "midQ": 1,
     "midGainStartDb": 0,
     "midGainEndDb": 2,
-
     "preGainStartDb": 0,
     "preGainEndDb": 31,
-
     "curveDriveStart": 2.6,
     "curveDriveEnd": 18,
     "curveAsymStart": 0.82,
     "curveAsymEnd": 0.38,
     "curveBiasStart": 0.03,
-    "curveBiasEnd": 0.26,
+    "curveBiasEnd": 0.297,
     "curvePowerStart": 0.9,
-    "curvePowerEnd": 0.42,
-
-    "toneFreqHz": 2600,
+    "curvePowerEnd": 0.3,
+    "toneFreqHz": 3406,
     "toneGainStartDb": 0,
-    "toneGainEndDb": 1.5,
-
+    "toneGainEndDb": 3.7,
     "lpStartHz": 9000,
-    "lpEndHz": 7200,
-
+    "lpEndHz": 9673,
     "trimStartDb": 0,
     "trimEndDb": -16
   },
-
   "sag": {
     "thresholdDb": -20,
     "kneeDb": 18,
@@ -113,18 +90,14 @@
     "attack": 0.008,
     "release": 0.18
   },
-
   "cab": {
     "hpHz": 75,
-
     "bodyFreqHz": 180,
     "bodyQ": 0.75,
     "bodyGainDb": 1.2,
-
     "presenceFreqHz": 2600,
     "presenceQ": 0.8,
     "presenceGainDb": 0.8,
-
     "lpHz": 7000,
     "lpQ": 0.7
   }
