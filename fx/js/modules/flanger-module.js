@@ -17,13 +17,13 @@
     lfo: null,
     lfoGain: null,
 
-    rate: 0.18,
-    manualDelay: 0.006,
-    depth: 0.0045,
-    feedbackAmount: 0.55,
-    mix: 0.65,
-    bodyGainDb: 2.5,
-    toneHz: 8500,
+    rate: 0.15,
+    manualDelay: 0.008,
+    depth: 0.0075,
+    feedbackAmount: 0.75,
+    mix: 0.8,
+    bodyGainDb: 3.5,
+    toneHz: 14000,
 
     els: {},
 
@@ -58,45 +58,45 @@
         <div class="controls">
           <label class="slider-row">
             <span>Rate</span>
-            <span class="value" id="flanger-rate-value">0.18 Hz</span>
+            <span class="value" id="flanger-rate-value">0.15 Hz</span>
           </label>
-          <input type="range" id="flanger-rate" min="0.03" max="2" step="0.01" value="0.18" />
+          <input type="range" id="flanger-rate" min="0.03" max="2" step="0.01" value="0.15" />
 
           <label class="slider-row">
             <span>Manual Delay</span>
-            <span class="value" id="flanger-delay-value">6.0 ms</span>
+            <span class="value" id="flanger-delay-value">8.0 ms</span>
           </label>
-          <input type="range" id="flanger-delay" min="0.001" max="0.012" step="0.0001" value="0.006" />
+          <input type="range" id="flanger-delay" min="0.001" max="0.018" step="0.0001" value="0.008" />
 
           <label class="slider-row">
             <span>Depth</span>
-            <span class="value" id="flanger-depth-value">4.5 ms</span>
+            <span class="value" id="flanger-depth-value">7.5 ms</span>
           </label>
-          <input type="range" id="flanger-depth" min="0.0005" max="0.009" step="0.0001" value="0.0045" />
+          <input type="range" id="flanger-depth" min="0.0005" max="0.014" step="0.0001" value="0.0075" />
 
           <label class="slider-row">
             <span>Feedback</span>
-            <span class="value" id="flanger-feedback-value">55%</span>
+            <span class="value" id="flanger-feedback-value">75%</span>
           </label>
-          <input type="range" id="flanger-feedback" min="0" max="0.85" step="0.01" value="0.55" />
+          <input type="range" id="flanger-feedback" min="0" max="0.9" step="0.01" value="0.75" />
 
           <label class="slider-row">
             <span>Mix</span>
-            <span class="value" id="flanger-mix-value">65%</span>
+            <span class="value" id="flanger-mix-value">80%</span>
           </label>
-          <input type="range" id="flanger-mix" min="0" max="1" step="0.01" value="0.65" />
+          <input type="range" id="flanger-mix" min="0" max="1" step="0.01" value="0.8" />
 
           <label class="slider-row">
             <span>Body</span>
-            <span class="value" id="flanger-body-value">+2.5 dB</span>
+            <span class="value" id="flanger-body-value">+3.5 dB</span>
           </label>
-          <input type="range" id="flanger-body" min="-4" max="6" step="0.1" value="2.5" />
+          <input type="range" id="flanger-body" min="-4" max="8" step="0.1" value="3.5" />
 
           <label class="slider-row">
             <span>Tone</span>
-            <span class="value" id="flanger-tone-value">8500 Hz</span>
+            <span class="value" id="flanger-tone-value">14000 Hz</span>
           </label>
-          <input type="range" id="flanger-tone" min="3000" max="14000" step="100" value="8500" />
+          <input type="range" id="flanger-tone" min="3000" max="20000" step="100" value="14000" />
         </div>
       `;
 
@@ -167,8 +167,8 @@
       this.input = ctx.createGain();
       this.output = ctx.createGain();
 
-      this.delay = ctx.createDelay(0.03);
-      this.delay.delayTime.value = this.manualDelay;
+      this.delay = ctx.createDelay(0.05);
+      this.delay.delayTime.value = this.manualDelay + this.depth * 0.5;
 
       this.feedback = ctx.createGain();
       this.feedback.gain.value = 0;
@@ -242,15 +242,15 @@
       this.setParam(this.dry.gain, dryTarget);
       this.setParam(this.feedback.gain, feedbackTarget);
 
-      this.setParam(this.delay.delayTime, this.manualDelay);
+      this.setParam(this.delay.delayTime, this.manualDelay + this.depth * 0.5);
       this.setParam(this.lfo.frequency, this.rate);
-      this.setParam(this.lfoGain.gain, this.depth);
+      this.setParam(this.lfoGain.gain, enabled ? this.depth : 0);
 
       this.setParam(this.bodyFilter.frequency, 240);
       this.setParam(this.bodyFilter.Q, 0.8);
       this.setParam(this.bodyFilter.gain, enabled ? this.bodyGainDb : 0);
 
-      this.setParam(this.toneFilter.frequency, this.toneHz);
+      this.setParam(this.toneFilter.frequency, enabled ? this.toneHz : 20000);
       this.setParam(this.toneFilter.Q, 0.7);
 
       this.els.rateValue.textContent = `${this.rate.toFixed(2)} Hz`;
@@ -267,13 +267,13 @@
 
       if (this.els.enabled) this.els.enabled.checked = false;
 
-      this.rate = 0.18;
-      this.manualDelay = 0.006;
-      this.depth = 0.0045;
-      this.feedbackAmount = 0.55;
-      this.mix = 0.65;
-      this.bodyGainDb = 2.5;
-      this.toneHz = 8500;
+      this.rate = 0.15;
+      this.manualDelay = 0.008;
+      this.depth = 0.0075;
+      this.feedbackAmount = 0.75;
+      this.mix = 0.8;
+      this.bodyGainDb = 3.5;
+      this.toneHz = 14000;
 
       if (this.els.rate) this.els.rate.value = this.rate;
       if (this.els.delay) this.els.delay.value = this.manualDelay;
