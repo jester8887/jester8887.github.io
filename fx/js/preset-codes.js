@@ -5,6 +5,7 @@
     els: {},
     isApplying: false,
     updateTimer: null,
+    lastCode: "",
 
     init() {
       this.cacheEls();
@@ -13,8 +14,13 @@
       this.bindUI();
       this.watchAppChanges();
 
-      window.setTimeout(() => this.updateCode(), 250);
-      window.setTimeout(() => this.updateCode(), 1000);
+      window.setTimeout(() => this.updateCode(true), 250);
+      window.setTimeout(() => this.updateCode(true), 1000);
+
+      // Safety net: catches module changes even if events do not bubble normally.
+      window.setInterval(() => {
+        if (!this.isApplying) this.updateCode(false);
+      }, 250);
     },
 
     cacheEls() {
@@ -39,26 +45,17 @@
       document.addEventListener("input", (event) => {
         if (this.shouldIgnoreEvent(event)) return;
         this.scheduleUpdate();
-      });
+      }, true);
 
       document.addEventListener("change", (event) => {
         if (this.shouldIgnoreEvent(event)) return;
         this.scheduleUpdate();
-      });
+      }, true);
 
       document.addEventListener("click", (event) => {
         if (this.shouldIgnoreEvent(event)) return;
-
-        const target = event.target;
-        if (
-          target.closest("#libraryList") ||
-          target.closest("#resetBtn") ||
-          target.closest(".effect-card") ||
-          target.closest("#masterOutputHost")
-        ) {
-          this.scheduleUpdate(120);
-        }
-      });
+        this.scheduleUpdate(120);
+      }, true);
     },
 
     watchAppChanges() {
@@ -66,12 +63,12 @@
         .filter(Boolean)
         .forEach((root) => {
           const observer = new MutationObserver(() => this.scheduleUpdate(120));
-         observer.observe(root, {
-          childList: true,
-          subtree: true,
-          attributes: true,
-          attributeFilter: ["class"]
-        });
+          observer.observe(root, {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            attributeFilter: ["class"]
+          });
         });
     },
 
@@ -88,26 +85,32 @@
 
     scheduleUpdate(delay = 40) {
       window.clearTimeout(this.updateTimer);
-      this.updateTimer = window.setTimeout(() => this.updateCode(), delay);
+      this.updateTimer = window.setTimeout(() => this.updateCode(true), delay);
     },
 
-    updateCode() {
+    updateCode(force = false) {
       if (this.isApplying || !this.els.field) return;
 
+      let code;
+
       if (this.isCustomAudioActive()) {
-        this.els.field.value = CUSTOM_AUDIO_TEXT;
-        return;
+        code = CUSTOM_AUDIO_TEXT;
+      } else {
+        const preset = {
+          version: 1,
+          app: "Audio FX Workshop",
+          source: this.getSourceState(),
+          activeModule: this.getActiveModuleState(),
+          master: this.getMasterState()
+        };
+
+        code = JSON.stringify(preset);
       }
 
-      const preset = {
-        version: 1,
-        app: "Audio FX Workshop",
-        source: this.getSourceState(),
-        activeModule: this.getActiveModuleState(),
-        master: this.getMasterState()
-      };
-
-      this.els.field.value = JSON.stringify(preset);
+      if (force || code !== this.lastCode) {
+        this.lastCode = code;
+        this.els.field.value = code;
+      }
     },
 
     isCustomAudioActive() {
