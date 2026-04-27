@@ -400,7 +400,7 @@
 
         <div class="controls">
           <div>
-            <label for="distortion-overdrive">Warm Overdrive</label>
+            <label for="distortion-overdrive">Overdrive</label>
             <div class="slider-row">
               <input type="range" id="distortion-overdrive" min="0" max="100" step="1" value="0" />
               <div class="value" id="distortion-overdrive-value"></div>
@@ -408,7 +408,7 @@
           </div>
 
           <div>
-            <label for="distortion-distortion">Crunch Distortion</label>
+            <label for="distortion-distortion">Distortion</label>
             <div class="slider-row">
               <input type="range" id="distortion-distortion" min="0" max="100" step="1" value="0" />
               <div class="value" id="distortion-distortion-value"></div>
@@ -416,7 +416,7 @@
           </div>
 
           <div>
-            <label for="distortion-fuzz">Dark Fuzz</label>
+            <label for="distortion-fuzz">Fuzz</label>
             <div class="slider-row">
               <input type="range" id="distortion-fuzz" min="0" max="100" step="1" value="0" />
               <div class="value" id="distortion-fuzz-value"></div>
