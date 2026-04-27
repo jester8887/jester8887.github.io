@@ -66,12 +66,12 @@
         .filter(Boolean)
         .forEach((root) => {
           const observer = new MutationObserver(() => this.scheduleUpdate(120));
-          observer.observe(root, {
-            childList: true,
-            subtree: true,
-            attributes: true,
-            attributeFilter: ["class", "checked", "value"]
-          });
+         observer.observe(root, {
+          childList: true,
+          subtree: true,
+          attributes: true,
+          attributeFilter: ["class"]
+        });
         });
     },
 
