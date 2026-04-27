@@ -49,133 +49,136 @@
     els: {},
 
     defaultSettings: {
-      output: {
-        minDb: -20,
-        maxDb: 20,
-        defaultDb: 0
-      },
+  output: {
+    minDb: -20,
+    maxDb: 20,
+    defaultDb: 0
+  },
 
-      mix: {
-        dryWhenEnabled: 0.08,
-        wetWhenEnabled: 1.0
-      },
+  mix: {
+    dryWhenEnabled: 0.06,
+    wetWhenEnabled: 1.0
+  },
 
-      overdrive: {
-        hpStartHz: 70,
-        hpEndHz: 120,
+  overdrive: {
+    hpStartHz: 85,
+    hpEndHz: 135,
 
-        midFreqHz: 720,
-        midQ: 0.85,
-        midGainStartDb: 0,
-        midGainEndDb: 3.5,
+    midFreqHz: 620,
+    midQ: 0.9,
+    midGainStartDb: 0,
+    midGainEndDb: 2.5,
 
-        preGainStartDb: 0,
-        preGainEndDb: 17,
+    preGainStartDb: 0,
+    preGainEndDb: 15,
 
-        curveDriveStart: 1.15,
-        curveDriveEnd: 4.2,
-        curveAsymStart: 0.96,
-        curveAsymEnd: 0.68,
-        curveBiasStart: 0,
-        curveBiasEnd: 0.08,
-        curveSoftnessStart: 0.96,
-        curveSoftnessEnd: 0.78,
+    curveDriveStart: 1.1,
+    curveDriveEnd: 3.6,
+    curveAsymStart: 0.97,
+    curveAsymEnd: 0.74,
+    curveBiasStart: 0,
+    curveBiasEnd: 0.055,
+    curveSoftnessStart: 0.98,
+    curveSoftnessEnd: 0.86,
 
-        toneFreqHz: 1800,
-        toneGainStartDb: 0,
-        toneGainEndDb: -1.5,
-        lpStartHz: 9000,
-        lpEndHz: 5600,
+    toneFreqHz: 1400,
+    toneGainStartDb: 0,
+    toneGainEndDb: -4,
 
-        trimStartDb: 0,
-        trimEndDb: -7
-      },
+    lpStartHz: 7200,
+    lpEndHz: 3600,
 
-      distortion: {
-        hpStartHz: 65,
-        hpEndHz: 105,
+    trimStartDb: 0,
+    trimEndDb: -6
+  },
 
-        midFreqHz: 950,
-        midQ: 0.75,
-        midGainStartDb: 0,
-        midGainEndDb: 1.5,
+  distortion: {
+    hpStartHz: 70,
+    hpEndHz: 120,
 
-        preGainStartDb: 0,
-        preGainEndDb: 22,
+    midFreqHz: 900,
+    midQ: 0.8,
+    midGainStartDb: 0,
+    midGainEndDb: 2,
 
-        curveDriveStart: 1.4,
-        curveDriveEnd: 8.0,
-        curveAsymStart: 0.95,
-        curveAsymEnd: 0.74,
-        curveBiasStart: 0,
-        curveBiasEnd: 0.045,
-        curveFoldStart: 0.02,
-        curveFoldEnd: 0.12,
+    preGainStartDb: 0,
+    preGainEndDb: 22,
 
-        toneFreqHz: 2400,
-        toneGainStartDb: 0,
-        toneGainEndDb: -3,
-        lpStartHz: 8200,
-        lpEndHz: 4200,
+    curveDriveStart: 1.35,
+    curveDriveEnd: 8.5,
+    curveAsymStart: 0.94,
+    curveAsymEnd: 0.68,
+    curveBiasStart: 0,
+    curveBiasEnd: 0.055,
+    curveFoldStart: 0.03,
+    curveFoldEnd: 0.15,
 
-        trimStartDb: 0,
-        trimEndDb: -10
-      },
+    toneFreqHz: 2200,
+    toneGainStartDb: 0,
+    toneGainEndDb: -2.5,
 
-      fuzz: {
-        hpStartHz: 90,
-        hpEndHz: 165,
+    lpStartHz: 8500,
+    lpEndHz: 5000,
 
-        midFreqHz: 420,
-        midQ: 0.9,
-        midGainStartDb: 0,
-        midGainEndDb: 4,
+    trimStartDb: 0,
+    trimEndDb: -10
+  },
 
-        preGainStartDb: 0,
-        preGainEndDb: 28,
+  fuzz: {
+    hpStartHz: 100,
+    hpEndHz: 190,
 
-        curveDriveStart: 2.2,
-        curveDriveEnd: 14,
-        curveAsymStart: 0.88,
-        curveAsymEnd: 0.48,
-        curveBiasStart: 0.02,
-        curveBiasEnd: 0.18,
-        curvePowerStart: 0.96,
-        curvePowerEnd: 0.58,
+    midFreqHz: 1100,
+    midQ: 1.0,
+    midGainStartDb: 0,
+    midGainEndDb: 2,
 
-        toneFreqHz: 900,
-        toneGainStartDb: 0,
-        toneGainEndDb: -5,
-        lpStartHz: 6200,
-        lpEndHz: 3100,
+    preGainStartDb: 0,
+    preGainEndDb: 31,
 
-        trimStartDb: 0,
-        trimEndDb: -14
-      },
+    curveDriveStart: 2.6,
+    curveDriveEnd: 18,
+    curveAsymStart: 0.82,
+    curveAsymEnd: 0.38,
+    curveBiasStart: 0.03,
+    curveBiasEnd: 0.26,
+    curvePowerStart: 0.9,
+    curvePowerEnd: 0.42,
 
-      sag: {
-        thresholdDb: -20,
-        kneeDb: 18,
-        ratio: 2.2,
-        attack: 0.008,
-        release: 0.18
-      },
+    toneFreqHz: 2600,
+    toneGainStartDb: 0,
+    toneGainEndDb: 1.5,
 
-      cab: {
-        hpHz: 75,
+    lpStartHz: 9000,
+    lpEndHz: 7200,
 
-        bodyFreqHz: 180,
-        bodyQ: 0.75,
-        bodyGainDb: 1.5,
+    trimStartDb: 0,
+    trimEndDb: -16
+  },
 
-        presenceFreqHz: 2600,
-        presenceQ: 0.8,
-        presenceGainDb: 1.2,
+  sag: {
+    thresholdDb: -20,
+    kneeDb: 18,
+    ratio: 2.2,
+    attack: 0.008,
+    release: 0.18
+  },
 
-        lpHz: 6200,
-        lpQ: 0.7
-      }
-    },
+  cab: {
+    hpHz: 75,
+
+    bodyFreqHz: 180,
+    bodyQ: 0.75,
+    bodyGainDb: 1.2,
+
+    presenceFreqHz: 2600,
+    presenceQ: 0.8,
+    presenceGainDb: 0.8,
+
+    lpHz: 7000,
+    lpQ: 0.7
+  }
+},
 
     clamp(value, min, max) {
       return Math.min(max, Math.max(min, value));
