@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Distortion Settings Tuner</title>
+
+<style>
+:root {
+  --bg: #0f1115;
+  --panel: #171a21;
+  --panel-2: #1f2430;
+  --text: #eef2f7;
+  --muted: #a9b3c3;
+  --accent: #63b3ff;
+  --border: #2a3140;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #11151d;
+  border-bottom: 1px solid var(--border);
+  padding: 14px 18px;
+}
+
+header h1 {
+  margin: 0 0 10px;
+  font-size: 1.1rem;
+}
+
+.transport {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+button,
+input[type="file"]::file-selector-button {
+  background: var(--panel-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 10px;
+  cursor: pointer;
+}
+
+button:hover,
+input[type="file"]::file-selector-button:hover {
+  border-color: var(--accent);
+}
+
+main {
+  padding: 18px;
+  display: grid;
+  grid-template-columns: minmax(320px, 1fr) minmax(360px, 520px);
+  gap: 18px;
+}
+
+.section {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.section h2 {
+  margin: 0 0 12px;
+  font-size: 1rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+.stage {
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.stage h3 {
+  margin: 0 0 10px;
+  font-size: 0.95rem;
+}
+
+.control {
+  display: grid;
+  grid-template-columns: 160px 1fr 76px;
+  gap: 10px;
+  align-items: center;
+  margin: 8px 0;
+}
+
+.control label {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.control input[type="range"] {
+  width: 100%;
+}
+
+.value {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+  font-size: 0.85rem;
+}
+
+textarea {
+  width: 100%;
+  min-height: 260px;
+  resize: vertical;
+  background: #0b0d12;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.status {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.preset-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+@media (max-width: 950px) {
+  main {
+    grid-template-columns: 1fr;
+  }
+
+  .control {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .value {
+    text-align: left;
+  }
+}
+</style>
+</head>
+
+<body>
+<header>
+  <h1>Distortion Settings Tuner</h1>
+
+  <div class="transport">
+    <input type="file" id="file" accept="audio/*" />
+    <button id="play">Play</button>
+    <button id="stop">Stop</button>
+
+    <label>
+      Master
+      <input type="range" id="master" min="-30" max="6" step="1" value="-8" />
+    </label>
+
+    <span class="status" id="status">Load an audio file to begin.</span>
+  </div>
+</header>
+
+<main>
+  <div class="grid">
+    <section class="section">
+      <h2>Audition</h2>
+
+      <div class="preset-buttons">
+        <button id="solo-overdrive">Overdrive Only</button>
+        <button id="solo-distortion">Distortion Only</button>
+        <button id="solo-fuzz">Fuzz Only</button>
+        <button id="all-off">All Off</button>
+      </div>
+
+      <div class="control">
+        <label for="amount-overdrive">Overdrive Amount</label>
+        <input type="range" id="amount-overdrive" min="0" max="100" step="1" value="60" />
+        <div class="value" id="amount-overdrive-value"></div>
+      </div>
+
+      <div class="control">
+        <label for="amount-distortion">Distortion Amount</label>
+        <input type="range" id="amount-distortion" min="0" max="100" step="1" value="0" />
+        <div class="value" id="amount-distortion-value"></div>
+      </div>
+
+      <div class="control">
+        <label for="amount-fuzz">Fuzz Amount</label>
+        <input type="range" id="amount-fuzz" min="0" max="100" step="1" value="0" />
+        <div class="value" id="amount-fuzz-value"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Settings</h2>
+
+      <div class="stage" id="overdrive-stage">
+        <h3>Overdrive</h3>
+      </div>
+
+      <div class="stage" id="distortion-stage">
+        <h3>Distortion</h3>
+      </div>
+
+      <div class="stage" id="fuzz-stage">
+        <h3>Fuzz</h3>
+      </div>
+
+      <div class="stage" id="mix-stage">
+        <h3>Mix / Sag / Cab</h3>
+      </div>
+    </section>
+  </div>
+
+  <aside class="grid">
+    <section class="section">
+      <h2>Generated distortion-settings.json</h2>
+      <button id="copy-json">Copy JSON</button>
+      <textarea id="json-output" spellcheck="false"></textarea>
+    </section>
+
+    <section class="section">
+      <h2>Generated defaultSettings block</h2>
+      <button id="copy-defaults">Copy defaultSettings</button>
+      <textarea id="defaults-output" spellcheck="false"></textarea>
+    </section>
+  </aside>
+</main>
+
+<script>
+const state = {
+  ctx: null,
+  buffer: null,
+  source: null,
+  playing: false,
+
+  input: null,
+  output: null,
+  master: null,
+
+  dryGain: null,
+  wetInput: null,
+  wetGain: null,
+
+  odHP: null,
+  odMid: null,
+  odPre: null,
+  odShaper: null,
+  odPostTone: null,
+  odLP: null,
+  odTrim: null,
+
+  distHP: null,
+  distMid: null,
+  distPre: null,
+  distShaper: null,
+  distPostTone: null,
+  distLP: null,
+  distTrim: null,
+
+  fuzzHP: null,
+  fuzzMid: null,
+  fuzzPre: null,
+  fuzzShaper: null,
+  fuzzPostTone: null,
+  fuzzLP: null,
+  fuzzTrim: null,
+
+  sag: null,
+  cabHP: null,
+  cabBody: null,
+  cabPresence: null,
+  cabLP: null,
+
+  curveCache: new Map()
+};
+
+const settings = {
+  output: {
+    minDb: -20,
+    maxDb: 20,
+    defaultDb: 0
+  },
+
+  mix: {
+    dryWhenEnabled: 0.06,
+    wetWhenEnabled: 1.0
+  },
+
+  overdrive: {
+    hpStartHz: 95,
+    hpEndHz: 150,
+
+    midFreqHz: 520,
+    midQ: 0.9,
+    midGainStartDb: 0,
+    midGainEndDb: 2,
+
+    preGainStartDb: 0,
+    preGainEndDb: 14,
+
+    curveDriveStart: 1.05,
+    curveDriveEnd: 3.3,
+    curveAsymStart: 0.97,
+    curveAsymEnd: 0.76,
+    curveBiasStart: 0,
+    curveBiasEnd: 0.045,
+    curveSoftnessStart: 0.99,
+    curveSoftnessEnd: 0.88,
+
+    toneFreqHz: 1050,
+    toneGainStartDb: 0,
+    toneGainEndDb: -7,
+
+    lpStartHz: 5200,
+    lpEndHz: 2600,
+
+    trimStartDb: 0,
+    trimEndDb: -6
+  },
+
+  distortion: {
+    hpStartHz: 70,
+    hpEndHz: 120,
+
+    midFreqHz: 900,
+    midQ: 0.8,
+    midGainStartDb: 0,
+    midGainEndDb: 2,
+
+    preGainStartDb: 0,
+    preGainEndDb: 22,
+
+    curveDriveStart: 1.35,
+    curveDriveEnd: 8.5,
+    curveAsymStart: 0.94,
+    curveAsymEnd: 0.68,
+    curveBiasStart: 0,
+    curveBiasEnd: 0.055,
+    curveFoldStart: 0.03,
+    curveFoldEnd: 0.15,
+
+    toneFreqHz: 2200,
+    toneGainStartDb: 0,
+    toneGainEndDb: -2.5,
+
+    lpStartHz: 8500,
+    lpEndHz: 5000,
+
+    trimStartDb: 0,
+    trimEndDb: -10
+  },
+
+  fuzz: {
+    hpStartHz: 100,
+    hpEndHz: 190,
+
+    midFreqHz: 1100,
+    midQ: 1.0,
+    midGainStartDb: 0,
+    midGainEndDb: 2,
+
+    preGainStartDb: 0,
+    preGainEndDb: 31,
+
+    curveDriveStart: 2.6,
+    curveDriveEnd: 18,
+    curveAsymStart: 0.82,
+    curveAsymEnd: 0.38,
+    curveBiasStart: 0.03,
+    curveBiasEnd: 0.26,
+    curvePowerStart: 0.9,
+    curvePowerEnd: 0.42,
+
+    toneFreqHz: 2600,
+    toneGainStartDb: 0,
+    toneGainEndDb: 1.5,
+
+    lpStartHz: 9000,
+    lpEndHz: 7200,
+
+    trimStartDb: 0,
+    trimEndDb: -16
+  },
+
+  sag: {
+    thresholdDb: -20,
+    kneeDb: 18,
+    ratio: 2.2,
+    attack: 0.008,
+    release: 0.18
+  },
+
+  cab: {
+    hpHz: 75,
+
+    bodyFreqHz: 180,
+    bodyQ: 0.75,
+    bodyGainDb: 1.2,
+
+    presenceFreqHz: 2600,
+    presenceQ: 0.8,
+    presenceGainDb: 0.8,
+
+    lpHz: 7000,
+    lpQ: 0.7
+  }
+};
+
+const controls = [
+  ['overdrive-stage', 'overdrive', 'hpStartHz', 'HP Start Hz', 20, 300, 1],
+  ['overdrive-stage', 'overdrive', 'hpEndHz', 'HP End Hz', 20, 300, 1],
+  ['overdrive-stage', 'overdrive', 'midFreqHz', 'Mid Freq Hz', 200, 2000, 1],
+  ['overdrive-stage', 'overdrive', 'midQ', 'Mid Q', 0.2, 3, 0.01],
+  ['overdrive-stage', 'overdrive', 'midGainEndDb', 'Mid Gain End dB', -8, 8, 0.1],
+  ['overdrive-stage', 'overdrive', 'preGainEndDb', 'Pre Gain End dB', 0, 35, 0.1],
+  ['overdrive-stage', 'overdrive', 'curveDriveEnd', 'Curve Drive End', 1, 20, 0.1],
+  ['overdrive-stage', 'overdrive', 'curveAsymEnd', 'Asym End', 0.2, 1, 0.01],
+  ['overdrive-stage', 'overdrive', 'curveBiasEnd', 'Bias End', 0, 0.35, 0.001],
+  ['overdrive-stage', 'overdrive', 'curveSoftnessEnd', 'Softness End', 0.4, 1.2, 0.01],
+  ['overdrive-stage', 'overdrive', 'toneFreqHz', 'Tone Freq Hz', 500, 5000, 1],
+  ['overdrive-stage', 'overdrive', 'toneGainEndDb', 'Tone Gain End dB', -12, 6, 0.1],
+  ['overdrive-stage', 'overdrive', 'lpStartHz', 'LP Start Hz', 1000, 16000, 1],
+  ['overdrive-stage', 'overdrive', 'lpEndHz', 'LP End Hz', 1000, 12000, 1],
+  ['overdrive-stage', 'overdrive', 'trimEndDb', 'Trim End dB', -24, 6, 0.1],
+
+  ['distortion-stage', 'distortion', 'hpStartHz', 'HP Start Hz', 20, 300, 1],
+  ['distortion-stage', 'distortion', 'hpEndHz', 'HP End Hz', 20, 300, 1],
+  ['distortion-stage', 'distortion', 'midFreqHz', 'Mid Freq Hz', 200, 3000, 1],
+  ['distortion-stage', 'distortion', 'midQ', 'Mid Q', 0.2, 3, 0.01],
+  ['distortion-stage', 'distortion', 'midGainEndDb', 'Mid Gain End dB', -8, 8, 0.1],
+  ['distortion-stage', 'distortion', 'preGainEndDb', 'Pre Gain End dB', 0, 40, 0.1],
+  ['distortion-stage', 'distortion', 'curveDriveEnd', 'Curve Drive End', 1, 30, 0.1],
+  ['distortion-stage', 'distortion', 'curveAsymEnd', 'Asym End', 0.2, 1, 0.01],
+  ['distortion-stage', 'distortion', 'curveBiasEnd', 'Bias End', 0, 0.35, 0.001],
+  ['distortion-stage', 'distortion', 'curveFoldEnd', 'Fold End', 0, 0.4, 0.001],
+  ['distortion-stage', 'distortion', 'toneFreqHz', 'Tone Freq Hz', 500, 6000, 1],
+  ['distortion-stage', 'distortion', 'toneGainEndDb', 'Tone Gain End dB', -12, 6, 0.1],
+  ['distortion-stage', 'distortion', 'lpStartHz', 'LP Start Hz', 1000, 18000, 1],
+  ['distortion-stage', 'distortion', 'lpEndHz', 'LP End Hz', 1000, 14000, 1],
+  ['distortion-stage', 'distortion', 'trimEndDb', 'Trim End dB', -30, 6, 0.1],
+
+  ['fuzz-stage', 'fuzz', 'hpStartHz', 'HP Start Hz', 20, 400, 1],
+  ['fuzz-stage', 'fuzz', 'hpEndHz', 'HP End Hz', 20, 400, 1],
+  ['fuzz-stage', 'fuzz', 'midFreqHz', 'Mid Freq Hz', 200, 4000, 1],
+  ['fuzz-stage', 'fuzz', 'midQ', 'Mid Q', 0.2, 4, 0.01],
+  ['fuzz-stage', 'fuzz', 'midGainEndDb', 'Mid Gain End dB', -8, 10, 0.1],
+  ['fuzz-stage', 'fuzz', 'preGainEndDb', 'Pre Gain End dB', 0, 45, 0.1],
+  ['fuzz-stage', 'fuzz', 'curveDriveEnd', 'Curve Drive End', 1, 40, 0.1],
+  ['fuzz-stage', 'fuzz', 'curveAsymEnd', 'Asym End', 0.1, 1, 0.01],
+  ['fuzz-stage', 'fuzz', 'curveBiasEnd', 'Bias End', 0, 0.5, 0.001],
+  ['fuzz-stage', 'fuzz', 'curvePowerEnd', 'Power End', 0.2, 1.2, 0.01],
+  ['fuzz-stage', 'fuzz', 'toneFreqHz', 'Tone Freq Hz', 500, 8000, 1],
+  ['fuzz-stage', 'fuzz', 'toneGainEndDb', 'Tone Gain End dB', -12, 10, 0.1],
+  ['fuzz-stage', 'fuzz', 'lpStartHz', 'LP Start Hz', 1000, 20000, 1],
+  ['fuzz-stage', 'fuzz', 'lpEndHz', 'LP End Hz', 1000, 16000, 1],
+  ['fuzz-stage', 'fuzz', 'trimEndDb', 'Trim End dB', -36, 6, 0.1],
+
+  ['mix-stage', 'mix', 'dryWhenEnabled', 'Dry Blend', 0, 0.5, 0.01],
+  ['mix-stage', 'sag', 'thresholdDb', 'Sag Threshold dB', -50, 0, 0.1],
+  ['mix-stage', 'sag', 'ratio', 'Sag Ratio', 1, 10, 0.1],
+  ['mix-stage', 'sag', 'attack', 'Sag Attack', 0.001, 0.1, 0.001],
+  ['mix-stage', 'sag', 'release', 'Sag Release', 0.03, 1, 0.001],
+  ['mix-stage', 'cab', 'bodyGainDb', 'Cab Body Gain dB', -6, 8, 0.1],
+  ['mix-stage', 'cab', 'presenceGainDb', 'Cab Presence Gain dB', -6, 8, 0.1],
+  ['mix-stage', 'cab', 'lpHz', 'Cab LP Hz', 2000, 12000, 1]
+];
+
+function dbToGain(db) {
+  return Math.pow(10, db / 20);
+}
+
+function lerp(a, b, t) {
+  return a + (b - a) * t;
+}
+
+function clamp(value, min, max) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function setStatus(text) {
+  document.getElementById('status').textContent = text;
+}
+
+function createContext() {
+  if (state.ctx) return;
+
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  state.ctx = new AudioContext();
+
+  const ctx = state.ctx;
+
+  state.input = ctx.createGain();
+  state.output = ctx.createGain();
+  state.master = ctx.createGain();
+
+  state.dryGain = ctx.createGain();
+  state.wetInput = ctx.createGain();
+  state.wetGain = ctx.createGain();
+
+  state.odHP = ctx.createBiquadFilter();
+  state.odHP.type = 'highpass';
+  state.odMid = ctx.createBiquadFilter();
+  state.odMid.type = 'peaking';
+  state.odPre = ctx.createGain();
+  state.odShaper = ctx.createWaveShaper();
+  state.odShaper.oversample = '4x';
+  state.odPostTone = ctx.createBiquadFilter();
+  state.odPostTone.type = 'highshelf';
+  state.odLP = ctx.createBiquadFilter();
+  state.odLP.type = 'lowpass';
+  state.odTrim = ctx.createGain();
+
+  state.distHP = ctx.createBiquadFilter();
+  state.distHP.type = 'highpass';
+  state.distMid = ctx.createBiquadFilter();
+  state.distMid.type = 'peaking';
+  state.distPre = ctx.createGain();
+  state.distShaper = ctx.createWaveShaper();
+  state.distShaper.oversample = '4x';
+  state.distPostTone = ctx.createBiquadFilter();
+  state.distPostTone.type = 'highshelf';
+  state.distLP = ctx.createBiquadFilter();
+  state.distLP.type = 'lowpass';
+  state.distTrim = ctx.createGain();
+
+  state.fuzzHP = ctx.createBiquadFilter();
+  state.fuzzHP.type = 'highpass';
+  state.fuzzMid = ctx.createBiquadFilter();
+  state.fuzzMid.type = 'peaking';
+  state.fuzzPre = ctx.createGain();
+  state.fuzzShaper = ctx.createWaveShaper();
+  state.fuzzShaper.oversample = '4x';
+  state.fuzzPostTone = ctx.createBiquadFilter();
+  state.fuzzPostTone.type = 'highshelf';
+  state.fuzzLP = ctx.createBiquadFilter();
+  state.fuzzLP.type = 'lowpass';
+  state.fuzzTrim = ctx.createGain();
+
+  state.sag = ctx.createDynamicsCompressor();
+
+  state.cabHP = ctx.createBiquadFilter();
+  state.cabHP.type = 'highpass';
+  state.cabBody = ctx.createBiquadFilter();
+  state.cabBody.type = 'peaking';
+  state.cabPresence = ctx.createBiquadFilter();
+  state.cabPresence.type = 'peaking';
+  state.cabLP = ctx.createBiquadFilter();
+  state.cabLP.type = 'lowpass';
+
+  state.input.connect(state.dryGain);
+  state.dryGain.connect(state.output);
+
+  state.input.connect(state.wetInput);
+  state.wetInput.connect(state.odHP);
+
+  state.odHP.connect(state.odMid);
+  state.odMid.connect(state.odPre);
+  state.odPre.connect(state.odShaper);
+  state.odShaper.connect(state.odPostTone);
+  state.odPostTone.connect(state.odLP);
+  state.odLP.connect(state.odTrim);
+
+  state.odTrim.connect(state.distHP);
+  state.distHP.connect(state.distMid);
+  state.distMid.connect(state.distPre);
+  state.distPre.connect(state.distShaper);
+  state.distShaper.connect(state.distPostTone);
+  state.distPostTone.connect(state.distLP);
+  state.distLP.connect(state.distTrim);
+
+  state.distTrim.connect(state.fuzzHP);
+  state.fuzzHP.connect(state.fuzzMid);
+  state.fuzzMid.connect(state.fuzzPre);
+  state.fuzzPre.connect(state.fuzzShaper);
+  state.fuzzShaper.connect(state.fuzzPostTone);
+  state.fuzzPostTone.connect(state.fuzzLP);
+  state.fuzzLP.connect(state.fuzzTrim);
+
+  state.fuzzTrim.connect(state.sag);
+  state.sag.connect(state.cabHP);
+  state.cabHP.connect(state.cabBody);
+  state.cabBody.connect(state.cabPresence);
+  state.cabPresence.connect(state.cabLP);
+  state.cabLP.connect(state.wetGain);
+  state.wetGain.connect(state.output);
+
+  state.output.connect(state.master);
+  state.master.connect(ctx.destination);
+
+  updateAudio();
+}
+
+function makeLinearCurve() {
+  const samples = 2048;
+  const curve = new Float32Array(samples);
+
+  for (let i = 0; i < samples; i++) {
+    curve[i] = (i * 2) / (samples - 1) - 1;
+  }
+
+  return curve;
+}
+
+const linearCurve = makeLinearCurve();
+
+function makeCurve(type, amount) {
+  if (amount <= 0) return linearCurve;
+
+  const key = `${type}-${Math.round(amount * 100)}-${JSON.stringify(settings[type])}`;
+
+  if (state.curveCache.has(key)) {
+    return state.curveCache.get(key);
+  }
+
+  const s = settings[type];
+  const samples = 4096;
+  const curve = new Float32Array(samples);
+
+  const drive = lerp(s.curveDriveStart, s.curveDriveEnd, amount);
+  const asym = lerp(s.curveAsymStart, s.curveAsymEnd, amount);
+  const bias = lerp(s.curveBiasStart, s.curveBiasEnd, amount);
+
+  for (let i = 0; i < samples; i++) {
+    const x = (i * 2) / (samples - 1) - 1;
+    const biased = x + bias;
+
+    const posDrive = drive;
+    const negDrive = drive * asym;
+
+    let y = biased >= 0
+      ? Math.tanh(biased * posDrive)
+      : Math.tanh(biased * negDrive);
+
+    y = y / Math.tanh(drive);
+
+    if (type === 'overdrive') {
+      const softness = lerp(s.curveSoftnessStart, s.curveSoftnessEnd, amount);
+      y = Math.sign(y) * Math.pow(Math.abs(y), softness);
+      y = y - bias * 0.42;
+    }
+
+    if (type === 'distortion') {
+      const fold = lerp(s.curveFoldStart, s.curveFoldEnd, amount);
+      const edge = Math.sin(y * Math.PI * 0.5);
+      y = y * (1 - fold) + edge * fold;
+      y = y - bias * 0.35;
+    }
+
+    if (type === 'fuzz') {
+      const power = lerp(s.curvePowerStart, s.curvePowerEnd, amount);
+      const broken = Math.sign(y) * Math.pow(Math.abs(y), power);
+      const gated = Math.abs(x) < 0.006 * amount ? 0 : broken;
+      y = gated - bias * 0.28;
+    }
+
+    curve[i] = clamp(y, -1, 1);
+  }
+
+  state.curveCache.set(key, curve);
+  return curve;
+}
+
+function setStage(nodes, amount, s, shaper, type) {
+  const active = amount > 0;
+
+  nodes.hp.frequency.value = lerp(s.hpStartHz, s.hpEndHz, amount);
+  nodes.hp.Q.value = 0.707;
+
+  nodes.mid.frequency.value = s.midFreqHz;
+  nodes.mid.Q.value = s.midQ;
+  nodes.mid.gain.value = active ? lerp(s.midGainStartDb, s.midGainEndDb, amount) : 0;
+
+  nodes.pre.gain.value = active ? dbToGain(lerp(s.preGainStartDb, s.preGainEndDb, amount)) : 1;
+
+  shaper.curve = active ? makeCurve(type, amount) : linearCurve;
+
+  nodes.postTone.frequency.value = s.toneFreqHz;
+  nodes.postTone.gain.value = active ? lerp(s.toneGainStartDb, s.toneGainEndDb, amount) : 0;
+
+  nodes.lp.frequency.value = lerp(s.lpStartHz, s.lpEndHz, amount);
+  nodes.lp.Q.value = 0.707;
+
+  nodes.trim.gain.value = active ? dbToGain(lerp(s.trimStartDb, s.trimEndDb, amount)) : 1;
+}
+
+function amount(id) {
+  return Number(document.getElementById(id).value) / 100;
+}
+
+function updateAudio() {
+  if (!state.ctx) return;
+
+  state.curveCache.clear();
+
+  const od = amount('amount-overdrive');
+  const dist = amount('amount-distortion');
+  const fuzz = amount('amount-fuzz');
+
+  const anyDrive = od > 0 || dist > 0 || fuzz > 0;
+
+  state.dryGain.gain.value = anyDrive ? settings.mix.dryWhenEnabled : 1;
+  state.wetInput.gain.value = anyDrive ? 1 : 0;
+  state.wetGain.gain.value = anyDrive ? settings.mix.wetWhenEnabled : 0;
+
+  setStage(
+    {
+      hp: state.odHP,
+      mid: state.odMid,
+      pre: state.odPre,
+      postTone: state.odPostTone,
+      lp: state.odLP,
+      trim: state.odTrim
+    },
+    od,
+    settings.overdrive,
+    state.odShaper,
+    'overdrive'
+  );
+
+  setStage(
+    {
+      hp: state.distHP,
+      mid: state.distMid,
+      pre: state.distPre,
+      postTone: state.distPostTone,
+      lp: state.distLP,
+      trim: state.distTrim
+    },
+    dist,
+    settings.distortion,
+    state.distShaper,
+    'distortion'
+  );
+
+  setStage(
+    {
+      hp: state.fuzzHP,
+      mid: state.fuzzMid,
+      pre: state.fuzzPre,
+      postTone: state.fuzzPostTone,
+      lp: state.fuzzLP,
+      trim: state.fuzzTrim
+    },
+    fuzz,
+    settings.fuzz,
+    state.fuzzShaper,
+    'fuzz'
+  );
+
+  state.sag.threshold.value = settings.sag.thresholdDb;
+  state.sag.knee.value = settings.sag.kneeDb;
+  state.sag.ratio.value = settings.sag.ratio;
+  state.sag.attack.value = settings.sag.attack;
+  state.sag.release.value = settings.sag.release;
+
+  state.cabHP.frequency.value = settings.cab.hpHz;
+  state.cabHP.Q.value = 0.707;
+
+  state.cabBody.frequency.value = settings.cab.bodyFreqHz;
+  state.cabBody.Q.value = settings.cab.bodyQ;
+  state.cabBody.gain.value = anyDrive ? settings.cab.bodyGainDb : 0;
+
+  state.cabPresence.frequency.value = settings.cab.presenceFreqHz;
+  state.cabPresence.Q.value = settings.cab.presenceQ;
+  state.cabPresence.gain.value = anyDrive ? settings.cab.presenceGainDb : 0;
+
+  const driveTotal = clamp(od + dist + fuzz, 0, 1);
+  state.cabLP.frequency.value = lerp(7600, settings.cab.lpHz, driveTotal);
+  state.cabLP.Q.value = settings.cab.lpQ;
+
+  state.master.gain.value = dbToGain(Number(document.getElementById('master').value));
+
+  document.getElementById('amount-overdrive-value').textContent = `${Math.round(od * 100)}%`;
+  document.getElementById('amount-distortion-value').textContent = `${Math.round(dist * 100)}%`;
+  document.getElementById('amount-fuzz-value').textContent = `${Math.round(fuzz * 100)}%`;
+
+  updateOutputs();
+}
+
+function createSlider(containerId, group, key, label, min, max, step) {
+  const container = document.getElementById(containerId);
+
+  const row = document.createElement('div');
+  row.className = 'control';
+
+  const inputId = `${group}-${key}`;
+
+  row.innerHTML = `
+    <label for="${inputId}">${label}</label>
+    <input type="range" id="${inputId}" min="${min}" max="${max}" step="${step}" value="${settings[group][key]}" />
+    <div class="value" id="${inputId}-value"></div>
+  `;
+
+  container.appendChild(row);
+
+  const input = document.getElementById(inputId);
+  const value = document.getElementById(`${inputId}-value`);
+
+  function sync() {
+    settings[group][key] = Number(input.value);
+    value.textContent = Number(input.value).toFixed(step < 0.01 ? 3 : step < 0.1 ? 2 : step < 1 ? 1 : 0);
+    updateAudio();
+  }
+
+  input.addEventListener('input', sync);
+  sync();
+}
+
+function updateOutputs() {
+  const jsonText = JSON.stringify(settings, null, 2);
+
+  document.getElementById('json-output').value = jsonText;
+
+  document.getElementById('defaults-output').value =
+`defaultSettings: ${jsonText.replace(/\n/g, '\n  ')},`;
+}
+
+async function loadFile(file) {
+  createContext();
+
+  const arrayBuffer = await file.arrayBuffer();
+  state.buffer = await state.ctx.decodeAudioData(arrayBuffer);
+
+  setStatus(`Loaded: ${file.name}`);
+}
+
+function stop() {
+  if (state.source) {
+    try {
+      state.source.stop();
+    } catch (error) {}
+    state.source.disconnect();
+    state.source = null;
+  }
+
+  state.playing = false;
+}
+
+function play() {
+  createContext();
+
+  if (!state.buffer) {
+    setStatus('Load an audio file first.');
+    return;
+  }
+
+  stop();
+
+  const src = state.ctx.createBufferSource();
+  src.buffer = state.buffer;
+  src.loop = true;
+  src.connect(state.input);
+  src.start();
+
+  state.source = src;
+  state.playing = true;
+
+  setStatus('Playing loop.');
+}
+
+function setupUI() {
+  controls.forEach((control) => createSlider(...control));
+
+  ['amount-overdrive', 'amount-distortion', 'amount-fuzz', 'master'].forEach((id) => {
+    document.getElementById(id).addEventListener('input', updateAudio);
+  });
+
+  document.getElementById('file').addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    if (file) loadFile(file);
+  });
+
+  document.getElementById('play').addEventListener('click', play);
+  document.getElementById('stop').addEventListener('click', stop);
+
+  document.getElementById('solo-overdrive').addEventListener('click', () => {
+    document.getElementById('amount-overdrive').value = 60;
+    document.getElementById('amount-distortion').value = 0;
+    document.getElementById('amount-fuzz').value = 0;
+    updateAudio();
+  });
+
+  document.getElementById('solo-distortion').addEventListener('click', () => {
+    document.getElementById('amount-overdrive').value = 0;
+    document.getElementById('amount-distortion').value = 60;
+    document.getElementById('amount-fuzz').value = 0;
+    updateAudio();
+  });
+
+  document.getElementById('solo-fuzz').addEventListener('click', () => {
+    document.getElementById('amount-overdrive').value = 0;
+    document.getElementById('amount-distortion').value = 0;
+    document.getElementById('amount-fuzz').value = 60;
+    updateAudio();
+  });
+
+  document.getElementById('all-off').addEventListener('click', () => {
+    document.getElementById('amount-overdrive').value = 0;
+    document.getElementById('amount-distortion').value = 0;
+    document.getElementById('amount-fuzz').value = 0;
+    updateAudio();
+  });
+
+  document.getElementById('copy-json').addEventListener('click', async () => {
+    await navigator.clipboard.writeText(document.getElementById('json-output').value);
+    setStatus('Copied JSON.');
+  });
+
+  document.getElementById('copy-defaults').addEventListener('click', async () => {
+    await navigator.clipboard.writeText(document.getElementById('defaults-output').value);
+    setStatus('Copied defaultSettings block.');
+  });
+
+  updateOutputs();
+}
+
+setupUI();
+</script>
+</body>
+</html>
