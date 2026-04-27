@@ -62,37 +62,22 @@
     },
 
     watchAppChanges() {
-      if (this.els.libraryList) {
-        const libraryObserver = new MutationObserver(() => this.scheduleUpdate(120));
-        libraryObserver.observe(this.els.libraryList, {
-          childList: true,
-          subtree: true,
-          attributes: true,
-          attributeFilter: ["class"]
+      [this.els.libraryList, this.els.effectsContainer, this.els.masterOutputHost]
+        .filter(Boolean)
+        .forEach((root) => {
+          const observer = new MutationObserver(() => this.scheduleUpdate(120));
+          observer.observe(root, {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            attributeFilter: ["class", "checked", "value"]
+          });
         });
-      }
-
-      if (this.els.effectsContainer) {
-        const effectsObserver = new MutationObserver(() => this.scheduleUpdate(120));
-        effectsObserver.observe(this.els.effectsContainer, {
-          childList: true,
-          subtree: true
-        });
-      }
-
-      if (this.els.masterOutputHost) {
-        const masterObserver = new MutationObserver(() => this.scheduleUpdate(120));
-        masterObserver.observe(this.els.masterOutputHost, {
-          childList: true,
-          subtree: true
-        });
-      }
     },
 
     shouldIgnoreEvent(event) {
       if (this.isApplying) return true;
       if (!event.target) return false;
-
       return Boolean(event.target.closest("#presetCodePanel"));
     },
 
@@ -118,7 +103,8 @@
         version: 1,
         app: "Audio FX Workshop",
         source: this.getSourceState(),
-        controls: this.getControlState()
+        activeModule: this.getActiveModuleState(),
+        master: this.getMasterState()
       };
 
       this.els.field.value = JSON.stringify(preset);
@@ -161,27 +147,55 @@
       );
     },
 
-    getControlState() {
-      const roots = [
-        this.els.effectsContainer,
-        this.els.masterOutputHost
-      ].filter(Boolean);
+    getActiveModuleState() {
+      const card = this.getActiveEffectCard();
 
+      if (!card) {
+        return {
+          id: null,
+          title: "",
+          controls: []
+        };
+      }
+
+      return {
+        id: this.getCardId(card),
+        title: this.getCardTitle(card),
+        controls: this.getControlsFromRoot(card)
+      };
+    },
+
+    getActiveEffectCard() {
+      const cards = Array.from(document.querySelectorAll("#effectsContainer .effect-card"));
+
+      return cards.find((card) => {
+        const checkbox = card.querySelector('input[type="checkbox"]');
+        return checkbox && checkbox.checked;
+      }) || null;
+    },
+
+    getMasterState() {
+      const root = this.els.masterOutputHost;
+      if (!root) return { controls: [] };
+
+      return {
+        controls: this.getControlsFromRoot(root)
+      };
+    },
+
+    getControlsFromRoot(root) {
       const controls = [];
+      const inputs = root.querySelectorAll("input, select, textarea");
 
-      roots.forEach((root) => {
-        const inputs = root.querySelectorAll("input, select, textarea");
+      inputs.forEach((control) => {
+        if (control.type === "file") return;
+        if (!this.getControlKey(control)) return;
 
-        inputs.forEach((control) => {
-          if (control.type === "file") return;
-          if (!this.getControlKey(control)) return;
-
-          controls.push({
-            key: this.getControlKey(control),
-            tag: control.tagName.toLowerCase(),
-            type: control.type || "",
-            value: control.type === "checkbox" ? control.checked : control.value
-          });
+        controls.push({
+          key: this.getControlKey(control),
+          tag: control.tagName.toLowerCase(),
+          type: control.type || "",
+          value: control.type === "checkbox" ? control.checked : control.value
         });
       });
 
@@ -202,6 +216,29 @@
       }
 
       return "";
+    },
+
+    getCardId(card) {
+      const checkbox = card.querySelector('input[type="checkbox"][id$="-enabled"]');
+
+      if (checkbox?.id) {
+        return checkbox.id.replace("-enabled", "");
+      }
+
+      const title = this.getCardTitle(card);
+      return title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    },
+
+    getCardTitle(card) {
+      const heading = card.querySelector("h3");
+      if (!heading) return "";
+
+      return this.cleanText(
+        Array.from(heading.childNodes)
+          .filter((node) => node.nodeType === Node.TEXT_NODE)
+          .map((node) => node.textContent)
+          .join(" ")
+      );
     },
 
     async copyCode() {
@@ -236,7 +273,7 @@
         return;
       }
 
-      if (!preset || preset.version !== 1 || !Array.isArray(preset.controls)) {
+      if (!preset || preset.version !== 1) {
         this.setStatus("Preset code format is not recognized.");
         return;
       }
@@ -245,7 +282,9 @@
 
       try {
         this.applySourceState(preset.source);
-        this.applyControlState(preset.controls);
+        this.turnOffAllEffectCards();
+        this.applyActiveModuleState(preset.activeModule);
+        this.applyControlState(preset.master?.controls || []);
         this.setStatus("Preset code loaded.");
       } finally {
         this.isApplying = false;
@@ -269,6 +308,41 @@
       if (match) {
         match.click();
       }
+    },
+
+    turnOffAllEffectCards() {
+      const checkboxes = document.querySelectorAll('#effectsContainer .effect-card input[type="checkbox"]');
+
+      checkboxes.forEach((checkbox) => {
+        if (checkbox.checked) {
+          checkbox.checked = false;
+          checkbox.dispatchEvent(new Event("change", { bubbles: true }));
+        }
+      });
+    },
+
+    applyActiveModuleState(activeModule) {
+      if (!activeModule || !activeModule.id) return;
+
+      const card = this.findEffectCardById(activeModule.id, activeModule.title);
+      if (!card) return;
+
+      const checkbox = card.querySelector('input[type="checkbox"]');
+
+      if (checkbox && !checkbox.checked) {
+        checkbox.checked = true;
+        checkbox.dispatchEvent(new Event("change", { bubbles: true }));
+      }
+
+      this.applyControlState(activeModule.controls || []);
+    },
+
+    findEffectCardById(id, title) {
+      const cards = Array.from(document.querySelectorAll("#effectsContainer .effect-card"));
+
+      return cards.find((card) => {
+        return this.getCardId(card) === id || this.getCardTitle(card) === title;
+      }) || null;
     },
 
     applyControlState(controls) {
