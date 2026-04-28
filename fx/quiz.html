@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Audio FX Identification Quiz</title>
+  <style>
+    :root {
+      --bg: #0f1115;
+      --panel: #171a21;
+      --panel-2: #1f2430;
+      --text: #eef2f7;
+      --muted: #a9b3c3;
+      --accent: #63b3ff;
+      --border: #2a3140;
+      --success: #4ade80;
+      --warn: #facc15;
+      --danger: #fb7185;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #0d1016, #121723);
+      color: var(--text);
+    }
+
+    button,
+    input[type="radio"] {
+      accent-color: var(--accent);
+    }
+
+    button {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--panel-2);
+      color: var(--text);
+      padding: 12px 14px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: 0.15s ease;
+    }
+
+    button:hover:not(:disabled) {
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.55;
+    }
+
+    .quiz-page {
+      width: min(920px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 36px;
+    }
+
+    .quiz-header {
+      margin-bottom: 18px;
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: rgba(15, 17, 21, 0.92);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    .quiz-header h1 {
+      margin: 0 0 8px;
+      font-size: clamp(25px, 4vw, 36px);
+    }
+
+    .quiz-header p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .quiz-card {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: var(--panel);
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    .quiz-topline {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .quiz-status {
+      color: var(--muted);
+    }
+
+    .quiz-prompt {
+      margin: 0 0 14px;
+      font-size: 20px;
+      line-height: 1.35;
+    }
+
+    .quiz-source {
+      margin-bottom: 18px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .play-controls {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .answer-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .answer-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 48px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--panel-2);
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .answer-option:hover {
+      border-color: var(--accent);
+    }
+
+    .answer-option input {
+      flex: 0 0 auto;
+    }
+
+    .submit-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .primary-button {
+      background: rgba(99, 179, 255, 0.18);
+      border-color: rgba(99, 179, 255, 0.55);
+    }
+
+    .feedback {
+      min-height: 24px;
+      margin-top: 16px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.03);
+      line-height: 1.45;
+    }
+
+    .feedback.correct {
+      color: var(--success);
+      border-color: rgba(74, 222, 128, 0.45);
+      background: rgba(74, 222, 128, 0.08);
+    }
+
+    .feedback.incorrect {
+      color: #ffd1d8;
+      border-color: rgba(251, 113, 133, 0.45);
+      background: rgba(251, 113, 133, 0.08);
+    }
+
+    .hidden-workshop {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    .transport-master .master-meter,
+    .meter {
+      height: 1px;
+      width: 1px;
+    }
+
+    @media (max-width: 720px) {
+      .quiz-page {
+        width: min(100% - 20px, 920px);
+        padding-top: 10px;
+      }
+
+      .play-controls,
+      .answer-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="quiz-page">
+    <header class="quiz-header">
+      <h1>Audio FX Identification Quiz</h1>
+      <p>Compare the clean sound with the processed sound. Then choose the effect you hear.</p>
+    </header>
+
+    <section class="quiz-card" aria-live="polite">
+      <div class="quiz-topline">
+        <div id="quizProgress">Loading quiz...</div>
+        <div id="quizStatus" class="quiz-status">Preparing audio engine...</div>
+      </div>
+
+      <h2 id="quizPrompt" class="quiz-prompt">Listen and identify the active effect.</h2>
+      <div id="quizSource" class="quiz-source">Source: loading...</div>
+
+      <div class="play-controls">
+        <button id="quizPlayCleanBtn" type="button" disabled>Play Clean</button>
+        <button id="quizPlayEffectBtn" class="primary-button" type="button" disabled>Play Effect</button>
+        <button id="quizStopBtn" type="button" disabled>Stop</button>
+      </div>
+
+      <form id="quizForm">
+        <div id="answerChoices" class="answer-grid"></div>
+        <div class="submit-row">
+          <button id="submitAnswerBtn" class="primary-button" type="submit" disabled>Submit Answer</button>
+          <button id="nextQuestionBtn" type="button" disabled>Next Example</button>
+        </div>
+      </form>
+
+      <div id="quizFeedback" class="feedback">The first example will load automatically.</div>
+    </section>
+  </main>
+
+  <div class="hidden-workshop" aria-hidden="true">
+    <button id="playBtn" type="button">Play</button>
+    <button id="pauseBtn" type="button">Pause</button>
+    <button id="stopBtn" type="button">Stop</button>
+    <button id="resetBtn" type="button">Reset FX</button>
+    <input type="checkbox" id="loopToggle" />
+    <div id="masterOutputHost"></div>
+    <div id="activeSourceText">Active source: none loaded</div>
+    <div id="statusText">Loading source library...</div>
+    <div class="meter"><div class="meter-fill" id="meterFill"></div></div>
+    <select id="categoryFilter"><option value="all">All categories</option></select>
+    <input type="text" id="searchInput" />
+    <input type="file" id="uploadInput" accept="audio/*" />
+    <div id="libraryList"></div>
+    <div id="effectsContainer"></div>
+    <section id="presetCodePanel" class="preset-code-panel collapsed">
+      <button id="presetCodeToggle" type="button" aria-expanded="false">Preset Code Builder</button>
+      <textarea id="presetCodeField"></textarea>
+      <button id="copyPresetCodeBtn" type="button">Copy Code</button>
+      <button id="loadPresetCodeBtn" type="button">Load Code</button>
+    </section>
+  </div>
+
+  <script src="js/app-state.js"></script>
+  <script src="js/dom-elements.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/module-registry.js"></script>
+  <script src="js/audio-engine.js"></script>
+  <script src="js/library-manager.js"></script>
+  <script src="js/upload-manager.js"></script>
+  <script src="js/transport-controls.js"></script>
+  <script src="js/meter.js"></script>
+  <script src="js/reset-fx.js"></script>
+
+  <script src="js/modules/master-module.js"></script>
+  <script src="js/modules/lowpass-module.js"></script>
+  <script src="js/modules/highpass-module.js"></script>
+  <script src="js/modules/bandpass-module.js"></script>
+  <script src="js/modules/notch-module.js"></script>
+  <script src="js/modules/lowshelf-module.js"></script>
+  <script src="js/modules/highshelf-module.js"></script>
+  <script src="js/modules/compressor-module.js"></script>
+  <script src="js/modules/distortion-module.js"></script>
+  <script src="js/modules/delay-module.js"></script>
+  <script src="js/modules/reverb-module.js"></script>
+  <script src="js/modules/tremolo-module.js"></script>
+  <script src="js/modules/vibrato-module.js"></script>
+  <script src="js/modules/chorus-module.js"></script>
+  <script src="js/modules/flanger-module.js"></script>
+  <script src="js/modules/noise-gate-module.js"></script>
+
+  <script src="js/preset-codes.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/audio-fx-quiz.js"></script>
+</body>
+</html>
