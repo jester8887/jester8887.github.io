@@ -1,8 +1,6 @@
 (function () {
   const module = {
     id: 'flanger',
-    enabled: false,
-
     input: null,
     output: null,
 
@@ -104,10 +102,7 @@
       this.els.mixValue = card.querySelector('#flanger-mix-value');
       this.els.toneValue = card.querySelector('#flanger-tone-value');
 
-      this.els.enabled.addEventListener('change', () => {
-        this.enabled = this.els.enabled.checked;
-        this.update();
-      });
+      this.els.enabled.addEventListener('change', () => this.update());
 
       this.els.rate.addEventListener('input', () => {
         this.rate = parseFloat(this.els.rate.value);
@@ -205,7 +200,7 @@
         return;
       }
 
-      const enabled = this.enabled;
+      const enabled = Boolean(this.els.enabled?.checked);
 
       const safeDelay = Math.max(0.0003, this.manualDelay);
       const safeDepth = Math.min(this.depth, safeDelay * 0.9);
@@ -234,8 +229,6 @@
     },
 
     reset() {
-      this.enabled = false;
-
       this.rate = 0.22;
       this.manualDelay = 0.0022;
       this.depth = 0.0018;

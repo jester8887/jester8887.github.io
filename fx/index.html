@@ -768,6 +768,62 @@
     font-size: 12px;
   }
 }
+
+.preset-code-panel {
+  margin: 14px auto 0;
+  max-width: 1200px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--panel);
+  overflow: hidden;
+}
+
+.preset-code-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 0;
+  color: var(--text);
+  background: var(--panel-2);
+  cursor: pointer;
+}
+
+.preset-code-title {
+  font-weight: 700;
+}
+
+.preset-code-body {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+}
+
+.preset-code-panel.collapsed .preset-code-body {
+  display: none;
+}
+
+.preset-code-field {
+  width: 100%;
+  min-height: 62px;
+  resize: vertical;
+  color: var(--text);
+  background: #0f1115;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 12px;
+}
+
+.preset-code-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
   </style>
 </head>
 <body>
@@ -803,6 +859,22 @@
       </div>
     </div>
   </header>
+
+
+  <section id="presetCodePanel" class="preset-code-panel collapsed">
+    <button id="presetCodeToggle" class="preset-code-header" type="button" aria-expanded="false">
+      <span class="preset-code-title">Preset Code Builder</span>
+      <span>Show / hide</span>
+    </button>
+
+    <div class="preset-code-body">
+      <textarea id="presetCodeField" class="preset-code-field" spellcheck="false" aria-label="Generated preset code"></textarea>
+      <div class="preset-code-actions">
+        <button id="copyPresetCodeBtn" type="button">Copy Code</button>
+        <button id="loadPresetCodeBtn" type="button">Load Code</button>
+      </div>
+    </div>
+  </section>
 
   <main class="layout">
     <section class="panel">
@@ -875,6 +947,7 @@
   <script src="js/modules/flanger-module.js"></script>
   <script src="js/modules/noise-gate-module.js"></script>
 
+  <script src="js/preset-codes.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

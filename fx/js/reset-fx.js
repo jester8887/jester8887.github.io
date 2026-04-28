@@ -1,9 +1,15 @@
 window.ResetFX = {
   init() {
     DOM.resetBtn.onclick = () => {
-      AppState.modules.forEach(m => {
-        if (m.reset) m.reset();
+      AppState.modules.forEach(module => {
+        if (module.reset) module.reset();
       });
+
+      if (window.ModuleRegistry?.clearAllEffects) {
+        ModuleRegistry.clearAllEffects();
+      } else if (window.ModuleRegistry?.updateAll) {
+        ModuleRegistry.updateAll();
+      }
     };
   }
 };

@@ -25,6 +25,7 @@ window.ModuleRegistry = {
     });
 
     this.bindExclusiveActivation();
+    this.syncAllModulesFromUI();
   },
 
   connectGraph(inputNode) {
@@ -40,10 +41,69 @@ window.ModuleRegistry = {
   },
 
   updateAll() {
-    AppState.modules.forEach(module => {
-      if (module.update) {
-        module.update();
+    AppState.modules.forEach(module => this.refreshModule(module));
+  },
+
+  getEffectToggles() {
+    return Array.from(
+      DOM.effectsContainer.querySelectorAll('input[type="checkbox"][id$="-enabled"]')
+    );
+  },
+
+  getModuleForToggle(toggle) {
+    if (!toggle || !toggle.id) return null;
+
+    const moduleId = toggle.id.replace(/-enabled$/, '');
+    return AppState.modules.find(module => module.id === moduleId) || null;
+  },
+
+  syncModuleFromToggle(toggle) {
+    const module = this.getModuleForToggle(toggle);
+    if (!module) return;
+
+    // Backward compatibility for older modules. Newer modules should read the
+    // checkbox directly, but this prevents stale internal state from keeping an
+    // effect active after the visual checkbox was cleared.
+    if ('enabled' in module) {
+      module.enabled = Boolean(toggle.checked);
+    }
+
+    this.refreshModule(module);
+  },
+
+  refreshModule(module) {
+    if (!module) return;
+
+    if (typeof module.update === 'function') {
+      module.update();
+      return;
+    }
+
+    if (typeof module.updateBypass === 'function') {
+      module.updateBypass();
+    }
+  },
+
+  syncAllModulesFromUI() {
+    this.getEffectToggles().forEach(toggle => this.syncModuleFromToggle(toggle));
+  },
+
+  setOnlyActive(activeToggle) {
+    this.getEffectToggles().forEach(toggle => {
+      const shouldBeChecked = toggle === activeToggle;
+
+      if (toggle.checked !== shouldBeChecked) {
+        toggle.checked = shouldBeChecked;
       }
+
+      this.syncModuleFromToggle(toggle);
+    });
+  },
+
+  clearAllEffects() {
+    this.getEffectToggles().forEach(toggle => {
+      toggle.checked = false;
+      this.syncModuleFromToggle(toggle);
     });
   },
 
@@ -63,27 +123,11 @@ window.ModuleRegistry = {
         return;
       }
 
-      if (!target.checked) return;
-
-      const toggles = DOM.effectsContainer.querySelectorAll(
-        'input[type="checkbox"][id$="-enabled"]'
-      );
-
-      toggles.forEach(other => {
-        if (other === target) return;
-        if (!other.checked) return;
-
-        other.checked = false;
-
-        // Important: support old modules that listen for input
-        other.dispatchEvent(new Event('input', { bubbles: true }));
-
-        // Important: support new modules that listen for change
-        other.dispatchEvent(new Event('change', { bubbles: true }));
-      });
-
-      // Support old modules that update on input when manually checked
-      target.dispatchEvent(new Event('input', { bubbles: true }));
+      if (target.checked) {
+        this.setOnlyActive(target);
+      } else {
+        this.syncModuleFromToggle(target);
+      }
     });
   }
 };

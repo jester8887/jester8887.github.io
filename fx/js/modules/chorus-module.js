@@ -1,7 +1,6 @@
 (function () {
   const module = {
     id: 'chorus',
-    enabled: false,
 
     input: null,
     output: null,
@@ -60,34 +59,10 @@
       this.els.depthValue = card.querySelector('#chorus-depth-value');
       this.els.mixValue = card.querySelector('#chorus-mix-value');
 
-      this.els.enabled.addEventListener('change', () => {
-        this.enabled = this.els.enabled.checked;
-        this.updateBypass();
-      });
-
-      this.els.rate.addEventListener('input', () => {
-        this.rate = parseFloat(this.els.rate.value);
-        this.els.rateValue.textContent = `${this.rate.toFixed(1)} Hz`;
-
-        if (this.lfo) {
-          this.lfo.frequency.setValueAtTime(this.rate, AppState.audioContext.currentTime);
-        }
-      });
-
-      this.els.depth.addEventListener('input', () => {
-        this.depth = parseFloat(this.els.depth.value);
-        this.els.depthValue.textContent = `${Math.round(this.depth * 1000)} ms`;
-
-        if (this.lfoGain) {
-          this.lfoGain.gain.setValueAtTime(this.depth, AppState.audioContext.currentTime);
-        }
-      });
-
-      this.els.mix.addEventListener('input', () => {
-        this.mix = parseFloat(this.els.mix.value);
-        this.els.mixValue.textContent = `${Math.round(this.mix * 100)}%`;
-        this.updateBypass();
-      });
+      this.els.enabled.addEventListener('change', () => this.update());
+      this.els.rate.addEventListener('input', () => this.update());
+      this.els.depth.addEventListener('input', () => this.update());
+      this.els.mix.addEventListener('input', () => this.update());
 
       return card;
     },
@@ -126,21 +101,45 @@
       this.wet.connect(this.output);
 
       this.lfo.start();
-      this.updateBypass();
+      this.update();
     },
 
-    updateBypass() {
-      if (!this.wet || !this.dry || !AppState.audioContext) return;
+    setParam(param, value, time = 0.025) {
+      const ctx = AppState.audioContext;
+      if (!ctx || !param) return;
+      param.setTargetAtTime(value, ctx.currentTime, time);
+    },
 
-      const now = AppState.audioContext.currentTime;
+    update() {
+      if (!this.wet || !this.dry || !this.lfo || !this.lfoGain || !AppState.audioContext) return;
 
-      if (this.enabled) {
-        this.wet.gain.setValueAtTime(this.mix, now);
-        this.dry.gain.setValueAtTime(1 - this.mix, now);
-      } else {
-        this.wet.gain.setValueAtTime(0, now);
-        this.dry.gain.setValueAtTime(1, now);
-      }
+      const enabled = Boolean(this.els.enabled?.checked);
+
+      this.rate = parseFloat(this.els.rate.value);
+      this.depth = parseFloat(this.els.depth.value);
+      this.mix = parseFloat(this.els.mix.value);
+
+      this.setParam(this.lfo.frequency, this.rate);
+      this.setParam(this.lfoGain.gain, enabled ? this.depth : 0);
+      this.setParam(this.wet.gain, enabled ? this.mix : 0);
+      this.setParam(this.dry.gain, enabled ? 1 - this.mix : 1);
+
+      this.els.rateValue.textContent = `${this.rate.toFixed(1)} Hz`;
+      this.els.depthValue.textContent = `${Math.round(this.depth * 1000)} ms`;
+      this.els.mixValue.textContent = `${Math.round(this.mix * 100)}%`;
+    },
+
+    reset() {
+      this.rate = 1.2;
+      this.depth = 0.003;
+      this.mix = 0.5;
+
+      if (this.els.enabled) this.els.enabled.checked = false;
+      if (this.els.rate) this.els.rate.value = this.rate;
+      if (this.els.depth) this.els.depth.value = this.depth;
+      if (this.els.mix) this.els.mix.value = this.mix;
+
+      this.update();
     },
 
     connect(source) {

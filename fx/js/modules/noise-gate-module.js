@@ -1,7 +1,6 @@
 (function () {
   const module = {
     id: 'noise-gate',
-    enabled: false,
 
     input: null,
     output: null,
@@ -61,25 +60,10 @@
       this.els.releaseValue = card.querySelector('#noise-gate-release-value');
       this.els.floorValue = card.querySelector('#noise-gate-floor-value');
 
-      this.els.enabled.addEventListener('change', () => {
-        this.enabled = this.els.enabled.checked;
-        this.updateBypass();
-      });
-
-      this.els.threshold.addEventListener('input', () => {
-        this.threshold = parseFloat(this.els.threshold.value);
-        this.els.thresholdValue.textContent = this.threshold.toFixed(3);
-      });
-
-      this.els.release.addEventListener('input', () => {
-        this.release = parseFloat(this.els.release.value);
-        this.els.releaseValue.textContent = `${this.release.toFixed(2)} s`;
-      });
-
-      this.els.floor.addEventListener('input', () => {
-        this.floor = parseFloat(this.els.floor.value);
-        this.els.floorValue.textContent = `${Math.round(this.floor * 100)}%`;
-      });
+      this.els.enabled.addEventListener('change', () => this.update());
+      this.els.threshold.addEventListener('input', () => this.update());
+      this.els.release.addEventListener('input', () => this.update());
+      this.els.floor.addEventListener('input', () => this.update());
 
       return card;
     },
@@ -106,36 +90,51 @@
       this.gainNode.connect(this.output);
       this.dry.connect(this.output);
 
-      this.startGate();
-      this.updateBypass();
+      this.update();
     },
 
-    updateBypass() {
+    isEnabled() {
+      return Boolean(this.els.enabled?.checked);
+    },
+
+    setParam(param, value, time = 0.025) {
+      const ctx = AppState.audioContext;
+      if (!ctx || !param) return;
+      param.setTargetAtTime(value, ctx.currentTime, time);
+    },
+
+    update() {
       if (!this.gainNode || !this.dry || !AppState.audioContext) return;
 
-      const now = AppState.audioContext.currentTime;
+      this.threshold = parseFloat(this.els.threshold.value);
+      this.release = parseFloat(this.els.release.value);
+      this.floor = parseFloat(this.els.floor.value);
 
-      this.gainNode.gain.cancelScheduledValues(now);
-      this.dry.gain.cancelScheduledValues(now);
+      this.els.thresholdValue.textContent = this.threshold.toFixed(3);
+      this.els.releaseValue.textContent = `${this.release.toFixed(2)} s`;
+      this.els.floorValue.textContent = `${Math.round(this.floor * 100)}%`;
 
-      if (this.enabled) {
-        this.dry.gain.setValueAtTime(0, now);
-        this.gainNode.gain.setValueAtTime(1, now);
+      if (this.isEnabled()) {
+        this.setParam(this.dry.gain, 0);
+        if (!this.animationId) this.startGate();
       } else {
-        this.dry.gain.setValueAtTime(1, now);
-        this.gainNode.gain.setValueAtTime(0, now);
+        this.stopGate();
+        this.setParam(this.dry.gain, 1);
+        this.setParam(this.gainNode.gain, 0);
       }
     },
 
     startGate() {
-      const update = () => {
-        if (!this.analyser || !this.gainNode || !this.data || !AppState.audioContext) {
-          this.animationId = requestAnimationFrame(update);
+      if (this.animationId) return;
+
+      const run = () => {
+        if (!this.isEnabled()) {
+          this.animationId = null;
           return;
         }
 
-        if (!this.enabled) {
-          this.animationId = requestAnimationFrame(update);
+        if (!this.analyser || !this.gainNode || !this.data || !AppState.audioContext) {
+          this.animationId = requestAnimationFrame(run);
           return;
         }
 
@@ -160,12 +159,29 @@
           targetGain === 1 ? this.attack : this.release
         );
 
-        this.animationId = requestAnimationFrame(update);
+        this.animationId = requestAnimationFrame(run);
       };
 
-      if (!this.animationId) {
-        update();
-      }
+      this.animationId = requestAnimationFrame(run);
+    },
+
+    stopGate() {
+      if (!this.animationId) return;
+      cancelAnimationFrame(this.animationId);
+      this.animationId = null;
+    },
+
+    reset() {
+      this.threshold = 0.03;
+      this.release = 0.18;
+      this.floor = 0.02;
+
+      if (this.els.enabled) this.els.enabled.checked = false;
+      if (this.els.threshold) this.els.threshold.value = this.threshold;
+      if (this.els.release) this.els.release.value = this.release;
+      if (this.els.floor) this.els.floor.value = this.floor;
+
+      this.update();
     },
 
     connect(source) {

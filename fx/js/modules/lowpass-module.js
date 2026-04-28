@@ -11,7 +11,7 @@
         <h3>
           Low-Pass Filter
           <label class="inline-toggle">
-            <input type="checkbox" id="lowpass-enabled" checked />
+            <input type="checkbox" id="lowpass-enabled" />
             On
           </label>
         </h3>
@@ -55,7 +55,7 @@
     },
 
     reset() {
-      this.els.enabled.checked = true;
+      this.els.enabled.checked = false;
       this.els.freq.value = 100;
       this.update();
     }
