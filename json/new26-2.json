@@ -339,7 +339,7 @@
     "categories": [
       "hiphop"
     ],
-    "featured": true,
+    "featured": false,
     "length": "1m57s",
     "songs": "Work It (Missy Elliott), Go DJ (Lil Wayne), Let Me Clear My Throat (DJ Kool), DJ Turn It Up (Yellow Claw)"
   },
@@ -748,7 +748,7 @@
       "artist",
       "hiphop"
     ],
-    "featured": true,
+    "featured": false,
     "length": "2m41s",
     "songs": "HUMBLE. (Kendrick Lamar), Not Like Us (Kendrick Lamar), DNA. (Kendrick Lamar), Alright (Kendrick Lamar), King Kunta (Kendrick Lamar)"
   },
@@ -801,7 +801,7 @@
     "categories": [
       "themed"
     ],
-    "featured": false,
+    "featured": true,
     "length": "2m22s",
     "songs": "Magdalena (DLG), Lets Get Loud (Jennifer Lopez), Waka Waka (Shakira)"
   },
@@ -854,7 +854,7 @@
       "hiphop",
       "themed"
     ],
-    "featured": false,
+    "featured": true,
     "length": "3m33s",
     "songs": "Dandelion (Ariana Grande), Men in Black (Will Smith), The Sweet Escape (Gwen Stefani), Smooth Criminal (Michael Jackson)"
   },
@@ -940,7 +940,7 @@
       "hiphop",
       "artist"
     ],
-    "featured": false,
+    "featured": true,
     "length": "2m17s",
     "songs": "Grillz, Party People, Hot in Here, Get Loose (Nelly)"
   },
@@ -1067,7 +1067,7 @@
       "themed",
       "artist"
     ],
-    "featured": true,
+    "featured": false,
     "length": "2m00s",
     "songs": "Roxanne (Moulin Rouge), Dangerous (Michael Jackson)"
   },
