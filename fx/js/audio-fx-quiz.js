@@ -46,6 +46,8 @@
         this.activeBank = this.getFilteredBank();
         this.pool = [...this.activeBank];
 
+        this.renderChoices();
+
         if (!this.pool.length) {
           this.setFeedback("No quiz examples were found for the selected FX filter.", "incorrect");
           this.setStatus("No examples found.");
@@ -95,7 +97,13 @@
     renderChoices() {
       this.els.choices.innerHTML = "";
 
-      ANSWER_CHOICES.forEach((choice) => {
+      const selectedCategories = this.getSelectedCategories();
+
+      const visibleChoices = ANSWER_CHOICES.filter((choice) => {
+        return selectedCategories.includes(choice.category);
+      });
+
+      visibleChoices.forEach((choice) => {
         const label = document.createElement("label");
         label.className = "answer-option";
         label.dataset.category = choice.category;
@@ -157,6 +165,8 @@
       this.activeBank = this.getFilteredBank();
       this.pool = [...this.activeBank];
       this.currentItem = null;
+
+      this.renderChoices();
 
       if (!this.activeBank.length) {
         this.setControlsEnabled(false);
