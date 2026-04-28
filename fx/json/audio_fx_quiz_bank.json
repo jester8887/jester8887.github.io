@@ -1,0 +1,848 @@
+{
+  "version": 1,
+  "app": "Audio FX Workshop",
+  "quizTitle": "Audio FX Identification Preset Bank",
+  "instructions": "Randomly select one item, load its preset, and ask students to identify the active audio effect/module.",
+  "items": [
+    {
+      "id": "fxid-001",
+      "prompt": "Listen to the processed audio. Which effect or processing module is active?",
+      "answer": "Low-Pass Filter",
+      "answerId": "lowpass",
+      "source": {
+        "type": "library",
+        "title": "Acoustic Bass 1",
+        "meta": "bass"
+      },
+      "preset": {
+        "version": 1,
+        "app": "Audio FX Workshop",
+        "source": {
+          "type": "library",
+          "title": "Acoustic Bass 1",
+          "meta": "bass"
+        },
+        "activeModule": {
+          "id": "lowpass",
+          "title": "Low-Pass Filter",
+          "controls": [
+            {
+              "key": "#lowpass-enabled",
+              "tag": "input",
+              "type": "checkbox",
+              "value": true
+            },
+            {
+              "key": "#lowpass-freq",
+              "tag": "input",
+              "type": "range",
+              "value": "19.8"
+            }
+          ]
+        },
+        "master": {
+          "controls": [
+            {
+              "key": "#master-slider",
+              "tag": "input",
+              "type": "range",
+              "value": "0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "fxid-002",
+      "prompt": "Listen to the processed audio. Which effect or processing module is active?",
+      "answer": "High-Pass Filter",
+      "answerId": "highpass",
+      "source": {
+        "type": "library",
+        "title": "Acoustic Bass 1",
+        "meta": "bass"
+      },
+      "preset": {
+        "version": 1,
+        "app": "Audio FX Workshop",
+        "source": {
+          "type": "library",
+          "title": "Acoustic Bass 1",
+          "meta": "bass"
+        },
+        "activeModule": {
+          "id": "highpass",
+          "title": "High-Pass Filter",
+          "controls": [
+            {
+              "key": "#highpass-enabled",
+              "tag": "input",
+              "type": "checkbox",
+              "value": true
+            },
+            {
+              "key": "#highpass-freq",
+              "tag": "input",
+              "type": "range",
+              "value": "61.3"
+            }
+          ]
+        },
+        "master": {
+          "controls": [
+            {
+              "key": "#master-slider",
+              "tag": "input",
+              "type": "range",
+              "value": "4"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "fxid-003",
+      "prompt": "Listen to the processed audio. Which effect or processing module is active?",
+      "answer": "Band-Pass Filter",
+      "answerId": "bandpass",
+      "source": {
+        "type": "library",
+        "title": "Acoustic Bass 1",
+        "meta": "bass"
+      },
+      "preset": {
+        "version": 1,
+        "app": "Audio FX Workshop",
+        "source": {
+          "type": "library",
+          "title": "Acoustic Bass 1",
+          "meta": "bass"
+        },
+        "activeModule": {
+          "id": "bandpass",
+          "title": "Band-Pass Filter",
+          "controls": [
+            {
+              "key": "#bandpass-enabled",
+              "tag": "input",
+              "type": "checkbox",
+              "value": true
+            },
+            {
+              "key": "#bandpass-freq",
+              "tag": "input",
+              "type": "range",
+              "value": "46.9"
+            },
+            {
+              "key": "#bandpass-q",
+              "tag": "input",
+              "type": "range",
+              "value": "60.2"
+            }
+          ]
+        },
+        "master": {
+          "controls": [
+            {
+              "key": "#master-slider",
+              "tag": "input",
+              "type": "range",
+              "value": "4"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "fxid-004",
+      "prompt": "Listen to the processed audio. Which effect or processing module is active?",
+      "answer": "Band-Reject Filter",
+      "answerId": "notch",
+      "source": {
+        "type": "library",
+        "title": "Acoustic Bass 1",
+        "meta": "bass"
+      },
+      "preset": {
+        "version": 1,
+        "app": "Audio FX Workshop",
+        "source": {
+          "type": "library",
+          "title": "Acoustic Bass 1",
+          "meta": "bass"
+        },
+        "activeModule": {
+          "id": "notch",
+          "title": "Band-Reject Filter",
+          "controls": [
+            {
+              "key": "#notch-enabled",
+              "tag": "input",
+              "type": "checkbox",
+              "value": true
+            },
+            {
+              "key": "#notch-freq",
+              "tag": "input",
+              "type": "range",
+              "value": "52.8"
+            },
+            {
+              "key": "#notch-q",
+              "tag": "input",
+              "type": "range",
+              "value": "8.5"
+            }
+          ]
+        },
+        "master": {
+          "controls": [
+            {
+              "key": "#master-slider",
+              "tag": "input",
+              "type": "range",
+              "value": "4"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "fxid-005",
+      "prompt": "Listen to the processed audio. Which effect or processing module is active?",
+      "answer": "Low Shelf",
+      "answerId": "lowshelf",
+      "source": {
+        "type": "library",
+        "title": "Acoustic Bass 1",
+        "meta": "bass"
+      },
+      "preset": {
+        "version": 1,
+        "app": "Audio FX Workshop",
+        "source": {
+          "type": "library",
+          "title": "Acoustic Bass 1",
+          "meta": "bass"
+        },
+        "activeModule": {
+          "id": "lowshelf",
+          "title": "Low Shelf",
+          "controls": [
+            {
+              "key": "#lowshelf-enabled",
+              "tag": "input",
+              "type": "checkbox",
+              "value": true
+            },
+            {
+              "key": "#lowshelf-freq",
+              "tag": "input",
+              "type": "range",
+              "value": "35"
+            },
+            {
+              "key": "#lowshelf-gain",
+              "tag": "input",
+              "type": "range",
+              "value": "4.7"
+            }
+          ]
+        },
+        "master": {
+          "controls": [
+            {
+              "key": "#master-slider",
+              "tag": "input",
+              "type": "range",
+              "value": "-3"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "fxid-006",
+      "prompt": "Listen to the processed audio. Which effect or processing module is active?",
+      "answer": "Low Shelf",
+      "answerId": "lowshelf",
+      "source": {
+        "type": "library",
+        "title": "Acoustic Bass 1",
+        "meta": "bass"
+      },
+      "preset": {
+        "version": 1,
+        "app": "Audio FX Workshop",
+        "source": {
+          "type": "library",
+          "title": "Acoustic Bass 1",
+          "meta": "bass"
+        },
+        "activeModule": {
+          "id": "lowshelf",
+          "title": "Low Shelf",
+          "controls": [
+            {
+              "key": "#lowshelf-enabled",
+              "tag": "input",
+              "type": "checkbox",
+              "value": true
+            },
+            {
+              "key": "#lowshelf-freq",
+              "tag": "input",
+              "type": "range",
+              "value": "35"
+            },
+            {
+              "key": "#lowshelf-gain",
+              "tag": "input",
+              "type": "range",
+              "value": "-6.9"
+            }
+          ]
+        },
+        "master": {
+          "controls": [
+            {
+              "key": "#master-slider",
+              "tag": "input",
+              "type": "range",
+              "value": "-1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "fxid-007",
+      "prompt": "Listen to the processed audio. Which effect or processing module is active?",
+      "answer": "High Shelf",
+      "answerId": "highshelf",
+      "source": {
+        "type": "library",
+        "title": "Acoustic Bass 1",
+        "meta": "bass"
+      },
+      "preset": {
+        "version": 1,
+        "app": "Audio FX Workshop",
+        "source": {
+          "type": "library",
+          "title": "Acoustic Bass 1",
+          "meta": "bass"
+        },
+        "activeModule": {
+          "id": "highshelf",
+          "title": "High Shelf",
+          "controls": [
+            {
+              "key": "#highshelf-enabled",
+              "tag": "input",
+              "type": "checkbox",
+              "value": true
+            },
+            {
+              "key": "#highshelf-freq",
+              "tag": "input",
+              "type": "range",
+              "value": "70"
+            },
+            {
+              "key": "#highshelf-gain",
+              "tag": "input",
+              "type": "range",
+              "value": "14.2"
+            }
+          ]
+        },
+        "master": {
+          "controls": [
+            {
+              "key": "#master-slider",
+              "tag": "input",
+              "type": "range",
+              "value": "-1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "fxid-008",
+      "prompt": "Listen to the processed audio. Which effect or processing module is active?",
+      "answer": "High Shelf",
+      "answerId": "highshelf",
+      "source": {
+        "type": "library",
+        "title": "Acoustic Bass 1",
+        "meta": "bass"
+      },
+      "preset": {
+        "version": 1,
+        "app": "Audio FX Workshop",
+        "source": {
+          "type": "library",
+          "title": "Acoustic Bass 1",
+          "meta": "bass"
+        },
+        "activeModule": {
+          "id": "highshelf",
+          "title": "High Shelf",
+          "controls": [
+            {
+              "key": "#highshelf-enabled",
+              "tag": "input",
+              "type": "checkbox",
+              "value": true
+            },
+            {
+              "key": "#highshelf-freq",
+              "tag": "input",
+              "type": "range",
+              "value": "55.8"
+            },
+            {
+              "key": "#highshelf-gain",
+              "tag": "input",
+              "type": "range",
+              "value": "-9.2"
+            }
+          ]
+        },
+        "master": {
+          "controls": [
+            {
+              "key": "#master-slider",
+              "tag": "input",
+              "type": "range",
+              "value": "-1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "fxid-009",
+      "prompt": "Listen to the processed audio. Which effect or processing module is active?",
+      "answer": "Compressor",
+      "answerId": "compressor",
+      "source": {
+        "type": "library",
+        "title": "Acoustic Bass 1",
+        "meta": "bass"
+      },
+      "preset": {
+        "version": 1,
+        "app": "Audio FX Workshop",
+        "source": {
+          "type": "library",
+          "title": "Acoustic Bass 1",
+          "meta": "bass"
+        },
+        "activeModule": {
+          "id": "compressor",
+          "title": "Compressor",
+          "controls": [
+            {
+              "key": "#compressor-enabled",
+              "tag": "input",
+              "type": "checkbox",
+              "value": true
+            },
+            {
+              "key": "#compressor-threshold",
+              "tag": "input",
+              "type": "range",
+              "value": "-67"
+            },
+            {
+              "key": "#compressor-ratio",
+              "tag": "input",
+              "type": "range",
+              "value": "6.7"
+            },
+            {
+              "key": "#compressor-attack",
+              "tag": "input",
+              "type": "range",
+              "value": "0.062"
+            },
+            {
+              "key": "#compressor-release",
+              "tag": "input",
+              "type": "range",
+              "value": "0.25"
+            },
+            {
+              "key": "#compressor-makeup",
+              "tag": "input",
+              "type": "range",
+              "value": "5.8"
+            }
+          ]
+        },
+        "master": {
+          "controls": [
+            {
+              "key": "#master-slider",
+              "tag": "input",
+              "type": "range",
+              "value": "-1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "fxid-010",
+      "prompt": "Listen to the processed audio. Which effect or processing module is active?",
+      "answer": "Delay",
+      "answerId": "delay",
+      "source": {
+        "type": "library",
+        "title": "Acoustic Bass 1",
+        "meta": "bass"
+      },
+      "preset": {
+        "version": 1,
+        "app": "Audio FX Workshop",
+        "source": {
+          "type": "library",
+          "title": "Acoustic Bass 1",
+          "meta": "bass"
+        },
+        "activeModule": {
+          "id": "delay",
+          "title": "Delay",
+          "controls": [
+            {
+              "key": "#delay-enabled",
+              "tag": "input",
+              "type": "checkbox",
+              "value": true
+            },
+            {
+              "key": "#delay-time",
+              "tag": "input",
+              "type": "range",
+              "value": "0.7"
+            },
+            {
+              "key": "#delay-feedback",
+              "tag": "input",
+              "type": "range",
+              "value": "0"
+            },
+            {
+              "key": "#delay-wet",
+              "tag": "input",
+              "type": "range",
+              "value": "0.39"
+            }
+          ]
+        },
+        "master": {
+          "controls": [
+            {
+              "key": "#master-slider",
+              "tag": "input",
+              "type": "range",
+              "value": "-1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "fxid-011",
+      "prompt": "Listen to the processed audio. Which effect or processing module is active?",
+      "answer": "Delay",
+      "answerId": "delay",
+      "source": {
+        "type": "library",
+        "title": "Acoustic Bass 1",
+        "meta": "bass"
+      },
+      "preset": {
+        "version": 1,
+        "app": "Audio FX Workshop",
+        "source": {
+          "type": "library",
+          "title": "Acoustic Bass 1",
+          "meta": "bass"
+        },
+        "activeModule": {
+          "id": "delay",
+          "title": "Delay",
+          "controls": [
+            {
+              "key": "#delay-enabled",
+              "tag": "input",
+              "type": "checkbox",
+              "value": true
+            },
+            {
+              "key": "#delay-time",
+              "tag": "input",
+              "type": "range",
+              "value": "0.7"
+            },
+            {
+              "key": "#delay-feedback",
+              "tag": "input",
+              "type": "range",
+              "value": "0.61"
+            },
+            {
+              "key": "#delay-wet",
+              "tag": "input",
+              "type": "range",
+              "value": "0.39"
+            }
+          ]
+        },
+        "master": {
+          "controls": [
+            {
+              "key": "#master-slider",
+              "tag": "input",
+              "type": "range",
+              "value": "-5"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "fxid-012",
+      "prompt": "Listen to the processed audio. Which effect or processing module is active?",
+      "answer": "Reverb",
+      "answerId": "reverb",
+      "source": {
+        "type": "library",
+        "title": "Acoustic Bass 1",
+        "meta": "bass"
+      },
+      "preset": {
+        "version": 1,
+        "app": "Audio FX Workshop",
+        "source": {
+          "type": "library",
+          "title": "Acoustic Bass 1",
+          "meta": "bass"
+        },
+        "activeModule": {
+          "id": "reverb",
+          "title": "Reverb",
+          "controls": [
+            {
+              "key": "#reverb-enabled",
+              "tag": "input",
+              "type": "checkbox",
+              "value": true
+            },
+            {
+              "key": "#reverb-length",
+              "tag": "input",
+              "type": "range",
+              "value": "3.1"
+            },
+            {
+              "key": "#reverb-wet",
+              "tag": "input",
+              "type": "range",
+              "value": "41"
+            },
+            {
+              "key": "#reverb-tone",
+              "tag": "input",
+              "type": "range",
+              "value": "65"
+            }
+          ]
+        },
+        "master": {
+          "controls": [
+            {
+              "key": "#master-slider",
+              "tag": "input",
+              "type": "range",
+              "value": "-3"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "fxid-013",
+      "prompt": "Listen to the processed audio. Which effect or processing module is active?",
+      "answer": "Tremolo",
+      "answerId": "tremolo",
+      "source": {
+        "type": "library",
+        "title": "Acoustic Bass 1",
+        "meta": "bass"
+      },
+      "preset": {
+        "version": 1,
+        "app": "Audio FX Workshop",
+        "source": {
+          "type": "library",
+          "title": "Acoustic Bass 1",
+          "meta": "bass"
+        },
+        "activeModule": {
+          "id": "tremolo",
+          "title": "Tremolo",
+          "controls": [
+            {
+              "key": "#tremolo-enabled",
+              "tag": "input",
+              "type": "checkbox",
+              "value": true
+            },
+            {
+              "key": "#tremolo-rate",
+              "tag": "input",
+              "type": "range",
+              "value": "2.5"
+            },
+            {
+              "key": "#tremolo-depth",
+              "tag": "input",
+              "type": "range",
+              "value": "1"
+            }
+          ]
+        },
+        "master": {
+          "controls": [
+            {
+              "key": "#master-slider",
+              "tag": "input",
+              "type": "range",
+              "value": "-3"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "fxid-014",
+      "prompt": "Listen to the processed audio. Which effect or processing module is active?",
+      "answer": "Vibrato",
+      "answerId": "vibrato",
+      "source": {
+        "type": "library",
+        "title": "Acoustic Bass 1",
+        "meta": "bass"
+      },
+      "preset": {
+        "version": 1,
+        "app": "Audio FX Workshop",
+        "source": {
+          "type": "library",
+          "title": "Acoustic Bass 1",
+          "meta": "bass"
+        },
+        "activeModule": {
+          "id": "vibrato",
+          "title": "Vibrato",
+          "controls": [
+            {
+              "key": "#vibrato-enabled",
+              "tag": "input",
+              "type": "checkbox",
+              "value": true
+            },
+            {
+              "key": "#vibrato-rate",
+              "tag": "input",
+              "type": "range",
+              "value": "3.5"
+            },
+            {
+              "key": "#vibrato-depth",
+              "tag": "input",
+              "type": "range",
+              "value": "0.2"
+            }
+          ]
+        },
+        "master": {
+          "controls": [
+            {
+              "key": "#master-slider",
+              "tag": "input",
+              "type": "range",
+              "value": "-3"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "fxid-015",
+      "prompt": "Listen to the processed audio. Which effect or processing module is active?",
+      "answer": "Chorus",
+      "answerId": "chorus",
+      "source": {
+        "type": "library",
+        "title": "Acoustic Bass 1",
+        "meta": "bass"
+      },
+      "preset": {
+        "version": 1,
+        "app": "Audio FX Workshop",
+        "source": {
+          "type": "library",
+          "title": "Acoustic Bass 1",
+          "meta": "bass"
+        },
+        "activeModule": {
+          "id": "chorus",
+          "title": "Chorus",
+          "controls": [
+            {
+              "key": "#chorus-enabled",
+              "tag": "input",
+              "type": "checkbox",
+              "value": true
+            },
+            {
+              "key": "#chorus-rate",
+              "tag": "input",
+              "type": "range",
+              "value": "1.2"
+            },
+            {
+              "key": "#chorus-depth",
+              "tag": "input",
+              "type": "range",
+              "value": "0.003"
+            },
+            {
+              "key": "#chorus-mix",
+              "tag": "input",
+              "type": "range",
+              "value": "0.5"
+            }
+          ]
+        },
+        "master": {
+          "controls": [
+            {
+              "key": "#master-slider",
+              "tag": "input",
+              "type": "range",
+              "value": "-1"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
