@@ -1,28 +1,33 @@
 (function () {
   const ANSWER_CHOICES = [
-    { id: "lowpass", label: "Low-Pass Filter" },
-    { id: "highpass", label: "High-Pass Filter" },
-    { id: "bandpass", label: "Band-Pass Filter" },
-    { id: "notch", label: "Band-Reject Filter" },
-    { id: "lowshelf-boost", label: "Low Shelf Boost" },
-    { id: "lowshelf-attenuate", label: "Low Shelf Attenuate" },
-    { id: "highshelf-boost", label: "High Shelf Boost" },
-    { id: "highshelf-attenuate", label: "High Shelf Attenuate" },
-    { id: "compressor", label: "Compressor" },
-    { id: "distortion", label: "Distortion" },
-    { id: "feed-forward-delay", label: "Feed-Forward Delay" },
-    { id: "feedback-delay", label: "Feedback Delay" },
-    { id: "reverb", label: "Reverb" },
-    { id: "tremolo", label: "Tremolo" },
-    { id: "vibrato", label: "Vibrato" },
-    { id: "chorus", label: "Chorus" },
-    { id: "flanger", label: "Flanger" },
-    { id: "noise-gate", label: "Noise Gate" }
+    { id: "lowpass", label: "Low-Pass Filter", category: "eq" },
+    { id: "highpass", label: "High-Pass Filter", category: "eq" },
+    { id: "bandpass", label: "Band-Pass Filter", category: "eq" },
+    { id: "notch", label: "Band-Reject Filter", category: "eq" },
+    { id: "lowshelf-boost", label: "Low Shelf Boost", category: "eq" },
+    { id: "lowshelf-attenuate", label: "Low Shelf Attenuate", category: "eq" },
+    { id: "highshelf-boost", label: "High Shelf Boost", category: "eq" },
+    { id: "highshelf-attenuate", label: "High Shelf Attenuate", category: "eq" },
+
+    { id: "compressor", label: "Compressor", category: "dynamics" },
+    { id: "noise-gate", label: "Noise Gate", category: "dynamics" },
+
+    { id: "distortion", label: "Distortion", category: "distortion" },
+
+    { id: "feed-forward-delay", label: "Feed-Forward Delay", category: "delayReverb" },
+    { id: "feedback-delay", label: "Feedback Delay", category: "delayReverb" },
+    { id: "reverb", label: "Reverb", category: "delayReverb" },
+
+    { id: "tremolo", label: "Tremolo", category: "modulation" },
+    { id: "vibrato", label: "Vibrato", category: "modulation" },
+    { id: "chorus", label: "Chorus", category: "modulation" },
+    { id: "flanger", label: "Flanger", category: "modulation" }
   ];
 
   const Quiz = {
     bank: [],
     pool: [],
+    activeBank: [],
     currentItem: null,
     busy: false,
     els: {},
@@ -37,11 +42,14 @@
       try {
         await this.waitForWorkshopReady();
         await this.loadBank();
-        this.pool = [...this.bank];
+
+        this.activeBank = this.getFilteredBank();
+        this.pool = [...this.activeBank];
 
         if (!this.pool.length) {
-          this.setFeedback("No quiz examples were found in json/audio_fx_quiz_bank.json.", "incorrect");
+          this.setFeedback("No quiz examples were found for the selected FX filter.", "incorrect");
           this.setStatus("No examples found.");
+          this.updateProgress();
           return;
         }
 
@@ -78,6 +86,10 @@
         event.preventDefault();
         this.checkAnswer();
       });
+
+      window.addEventListener("fxQuizGenerateRequested", () => {
+        this.generateFilteredQuiz();
+      });
     },
 
     renderChoices() {
@@ -86,6 +98,7 @@
       ANSWER_CHOICES.forEach((choice) => {
         const label = document.createElement("label");
         label.className = "answer-option";
+        label.dataset.category = choice.category;
         label.innerHTML = `
           <input type="radio" name="fxAnswer" value="${choice.id}" />
           <span>${choice.label}</span>
@@ -131,9 +144,59 @@
           return {
             ...item,
             correctAnswerId: answer.id,
-            correctAnswerLabel: answer.label
+            correctAnswerLabel: answer.label,
+            correctAnswerCategory: answer.category || this.getCategoryForAnswerId(answer.id)
           };
         });
+    },
+
+    generateFilteredQuiz() {
+      this.stopAudio();
+      this.clearAnswerSelection();
+
+      this.activeBank = this.getFilteredBank();
+      this.pool = [...this.activeBank];
+      this.currentItem = null;
+
+      if (!this.activeBank.length) {
+        this.setControlsEnabled(false);
+        this.els.next.disabled = true;
+        this.els.submit.disabled = true;
+        this.els.prompt.textContent = "No matching examples.";
+        this.els.source.textContent = "Choose a different FX filter.";
+        this.setFeedback("No quiz examples match the selected FX filter.", "incorrect");
+        this.setStatus("Adjust FX filter.");
+        this.updateProgress();
+        return;
+      }
+
+      this.setFeedback("New filtered quiz generated.", "");
+      this.loadNextQuestion();
+    },
+
+    getFilteredBank() {
+      const selectedCategories = this.getSelectedCategories();
+
+      if (!selectedCategories.length) {
+        return [];
+      }
+
+      return this.bank.filter((item) => {
+        return selectedCategories.includes(item.correctAnswerCategory);
+      });
+    },
+
+    getSelectedCategories() {
+      if (typeof window.getSelectedFxQuizCategories === "function") {
+        return window.getSelectedFxQuizCategories();
+      }
+
+      return ["eq", "modulation", "dynamics", "delayReverb", "distortion"];
+    },
+
+    getCategoryForAnswerId(answerId) {
+      const choice = this.choice(answerId);
+      return choice?.category || "";
     },
 
     async loadNextQuestion() {
@@ -147,7 +210,7 @@
         this.setControlsEnabled(false);
         this.els.prompt.textContent = "Quiz complete.";
         this.els.source.textContent = "You identified every example correctly.";
-        this.setFeedback("Great work. Refresh the page to start again.", "correct");
+        this.setFeedback("Great work. Click Generate Quiz to start again with the selected filter, or refresh the page.", "correct");
         this.updateProgress();
         this.setStatus("Complete");
         return;
@@ -329,7 +392,8 @@
 
       return this.choice(moduleId) || {
         id: moduleId,
-        label: preset.activeModule?.title || moduleId
+        label: preset.activeModule?.title || moduleId,
+        category: ""
       };
     },
 
@@ -351,8 +415,8 @@
 
     updateProgress() {
       const remaining = this.pool.length;
-      const total = this.bank.length;
-      const completed = total - remaining;
+      const total = this.activeBank.length || this.bank.length;
+      const completed = Math.max(total - remaining, 0);
       this.els.progress.textContent = `${completed} correct • ${remaining} remaining`;
     },
 
