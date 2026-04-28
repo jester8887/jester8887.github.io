@@ -31,7 +31,8 @@
     }
 
     button,
-    input[type="radio"] {
+    input[type="radio"],
+    input[type="checkbox"] {
       accent-color: var(--accent);
     }
 
@@ -88,6 +89,53 @@
       background: var(--panel);
       padding: 20px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    .fx-filter-panel {
+      margin-bottom: 18px;
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .fx-filter-panel h2 {
+      margin: 0 0 12px;
+      font-size: 18px;
+      line-height: 1.25;
+    }
+
+    .fx-filter-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .fx-filter-grid label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--panel-2);
+      color: var(--text);
+      cursor: pointer;
+      line-height: 1.25;
+      user-select: none;
+    }
+
+    .fx-filter-grid label:hover {
+      border-color: var(--accent);
+    }
+
+    .fx-filter-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
     }
 
     .quiz-topline {
@@ -209,6 +257,7 @@
         padding-top: 10px;
       }
 
+      .fx-filter-grid,
       .play-controls,
       .answer-grid {
         grid-template-columns: 1fr;
@@ -224,6 +273,42 @@
     </header>
 
     <section class="quiz-card" aria-live="polite">
+      <section class="fx-filter-panel" aria-label="Choose FX Filter">
+        <h2>Choose FX Filter</h2>
+
+        <div class="fx-filter-grid">
+          <label>
+            <input type="checkbox" class="fx-filter-check" value="eq" checked />
+            EQ
+          </label>
+
+          <label>
+            <input type="checkbox" class="fx-filter-check" value="modulation" checked />
+            Modulation
+          </label>
+
+          <label>
+            <input type="checkbox" class="fx-filter-check" value="dynamics" checked />
+            Dynamics
+          </label>
+
+          <label>
+            <input type="checkbox" class="fx-filter-check" value="delayReverb" checked />
+            Delay/Reverb
+          </label>
+
+          <label>
+            <input type="checkbox" class="fx-filter-check" value="distortion" checked />
+            Distortion
+          </label>
+        </div>
+
+        <div class="fx-filter-actions">
+          <button id="selectAllFxBtn" type="button">All</button>
+          <button id="generateQuizBtn" class="primary-button" type="button">Generate Quiz</button>
+        </div>
+      </section>
+
       <div class="quiz-topline">
         <div id="quizProgress">Loading quiz...</div>
         <div id="quizStatus" class="quiz-status">Preparing audio engine...</div>
@@ -272,6 +357,107 @@
       <button id="loadPresetCodeBtn" type="button">Load Code</button>
     </section>
   </div>
+
+  <script>
+    window.FX_QUIZ_CATEGORIES = {
+      eq: [
+        "lowpass",
+        "low pass",
+        "highpass",
+        "high pass",
+        "bandpass",
+        "band pass",
+        "notch",
+        "lowshelf",
+        "low shelf",
+        "low shelf boost",
+        "low shelf attenuate",
+        "highshelf",
+        "high shelf",
+        "high shelf boost",
+        "high shelf attenuate"
+      ],
+      modulation: [
+        "tremolo",
+        "vibrato",
+        "chorus",
+        "flanger"
+      ],
+      dynamics: [
+        "compressor",
+        "compression",
+        "noise gate",
+        "noise-gate",
+        "gate"
+      ],
+      delayReverb: [
+        "delay",
+        "feed forward delay",
+        "feedback delay",
+        "reverb",
+        "reverberation"
+      ],
+      distortion: [
+        "distortion",
+        "overdrive",
+        "drive"
+      ]
+    };
+
+    window.getSelectedFxQuizCategories = function () {
+      return Array.from(document.querySelectorAll(".fx-filter-check:checked"))
+        .map(input => input.value);
+    };
+
+    window.getSelectedFxQuizKeywords = function () {
+      const selectedCategories = window.getSelectedFxQuizCategories();
+      return selectedCategories.flatMap(category => window.FX_QUIZ_CATEGORIES[category] || []);
+    };
+
+    window.fxQuizEffectMatchesSelectedCategories = function (effectName) {
+      const normalizedEffect = String(effectName || "")
+        .toLowerCase()
+        .replace(/[_-]+/g, " ");
+
+      const selectedKeywords = window.getSelectedFxQuizKeywords();
+
+      if (!selectedKeywords.length) {
+        return false;
+      }
+
+      return selectedKeywords.some(keyword => {
+        const normalizedKeyword = String(keyword || "")
+          .toLowerCase()
+          .replace(/[_-]+/g, " ");
+
+        return normalizedEffect.includes(normalizedKeyword);
+      });
+    };
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const selectAllFxBtn = document.getElementById("selectAllFxBtn");
+      const generateQuizBtn = document.getElementById("generateQuizBtn");
+
+      if (selectAllFxBtn) {
+        selectAllFxBtn.addEventListener("click", () => {
+          document.querySelectorAll(".fx-filter-check").forEach(input => {
+            input.checked = true;
+          });
+        });
+      }
+
+      if (generateQuizBtn) {
+        generateQuizBtn.addEventListener("click", () => {
+          window.dispatchEvent(new CustomEvent("fxQuizGenerateRequested", {
+            detail: {
+              categories: window.getSelectedFxQuizCategories(),
+              keywords: window.getSelectedFxQuizKeywords()
+            }
+          }));
+        });
+      }
+    });
+  </script>
 
   <script src="js/app-state.js"></script>
   <script src="js/dom-elements.js"></script>
