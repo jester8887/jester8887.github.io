@@ -1,848 +1,97 @@
 {
-  "version": 1,
+  "version": 2,
   "app": "Audio FX Workshop",
   "quizTitle": "Audio FX Identification Preset Bank",
   "instructions": "Randomly select one item, load its preset, and ask students to identify the active audio effect/module.",
+  "key": {"s":"source title","m":"source meta/category","fx":"effect/module id","p":"module parameters","o":"master output dB","f":"frequency","q":"Q","g":"gain","th":"threshold","ra":"ratio","a":"attack","rel":"release","mk":"makeup gain","od":"overdrive","ds":"distortion","fz":"fuzz","out":"distortion output","t":"delay time","fb":"feedback","w":"wet","len":"reverb length","r":"rate","d":"depth","del":"flanger delay","mix":"mix"},
+  "labels": {"lowpass":"Low-Pass Filter","highpass":"High-Pass Filter","bandpass":"Band-Pass Filter","notch":"Band-Reject Filter","lowshelf":"Low Shelf","highshelf":"High Shelf","compressor":"Compressor","distortion":"Analog Drive Stack","delay":"Delay","reverb":"Reverb","tremolo":"Tremolo","vibrato":"Vibrato","chorus":"Chorus","flanger":"Flanger","noise-gate":"Noise Gate"},
   "items": [
-    {
-      "id": "fxid-001",
-      "prompt": "Listen to the processed audio. Which effect or processing module is active?",
-      "answer": "Low-Pass Filter",
-      "answerId": "lowpass",
-      "source": {
-        "type": "library",
-        "title": "Acoustic Bass 1",
-        "meta": "bass"
-      },
-      "preset": {
-        "version": 1,
-        "app": "Audio FX Workshop",
-        "source": {
-          "type": "library",
-          "title": "Acoustic Bass 1",
-          "meta": "bass"
-        },
-        "activeModule": {
-          "id": "lowpass",
-          "title": "Low-Pass Filter",
-          "controls": [
-            {
-              "key": "#lowpass-enabled",
-              "tag": "input",
-              "type": "checkbox",
-              "value": true
-            },
-            {
-              "key": "#lowpass-freq",
-              "tag": "input",
-              "type": "range",
-              "value": "19.8"
-            }
-          ]
-        },
-        "master": {
-          "controls": [
-            {
-              "key": "#master-slider",
-              "tag": "input",
-              "type": "range",
-              "value": "0"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "id": "fxid-002",
-      "prompt": "Listen to the processed audio. Which effect or processing module is active?",
-      "answer": "High-Pass Filter",
-      "answerId": "highpass",
-      "source": {
-        "type": "library",
-        "title": "Acoustic Bass 1",
-        "meta": "bass"
-      },
-      "preset": {
-        "version": 1,
-        "app": "Audio FX Workshop",
-        "source": {
-          "type": "library",
-          "title": "Acoustic Bass 1",
-          "meta": "bass"
-        },
-        "activeModule": {
-          "id": "highpass",
-          "title": "High-Pass Filter",
-          "controls": [
-            {
-              "key": "#highpass-enabled",
-              "tag": "input",
-              "type": "checkbox",
-              "value": true
-            },
-            {
-              "key": "#highpass-freq",
-              "tag": "input",
-              "type": "range",
-              "value": "61.3"
-            }
-          ]
-        },
-        "master": {
-          "controls": [
-            {
-              "key": "#master-slider",
-              "tag": "input",
-              "type": "range",
-              "value": "4"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "id": "fxid-003",
-      "prompt": "Listen to the processed audio. Which effect or processing module is active?",
-      "answer": "Band-Pass Filter",
-      "answerId": "bandpass",
-      "source": {
-        "type": "library",
-        "title": "Acoustic Bass 1",
-        "meta": "bass"
-      },
-      "preset": {
-        "version": 1,
-        "app": "Audio FX Workshop",
-        "source": {
-          "type": "library",
-          "title": "Acoustic Bass 1",
-          "meta": "bass"
-        },
-        "activeModule": {
-          "id": "bandpass",
-          "title": "Band-Pass Filter",
-          "controls": [
-            {
-              "key": "#bandpass-enabled",
-              "tag": "input",
-              "type": "checkbox",
-              "value": true
-            },
-            {
-              "key": "#bandpass-freq",
-              "tag": "input",
-              "type": "range",
-              "value": "46.9"
-            },
-            {
-              "key": "#bandpass-q",
-              "tag": "input",
-              "type": "range",
-              "value": "60.2"
-            }
-          ]
-        },
-        "master": {
-          "controls": [
-            {
-              "key": "#master-slider",
-              "tag": "input",
-              "type": "range",
-              "value": "4"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "id": "fxid-004",
-      "prompt": "Listen to the processed audio. Which effect or processing module is active?",
-      "answer": "Band-Reject Filter",
-      "answerId": "notch",
-      "source": {
-        "type": "library",
-        "title": "Acoustic Bass 1",
-        "meta": "bass"
-      },
-      "preset": {
-        "version": 1,
-        "app": "Audio FX Workshop",
-        "source": {
-          "type": "library",
-          "title": "Acoustic Bass 1",
-          "meta": "bass"
-        },
-        "activeModule": {
-          "id": "notch",
-          "title": "Band-Reject Filter",
-          "controls": [
-            {
-              "key": "#notch-enabled",
-              "tag": "input",
-              "type": "checkbox",
-              "value": true
-            },
-            {
-              "key": "#notch-freq",
-              "tag": "input",
-              "type": "range",
-              "value": "52.8"
-            },
-            {
-              "key": "#notch-q",
-              "tag": "input",
-              "type": "range",
-              "value": "8.5"
-            }
-          ]
-        },
-        "master": {
-          "controls": [
-            {
-              "key": "#master-slider",
-              "tag": "input",
-              "type": "range",
-              "value": "4"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "id": "fxid-005",
-      "prompt": "Listen to the processed audio. Which effect or processing module is active?",
-      "answer": "Low Shelf",
-      "answerId": "lowshelf",
-      "source": {
-        "type": "library",
-        "title": "Acoustic Bass 1",
-        "meta": "bass"
-      },
-      "preset": {
-        "version": 1,
-        "app": "Audio FX Workshop",
-        "source": {
-          "type": "library",
-          "title": "Acoustic Bass 1",
-          "meta": "bass"
-        },
-        "activeModule": {
-          "id": "lowshelf",
-          "title": "Low Shelf",
-          "controls": [
-            {
-              "key": "#lowshelf-enabled",
-              "tag": "input",
-              "type": "checkbox",
-              "value": true
-            },
-            {
-              "key": "#lowshelf-freq",
-              "tag": "input",
-              "type": "range",
-              "value": "35"
-            },
-            {
-              "key": "#lowshelf-gain",
-              "tag": "input",
-              "type": "range",
-              "value": "4.7"
-            }
-          ]
-        },
-        "master": {
-          "controls": [
-            {
-              "key": "#master-slider",
-              "tag": "input",
-              "type": "range",
-              "value": "-3"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "id": "fxid-006",
-      "prompt": "Listen to the processed audio. Which effect or processing module is active?",
-      "answer": "Low Shelf",
-      "answerId": "lowshelf",
-      "source": {
-        "type": "library",
-        "title": "Acoustic Bass 1",
-        "meta": "bass"
-      },
-      "preset": {
-        "version": 1,
-        "app": "Audio FX Workshop",
-        "source": {
-          "type": "library",
-          "title": "Acoustic Bass 1",
-          "meta": "bass"
-        },
-        "activeModule": {
-          "id": "lowshelf",
-          "title": "Low Shelf",
-          "controls": [
-            {
-              "key": "#lowshelf-enabled",
-              "tag": "input",
-              "type": "checkbox",
-              "value": true
-            },
-            {
-              "key": "#lowshelf-freq",
-              "tag": "input",
-              "type": "range",
-              "value": "35"
-            },
-            {
-              "key": "#lowshelf-gain",
-              "tag": "input",
-              "type": "range",
-              "value": "-6.9"
-            }
-          ]
-        },
-        "master": {
-          "controls": [
-            {
-              "key": "#master-slider",
-              "tag": "input",
-              "type": "range",
-              "value": "-1"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "id": "fxid-007",
-      "prompt": "Listen to the processed audio. Which effect or processing module is active?",
-      "answer": "High Shelf",
-      "answerId": "highshelf",
-      "source": {
-        "type": "library",
-        "title": "Acoustic Bass 1",
-        "meta": "bass"
-      },
-      "preset": {
-        "version": 1,
-        "app": "Audio FX Workshop",
-        "source": {
-          "type": "library",
-          "title": "Acoustic Bass 1",
-          "meta": "bass"
-        },
-        "activeModule": {
-          "id": "highshelf",
-          "title": "High Shelf",
-          "controls": [
-            {
-              "key": "#highshelf-enabled",
-              "tag": "input",
-              "type": "checkbox",
-              "value": true
-            },
-            {
-              "key": "#highshelf-freq",
-              "tag": "input",
-              "type": "range",
-              "value": "70"
-            },
-            {
-              "key": "#highshelf-gain",
-              "tag": "input",
-              "type": "range",
-              "value": "14.2"
-            }
-          ]
-        },
-        "master": {
-          "controls": [
-            {
-              "key": "#master-slider",
-              "tag": "input",
-              "type": "range",
-              "value": "-1"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "id": "fxid-008",
-      "prompt": "Listen to the processed audio. Which effect or processing module is active?",
-      "answer": "High Shelf",
-      "answerId": "highshelf",
-      "source": {
-        "type": "library",
-        "title": "Acoustic Bass 1",
-        "meta": "bass"
-      },
-      "preset": {
-        "version": 1,
-        "app": "Audio FX Workshop",
-        "source": {
-          "type": "library",
-          "title": "Acoustic Bass 1",
-          "meta": "bass"
-        },
-        "activeModule": {
-          "id": "highshelf",
-          "title": "High Shelf",
-          "controls": [
-            {
-              "key": "#highshelf-enabled",
-              "tag": "input",
-              "type": "checkbox",
-              "value": true
-            },
-            {
-              "key": "#highshelf-freq",
-              "tag": "input",
-              "type": "range",
-              "value": "55.8"
-            },
-            {
-              "key": "#highshelf-gain",
-              "tag": "input",
-              "type": "range",
-              "value": "-9.2"
-            }
-          ]
-        },
-        "master": {
-          "controls": [
-            {
-              "key": "#master-slider",
-              "tag": "input",
-              "type": "range",
-              "value": "-1"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "id": "fxid-009",
-      "prompt": "Listen to the processed audio. Which effect or processing module is active?",
-      "answer": "Compressor",
-      "answerId": "compressor",
-      "source": {
-        "type": "library",
-        "title": "Acoustic Bass 1",
-        "meta": "bass"
-      },
-      "preset": {
-        "version": 1,
-        "app": "Audio FX Workshop",
-        "source": {
-          "type": "library",
-          "title": "Acoustic Bass 1",
-          "meta": "bass"
-        },
-        "activeModule": {
-          "id": "compressor",
-          "title": "Compressor",
-          "controls": [
-            {
-              "key": "#compressor-enabled",
-              "tag": "input",
-              "type": "checkbox",
-              "value": true
-            },
-            {
-              "key": "#compressor-threshold",
-              "tag": "input",
-              "type": "range",
-              "value": "-67"
-            },
-            {
-              "key": "#compressor-ratio",
-              "tag": "input",
-              "type": "range",
-              "value": "6.7"
-            },
-            {
-              "key": "#compressor-attack",
-              "tag": "input",
-              "type": "range",
-              "value": "0.062"
-            },
-            {
-              "key": "#compressor-release",
-              "tag": "input",
-              "type": "range",
-              "value": "0.25"
-            },
-            {
-              "key": "#compressor-makeup",
-              "tag": "input",
-              "type": "range",
-              "value": "5.8"
-            }
-          ]
-        },
-        "master": {
-          "controls": [
-            {
-              "key": "#master-slider",
-              "tag": "input",
-              "type": "range",
-              "value": "-1"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "id": "fxid-010",
-      "prompt": "Listen to the processed audio. Which effect or processing module is active?",
-      "answer": "Delay",
-      "answerId": "delay",
-      "source": {
-        "type": "library",
-        "title": "Acoustic Bass 1",
-        "meta": "bass"
-      },
-      "preset": {
-        "version": 1,
-        "app": "Audio FX Workshop",
-        "source": {
-          "type": "library",
-          "title": "Acoustic Bass 1",
-          "meta": "bass"
-        },
-        "activeModule": {
-          "id": "delay",
-          "title": "Delay",
-          "controls": [
-            {
-              "key": "#delay-enabled",
-              "tag": "input",
-              "type": "checkbox",
-              "value": true
-            },
-            {
-              "key": "#delay-time",
-              "tag": "input",
-              "type": "range",
-              "value": "0.7"
-            },
-            {
-              "key": "#delay-feedback",
-              "tag": "input",
-              "type": "range",
-              "value": "0"
-            },
-            {
-              "key": "#delay-wet",
-              "tag": "input",
-              "type": "range",
-              "value": "0.39"
-            }
-          ]
-        },
-        "master": {
-          "controls": [
-            {
-              "key": "#master-slider",
-              "tag": "input",
-              "type": "range",
-              "value": "-1"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "id": "fxid-011",
-      "prompt": "Listen to the processed audio. Which effect or processing module is active?",
-      "answer": "Delay",
-      "answerId": "delay",
-      "source": {
-        "type": "library",
-        "title": "Acoustic Bass 1",
-        "meta": "bass"
-      },
-      "preset": {
-        "version": 1,
-        "app": "Audio FX Workshop",
-        "source": {
-          "type": "library",
-          "title": "Acoustic Bass 1",
-          "meta": "bass"
-        },
-        "activeModule": {
-          "id": "delay",
-          "title": "Delay",
-          "controls": [
-            {
-              "key": "#delay-enabled",
-              "tag": "input",
-              "type": "checkbox",
-              "value": true
-            },
-            {
-              "key": "#delay-time",
-              "tag": "input",
-              "type": "range",
-              "value": "0.7"
-            },
-            {
-              "key": "#delay-feedback",
-              "tag": "input",
-              "type": "range",
-              "value": "0.61"
-            },
-            {
-              "key": "#delay-wet",
-              "tag": "input",
-              "type": "range",
-              "value": "0.39"
-            }
-          ]
-        },
-        "master": {
-          "controls": [
-            {
-              "key": "#master-slider",
-              "tag": "input",
-              "type": "range",
-              "value": "-5"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "id": "fxid-012",
-      "prompt": "Listen to the processed audio. Which effect or processing module is active?",
-      "answer": "Reverb",
-      "answerId": "reverb",
-      "source": {
-        "type": "library",
-        "title": "Acoustic Bass 1",
-        "meta": "bass"
-      },
-      "preset": {
-        "version": 1,
-        "app": "Audio FX Workshop",
-        "source": {
-          "type": "library",
-          "title": "Acoustic Bass 1",
-          "meta": "bass"
-        },
-        "activeModule": {
-          "id": "reverb",
-          "title": "Reverb",
-          "controls": [
-            {
-              "key": "#reverb-enabled",
-              "tag": "input",
-              "type": "checkbox",
-              "value": true
-            },
-            {
-              "key": "#reverb-length",
-              "tag": "input",
-              "type": "range",
-              "value": "3.1"
-            },
-            {
-              "key": "#reverb-wet",
-              "tag": "input",
-              "type": "range",
-              "value": "41"
-            },
-            {
-              "key": "#reverb-tone",
-              "tag": "input",
-              "type": "range",
-              "value": "65"
-            }
-          ]
-        },
-        "master": {
-          "controls": [
-            {
-              "key": "#master-slider",
-              "tag": "input",
-              "type": "range",
-              "value": "-3"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "id": "fxid-013",
-      "prompt": "Listen to the processed audio. Which effect or processing module is active?",
-      "answer": "Tremolo",
-      "answerId": "tremolo",
-      "source": {
-        "type": "library",
-        "title": "Acoustic Bass 1",
-        "meta": "bass"
-      },
-      "preset": {
-        "version": 1,
-        "app": "Audio FX Workshop",
-        "source": {
-          "type": "library",
-          "title": "Acoustic Bass 1",
-          "meta": "bass"
-        },
-        "activeModule": {
-          "id": "tremolo",
-          "title": "Tremolo",
-          "controls": [
-            {
-              "key": "#tremolo-enabled",
-              "tag": "input",
-              "type": "checkbox",
-              "value": true
-            },
-            {
-              "key": "#tremolo-rate",
-              "tag": "input",
-              "type": "range",
-              "value": "2.5"
-            },
-            {
-              "key": "#tremolo-depth",
-              "tag": "input",
-              "type": "range",
-              "value": "1"
-            }
-          ]
-        },
-        "master": {
-          "controls": [
-            {
-              "key": "#master-slider",
-              "tag": "input",
-              "type": "range",
-              "value": "-3"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "id": "fxid-014",
-      "prompt": "Listen to the processed audio. Which effect or processing module is active?",
-      "answer": "Vibrato",
-      "answerId": "vibrato",
-      "source": {
-        "type": "library",
-        "title": "Acoustic Bass 1",
-        "meta": "bass"
-      },
-      "preset": {
-        "version": 1,
-        "app": "Audio FX Workshop",
-        "source": {
-          "type": "library",
-          "title": "Acoustic Bass 1",
-          "meta": "bass"
-        },
-        "activeModule": {
-          "id": "vibrato",
-          "title": "Vibrato",
-          "controls": [
-            {
-              "key": "#vibrato-enabled",
-              "tag": "input",
-              "type": "checkbox",
-              "value": true
-            },
-            {
-              "key": "#vibrato-rate",
-              "tag": "input",
-              "type": "range",
-              "value": "3.5"
-            },
-            {
-              "key": "#vibrato-depth",
-              "tag": "input",
-              "type": "range",
-              "value": "0.2"
-            }
-          ]
-        },
-        "master": {
-          "controls": [
-            {
-              "key": "#master-slider",
-              "tag": "input",
-              "type": "range",
-              "value": "-3"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "id": "fxid-015",
-      "prompt": "Listen to the processed audio. Which effect or processing module is active?",
-      "answer": "Chorus",
-      "answerId": "chorus",
-      "source": {
-        "type": "library",
-        "title": "Acoustic Bass 1",
-        "meta": "bass"
-      },
-      "preset": {
-        "version": 1,
-        "app": "Audio FX Workshop",
-        "source": {
-          "type": "library",
-          "title": "Acoustic Bass 1",
-          "meta": "bass"
-        },
-        "activeModule": {
-          "id": "chorus",
-          "title": "Chorus",
-          "controls": [
-            {
-              "key": "#chorus-enabled",
-              "tag": "input",
-              "type": "checkbox",
-              "value": true
-            },
-            {
-              "key": "#chorus-rate",
-              "tag": "input",
-              "type": "range",
-              "value": "1.2"
-            },
-            {
-              "key": "#chorus-depth",
-              "tag": "input",
-              "type": "range",
-              "value": "0.003"
-            },
-            {
-              "key": "#chorus-mix",
-              "tag": "input",
-              "type": "range",
-              "value": "0.5"
-            }
-          ]
-        },
-        "master": {
-          "controls": [
-            {
-              "key": "#master-slider",
-              "tag": "input",
-              "type": "range",
-              "value": "-1"
-            }
-          ]
-        }
-      }
-    }
+    {"id":"001","s":"Acoustic Bass 1","m":"bass","fx":"lowpass","p":{"f":19.8},"o":0},
+    {"id":"002","s":"Acoustic Bass 1","m":"bass","fx":"highpass","p":{"f":61.3},"o":4},
+    {"id":"003","s":"Acoustic Bass 1","m":"bass","fx":"bandpass","p":{"f":46.9,"q":60.2},"o":4},
+    {"id":"004","s":"Acoustic Bass 1","m":"bass","fx":"notch","p":{"f":52.8,"q":8.5},"o":4},
+    {"id":"005","s":"Acoustic Bass 1","m":"bass","fx":"lowshelf","p":{"f":35,"g":4.7},"o":-3},
+    {"id":"006","s":"Acoustic Bass 1","m":"bass","fx":"lowshelf","p":{"f":35,"g":-6.9},"o":-1},
+    {"id":"007","s":"Acoustic Bass 1","m":"bass","fx":"highshelf","p":{"f":70,"g":14.2},"o":-1},
+    {"id":"008","s":"Acoustic Bass 1","m":"bass","fx":"highshelf","p":{"f":55.8,"g":-9.2},"o":-1},
+    {"id":"009","s":"Acoustic Bass 1","m":"bass","fx":"compressor","p":{"th":-67,"ra":6.7,"a":0.062,"rel":0.25,"mk":5.8},"o":-1},
+    {"id":"010","s":"Acoustic Bass 1","m":"bass","fx":"delay","p":{"t":0.7,"fb":0,"w":0.39},"o":-1},
+    {"id":"011","s":"Acoustic Bass 1","m":"bass","fx":"delay","p":{"t":0.7,"fb":0.61,"w":0.39},"o":-5},
+    {"id":"012","s":"Acoustic Bass 1","m":"bass","fx":"reverb","p":{"len":3.1,"w":41,"tone":65},"o":-3},
+    {"id":"013","s":"Acoustic Bass 1","m":"bass","fx":"tremolo","p":{"r":2.5,"d":1},"o":-3},
+    {"id":"014","s":"Acoustic Bass 1","m":"bass","fx":"vibrato","p":{"r":3.5,"d":0.2},"o":-3},
+    {"id":"015","s":"Acoustic Bass 1","m":"bass","fx":"chorus","p":{"r":1.2,"d":0.003,"mix":0.5},"o":-1},
+    {"id":"016","s":"Clarinet 1","m":"woodwind","fx":"lowpass","p":{"f":50.4},"o":0},
+    {"id":"017","s":"Clarinet 1","m":"woodwind","fx":"highpass","p":{"f":69.9},"o":0},
+    {"id":"018","s":"Clarinet 1","m":"woodwind","fx":"delay","p":{"t":0.6,"fb":0.48,"w":0.33},"o":-8},
+    {"id":"019","s":"Clarinet 1","m":"woodwind","fx":"delay","p":{"t":0.6,"fb":0,"w":0.33},"o":-8},
+    {"id":"020","s":"Clarinet 1","m":"woodwind","fx":"reverb","p":{"len":4.4,"w":53,"tone":50},"o":-8},
+    {"id":"021","s":"Clarinet 1","m":"woodwind","fx":"vibrato","p":{"r":2.9,"d":0.14},"o":-8},
+    {"id":"022","s":"Clarinet 1","m":"woodwind","fx":"chorus","p":{"r":1.2,"d":0.003,"mix":0.5},"o":-8},
+    {"id":"023","s":"Drum Set 1","m":"drums","fx":"lowpass","p":{"f":45.5},"o":-8},
+    {"id":"024","s":"Drum Set 1","m":"drums","fx":"highpass","p":{"f":57.2},"o":-8},
+    {"id":"025","s":"Drum Set 1","m":"drums","fx":"bandpass","p":{"f":47.9,"q":47.9},"o":-8},
+    {"id":"026","s":"Drum Set 1","m":"drums","fx":"notch","p":{"f":57.4,"q":4.4},"o":-8},
+    {"id":"027","s":"Drum Set 1","m":"drums","fx":"lowshelf","p":{"f":35,"g":8.3},"o":-8},
+    {"id":"028","s":"Drum Set 1","m":"drums","fx":"lowshelf","p":{"f":35,"g":-13.5},"o":-8},
+    {"id":"029","s":"Drum Set 1","m":"drums","fx":"highshelf","p":{"f":70,"g":9.4},"o":-8},
+    {"id":"030","s":"Drum Set 1","m":"drums","fx":"highshelf","p":{"f":70,"g":-6.9},"o":-8},
+    {"id":"031","s":"Drum Set 1","m":"drums","fx":"compressor","p":{"th":-67,"ra":7.9,"a":0.003,"rel":0.25,"mk":8.6},"o":-8},
+    {"id":"032","s":"Drum Set 1","m":"drums","fx":"distortion","p":{"od":48,"ds":0,"fz":0,"out":-6},"o":-8},
+    {"id":"033","s":"Drum Set 1","m":"drums","fx":"distortion","p":{"od":0,"ds":42,"fz":0,"out":-6},"o":-8},
+    {"id":"034","s":"Drum Set 1","m":"drums","fx":"distortion","p":{"od":0,"ds":0,"fz":37,"out":-6},"o":-8},
+    {"id":"035","s":"Drum Set 1","m":"drums","fx":"delay","p":{"t":0.25,"fb":0,"w":0.25},"o":-8},
+    {"id":"036","s":"Drum Set 1","m":"drums","fx":"delay","p":{"t":0.25,"fb":0.82,"w":0.25},"o":-8},
+    {"id":"037","s":"Drum Set 1","m":"drums","fx":"reverb","p":{"len":4.6,"w":49,"tone":70},"o":-8},
+    {"id":"038","s":"Drum Set 1","m":"drums","fx":"tremolo","p":{"r":7.3,"d":1},"o":-8},
+    {"id":"039","s":"Drum Set 1","m":"drums","fx":"flanger","p":{"r":0.22,"del":0.0022,"d":0.0018,"fb":0.38,"mix":0.5,"tone":12000},"o":-8},
+    {"id":"040","s":"Drum Set 1","m":"drums","fx":"noise-gate","p":{"th":0.2,"rel":0.05,"floor":0.02},"o":-8},
+    {"id":"041","s":"Flute 1","m":"woodwind","fx":"lowpass","p":{"f":46.2},"o":-8},
+    {"id":"042","s":"Flute 1","m":"woodwind","fx":"highpass","p":{"f":71.1},"o":-8},
+    {"id":"043","s":"Flute 1","m":"woodwind","fx":"compressor","p":{"th":-73,"ra":5.3,"a":0.003,"rel":0.25,"mk":7.4},"o":-8},
+    {"id":"044","s":"Flute 1","m":"woodwind","fx":"delay","p":{"t":0.56,"fb":0,"w":0.25},"o":-8},
+    {"id":"045","s":"Flute 1","m":"woodwind","fx":"delay","p":{"t":0.56,"fb":0.64,"w":0.25},"o":-8},
+    {"id":"046","s":"Flute 1","m":"woodwind","fx":"reverb","p":{"len":5.1,"w":53,"tone":55},"o":-8},
+    {"id":"047","s":"Flute 1","m":"woodwind","fx":"tremolo","p":{"r":9.3,"d":1},"o":-8},
+    {"id":"048","s":"Flute 1","m":"woodwind","fx":"vibrato","p":{"r":3,"d":0.2},"o":-8},
+    {"id":"049","s":"Flute 1","m":"woodwind","fx":"chorus","p":{"r":1.2,"d":0.003,"mix":0.5},"o":-8},
+    {"id":"050","s":"Acoustic Guitar 1","m":"guitar","fx":"lowpass","p":{"f":43.2},"o":-8},
+    {"id":"051","s":"Acoustic Guitar 1","m":"guitar","fx":"highpass","p":{"f":62.9},"o":-8},
+    {"id":"052","s":"Acoustic Guitar 1","m":"guitar","fx":"bandpass","p":{"f":46.5,"q":61.8},"o":-3},
+    {"id":"053","s":"Acoustic Guitar 1","m":"guitar","fx":"notch","p":{"f":40.8,"q":11.7},"o":-3},
+    {"id":"054","s":"Acoustic Guitar 1","m":"guitar","fx":"lowshelf","p":{"f":42.6,"g":7.7},"o":-8},
+    {"id":"055","s":"Acoustic Guitar 1","m":"guitar","fx":"lowshelf","p":{"f":42.6,"g":-9.7},"o":-8},
+    {"id":"056","s":"Acoustic Guitar 1","m":"guitar","fx":"highshelf","p":{"f":70,"g":12.4},"o":-8},
+    {"id":"057","s":"Acoustic Guitar 1","m":"guitar","fx":"highshelf","p":{"f":53.5,"g":-10.8},"o":-8},
+    {"id":"058","s":"Acoustic Guitar 1","m":"guitar","fx":"compressor","p":{"th":-80,"ra":6.7,"a":0.003,"rel":0.25,"mk":12.2},"o":-8},
+    {"id":"059","s":"Acoustic Guitar 1","m":"guitar","fx":"distortion","p":{"od":52,"ds":0,"fz":0,"out":-5},"o":-8},
+    {"id":"060","s":"Acoustic Guitar 1","m":"guitar","fx":"distortion","p":{"od":0,"ds":34,"fz":0,"out":-5},"o":-8},
+    {"id":"061","s":"Acoustic Guitar 1","m":"guitar","fx":"distortion","p":{"od":0,"ds":0,"fz":33,"out":-5},"o":-8},
+    {"id":"062","s":"Acoustic Guitar 1","m":"guitar","fx":"delay","p":{"t":0.49,"fb":0,"w":0.4},"o":-8},
+    {"id":"063","s":"Acoustic Guitar 1","m":"guitar","fx":"delay","p":{"t":0.49,"fb":0.71,"w":0.4},"o":-8},
+    {"id":"064","s":"Acoustic Guitar 1","m":"guitar","fx":"reverb","p":{"len":3.7,"w":48,"tone":50},"o":-8},
+    {"id":"065","s":"Acoustic Guitar 1","m":"guitar","fx":"tremolo","p":{"r":2.5,"d":1},"o":-8},
+    {"id":"066","s":"Acoustic Guitar 1","m":"guitar","fx":"vibrato","p":{"r":2.3,"d":0.2},"o":-8},
+    {"id":"067","s":"Acoustic Guitar 1","m":"guitar","fx":"chorus","p":{"r":1.2,"d":0.003,"mix":0.5},"o":-8},
+    {"id":"068","s":"Acoustic Guitar 1","m":"guitar","fx":"flanger","p":{"r":0.22,"del":0.0022,"d":0.0027,"fb":0.54,"mix":0.5,"tone":12000},"o":-8},
+    {"id":"069","s":"Acoustic Guitar 2","m":"guitar","fx":"lowpass","p":{"f":50.7},"o":-8},
+    {"id":"070","s":"Acoustic Guitar 2","m":"guitar","fx":"highpass","p":{"f":63.3},"o":-8},
+    {"id":"071","s":"Acoustic Guitar 2","m":"guitar","fx":"bandpass","p":{"f":57.7,"q":68.2},"o":0},
+    {"id":"072","s":"Acoustic Guitar 2","m":"guitar","fx":"notch","p":{"f":51.9,"q":3.1},"o":0},
+    {"id":"073","s":"Acoustic Guitar 2","m":"guitar","fx":"lowshelf","p":{"f":46.4,"g":6},"o":0},
+    {"id":"074","s":"Acoustic Guitar 2","m":"guitar","fx":"lowshelf","p":{"f":46.4,"g":-7.6},"o":0},
+    {"id":"075","s":"Acoustic Guitar 2","m":"guitar","fx":"highshelf","p":{"f":70,"g":14.1},"o":0},
+    {"id":"076","s":"Acoustic Guitar 2","m":"guitar","fx":"highshelf","p":{"f":70,"g":-6.4},"o":0},
+    {"id":"077","s":"Acoustic Guitar 2","m":"guitar","fx":"distortion","p":{"od":0,"ds":0,"fz":25,"out":-11},"o":0},
+    {"id":"078","s":"Acoustic Guitar 2","m":"guitar","fx":"distortion","p":{"od":0,"ds":38,"fz":0,"out":-11},"o":0},
+    {"id":"079","s":"Acoustic Guitar 2","m":"guitar","fx":"distortion","p":{"od":57,"ds":0,"fz":0,"out":-11},"o":0},
+    {"id":"080","s":"Acoustic Guitar 2","m":"guitar","fx":"delay","p":{"t":0.41,"fb":0,"w":0.37},"o":0},
+    {"id":"081","s":"Acoustic Guitar 2","m":"guitar","fx":"delay","p":{"t":0.41,"fb":0.66,"w":0.37},"o":0},
+    {"id":"082","s":"Acoustic Guitar 2","m":"guitar","fx":"reverb","p":{"len":4,"w":43,"tone":73},"o":0},
+    {"id":"083","s":"Acoustic Guitar 2","m":"guitar","fx":"tremolo","p":{"r":5.5,"d":1},"o":0},
+    {"id":"084","s":"Acoustic Guitar 2","m":"guitar","fx":"vibrato","p":{"r":2.2,"d":0.2},"o":0},
+    {"id":"085","s":"Acoustic Guitar 2","m":"guitar","fx":"chorus","p":{"r":1.2,"d":0.003,"mix":0.5},"o":0},
+    {"id":"086","s":"Acoustic Guitar 2","m":"guitar","fx":"flanger","p":{"r":0.48,"del":0.0022,"d":0.0018,"fb":0.38,"mix":0.5,"tone":12000},"o":0},
+    {"id":"087","s":"Acoustic Guitar 2","m":"guitar","fx":"noise-gate","p":{"th":0.135,"rel":0.05,"floor":0},"o":0}
   ]
 }
