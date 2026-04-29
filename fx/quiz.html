@@ -265,6 +265,7 @@
     }
   </style>
 </head>
+
 <body>
   <main class="quiz-page">
     <header class="quiz-header">
@@ -299,7 +300,7 @@
 
           <label>
             <input type="checkbox" class="fx-filter-check" value="distortion" checked />
-            Distortion
+            Distortion/Drive/Fuzz
           </label>
         </div>
 
@@ -325,6 +326,7 @@
 
       <form id="quizForm">
         <div id="answerChoices" class="answer-grid"></div>
+
         <div class="submit-row">
           <button id="submitAnswerBtn" class="primary-button" type="submit" disabled>Submit Answer</button>
           <button id="nextQuestionBtn" type="button" disabled>Next Example</button>
@@ -340,16 +342,27 @@
     <button id="pauseBtn" type="button">Pause</button>
     <button id="stopBtn" type="button">Stop</button>
     <button id="resetBtn" type="button">Reset FX</button>
+
     <input type="checkbox" id="loopToggle" />
+
     <div id="masterOutputHost"></div>
     <div id="activeSourceText">Active source: none loaded</div>
     <div id="statusText">Loading source library...</div>
-    <div class="meter"><div class="meter-fill" id="meterFill"></div></div>
-    <select id="categoryFilter"><option value="all">All categories</option></select>
+
+    <div class="meter">
+      <div class="meter-fill" id="meterFill"></div>
+    </div>
+
+    <select id="categoryFilter">
+      <option value="all">All categories</option>
+    </select>
+
     <input type="text" id="searchInput" />
     <input type="file" id="uploadInput" accept="audio/*" />
+
     <div id="libraryList"></div>
     <div id="effectsContainer"></div>
+
     <section id="presetCodePanel" class="preset-code-panel collapsed">
       <button id="presetCodeToggle" type="button" aria-expanded="false">Preset Code Builder</button>
       <textarea id="presetCodeField"></textarea>
@@ -359,23 +372,59 @@
   </div>
 
   <script>
+    window.FX_QUIZ_BANK_URL = "json/audio_fx_quiz_bank.json";
+
+    window.FX_QUIZ_DEFAULT_PROMPT =
+      "Listen to the processed audio. Which effect or processing module is active?";
+
+    window.FX_QUIZ_LABELS = {
+      lowpass: "Low-Pass Filter",
+      highpass: "High-Pass Filter",
+      bandpass: "Band-Pass Filter",
+      notch: "Band-Reject Filter",
+      lowshelf: "Low Shelf",
+      highshelf: "High Shelf",
+      compressor: "Compressor",
+      delay: "Delay",
+      reverb: "Reverb",
+      tremolo: "Tremolo",
+      vibrato: "Vibrato",
+      chorus: "Chorus",
+      flanger: "Flanger",
+      "noise-gate": "Noise Gate",
+      overdrive: "Overdrive",
+      distortion: "Distortion",
+      fuzz: "Fuzz"
+    };
+
+    window.FX_QUIZ_ANSWER_ORDER = [
+      "lowpass",
+      "highpass",
+      "bandpass",
+      "notch",
+      "lowshelf",
+      "highshelf",
+      "compressor",
+      "delay",
+      "reverb",
+      "tremolo",
+      "vibrato",
+      "chorus",
+      "flanger",
+      "noise-gate",
+      "overdrive",
+      "distortion",
+      "fuzz"
+    ];
+
     window.FX_QUIZ_CATEGORIES = {
       eq: [
         "lowpass",
-        "low pass",
         "highpass",
-        "high pass",
         "bandpass",
-        "band pass",
         "notch",
         "lowshelf",
-        "low shelf",
-        "low shelf boost",
-        "low shelf attenuate",
-        "highshelf",
-        "high shelf",
-        "high shelf boost",
-        "high shelf attenuate"
+        "highshelf"
       ],
       modulation: [
         "tremolo",
@@ -385,23 +434,146 @@
       ],
       dynamics: [
         "compressor",
-        "compression",
-        "noise gate",
-        "noise-gate",
-        "gate"
+        "noise-gate"
       ],
       delayReverb: [
         "delay",
-        "feed forward delay",
-        "feedback delay",
-        "reverb",
-        "reverberation"
+        "reverb"
       ],
       distortion: [
-        "distortion",
         "overdrive",
-        "drive"
+        "distortion",
+        "fuzz"
       ]
+    };
+
+    window.FX_QUIZ_PARAM_MAP = {
+      lowpass: {
+        f: "#lowpass-freq"
+      },
+      highpass: {
+        f: "#highpass-freq"
+      },
+      bandpass: {
+        f: "#bandpass-freq",
+        q: "#bandpass-q"
+      },
+      notch: {
+        f: "#notch-freq",
+        q: "#notch-q"
+      },
+      lowshelf: {
+        f: "#lowshelf-freq",
+        g: "#lowshelf-gain"
+      },
+      highshelf: {
+        f: "#highshelf-freq",
+        g: "#highshelf-gain"
+      },
+      compressor: {
+        th: "#compressor-threshold",
+        ra: "#compressor-ratio",
+        a: "#compressor-attack",
+        rel: "#compressor-release",
+        mk: "#compressor-makeup"
+      },
+      delay: {
+        t: "#delay-time",
+        fb: "#delay-feedback",
+        w: "#delay-wet"
+      },
+      reverb: {
+        len: "#reverb-length",
+        w: "#reverb-wet",
+        tone: "#reverb-tone"
+      },
+      tremolo: {
+        r: "#tremolo-rate",
+        d: "#tremolo-depth"
+      },
+      vibrato: {
+        r: "#vibrato-rate",
+        d: "#vibrato-depth"
+      },
+      chorus: {
+        r: "#chorus-rate",
+        d: "#chorus-depth",
+        mix: "#chorus-mix"
+      },
+      flanger: {
+        r: "#flanger-rate",
+        del: "#flanger-delay",
+        d: "#flanger-depth",
+        fb: "#flanger-feedback",
+        mix: "#flanger-mix",
+        tone: "#flanger-tone"
+      },
+      "noise-gate": {
+        th: "#noise-gate-threshold",
+        rel: "#noise-gate-release",
+        floor: "#noise-gate-floor"
+      },
+      distortion: {
+        od: "#distortion-overdrive",
+        ds: "#distortion-distortion",
+        fz: "#distortion-fuzz",
+        out: "#distortion-output"
+      }
+    };
+
+    window.FX_QUIZ_ENABLE_MAP = {
+      lowpass: "#lowpass-enabled",
+      highpass: "#highpass-enabled",
+      bandpass: "#bandpass-enabled",
+      notch: "#notch-enabled",
+      lowshelf: "#lowshelf-enabled",
+      highshelf: "#highshelf-enabled",
+      compressor: "#compressor-enabled",
+      delay: "#delay-enabled",
+      reverb: "#reverb-enabled",
+      tremolo: "#tremolo-enabled",
+      vibrato: "#vibrato-enabled",
+      chorus: "#chorus-enabled",
+      flanger: "#flanger-enabled",
+      "noise-gate": "#noise-gate-enabled",
+      distortion: "#distortion-enabled"
+    };
+
+    window.resolveFxQuizAnswerId = function (item) {
+      if (!item) {
+        return "";
+      }
+
+      if (item.answerId) {
+        return String(item.answerId);
+      }
+
+      if (item.fx === "distortion") {
+        const p = item.p || {};
+        const od = Number(p.od || 0);
+        const ds = Number(p.ds || 0);
+        const fz = Number(p.fz || 0);
+
+        if (od > 0 && od >= ds && od >= fz) {
+          return "overdrive";
+        }
+
+        if (ds > 0 && ds >= od && ds >= fz) {
+          return "distortion";
+        }
+
+        if (fz > 0 && fz >= od && fz >= ds) {
+          return "fuzz";
+        }
+
+        return "distortion";
+      }
+
+      return String(item.fx || "");
+    };
+
+    window.getFxQuizAnswerLabel = function (answerId) {
+      return window.FX_QUIZ_LABELS[answerId] || String(answerId || "");
     };
 
     window.getSelectedFxQuizCategories = function () {
@@ -409,29 +581,26 @@
         .map(input => input.value);
     };
 
-    window.getSelectedFxQuizKeywords = function () {
+    window.getSelectedFxQuizAnswerIds = function () {
       const selectedCategories = window.getSelectedFxQuizCategories();
-      return selectedCategories.flatMap(category => window.FX_QUIZ_CATEGORIES[category] || []);
+
+      return selectedCategories.flatMap(category => {
+        return window.FX_QUIZ_CATEGORIES[category] || [];
+      });
     };
 
-    window.fxQuizEffectMatchesSelectedCategories = function (effectName) {
-      const normalizedEffect = String(effectName || "")
-        .toLowerCase()
-        .replace(/[_-]+/g, " ");
+    window.fxQuizEffectMatchesSelectedCategories = function (itemOrEffectName) {
+      const selectedAnswerIds = window.getSelectedFxQuizAnswerIds();
 
-      const selectedKeywords = window.getSelectedFxQuizKeywords();
-
-      if (!selectedKeywords.length) {
+      if (!selectedAnswerIds.length) {
         return false;
       }
 
-      return selectedKeywords.some(keyword => {
-        const normalizedKeyword = String(keyword || "")
-          .toLowerCase()
-          .replace(/[_-]+/g, " ");
+      const answerId = typeof itemOrEffectName === "object"
+        ? window.resolveFxQuizAnswerId(itemOrEffectName)
+        : String(itemOrEffectName || "");
 
-        return normalizedEffect.includes(normalizedKeyword);
-      });
+      return selectedAnswerIds.includes(answerId);
     };
 
     window.addEventListener("DOMContentLoaded", () => {
@@ -451,7 +620,7 @@
           window.dispatchEvent(new CustomEvent("fxQuizGenerateRequested", {
             detail: {
               categories: window.getSelectedFxQuizCategories(),
-              keywords: window.getSelectedFxQuizKeywords()
+              answerIds: window.getSelectedFxQuizAnswerIds()
             }
           }));
         });
