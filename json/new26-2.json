@@ -452,7 +452,7 @@
       "production",
       "artist"
     ],
-    "featured": false,
+    "featured": true,
     "length": "4m55s",
     "songs": "Bloody Mary, Abracadabra, Judas, Poker Face, Bad Romance, Telephone, Born This Way (Lady Gaga)"
   },
@@ -770,7 +770,7 @@
       "hiphop",
       "artist"
     ],
-    "featured": false,
+    "featured": true,
     "length": "2m48s",
     "songs": "HUMBLE. (Kendrick Lamar), DNA. (Kendrick Lamar), Alright (Kendrick Lamar), King Kunta (Kendrick Lamar)"
   },
@@ -801,7 +801,7 @@
     "categories": [
       "themed"
     ],
-    "featured": true,
+    "featured": false,
     "length": "2m22s",
     "songs": "Magdalena (DLG), Lets Get Loud (Jennifer Lopez), Waka Waka (Shakira)"
   },
@@ -854,7 +854,7 @@
       "hiphop",
       "themed"
     ],
-    "featured": true,
+    "featured": false,
     "length": "3m33s",
     "songs": "Dandelion (Ariana Grande), Men in Black (Will Smith), The Sweet Escape (Gwen Stefani), Smooth Criminal (Michael Jackson)"
   },
@@ -940,7 +940,7 @@
       "hiphop",
       "artist"
     ],
-    "featured": true,
+    "featured": false,
     "length": "2m17s",
     "songs": "Grillz, Party People, Hot in Here, Get Loose (Nelly)"
   },
@@ -1138,7 +1138,7 @@
       "hiphop",
       "artist"
     ],
-    "featured": false,
+    "featured": true,
     "length": "1m59s",
     "songs": "Drop It Like It’s Hot, Signs, The Next Episode (Snoop Dogg)"
   },
