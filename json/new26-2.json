@@ -27,7 +27,7 @@
       "themed",
       "hiphop"
     ],
-    "featured": false,
+    "featured": true,
     "length": "2m27s",
     "songs": "Clique (Kanye), DOA Trump Money (Mix Mobster), Bring Em Out (TI), Yeah (Big Kuntry King)"
   },
@@ -111,7 +111,7 @@
     "categories": [
       "artist"
     ],
-    "featured": false,
+    "featured": true,
     "length": "2m08s",
     "songs": "Yaya, Sweet Honey Buckin, America Has a Problem (Beyonce)"
   },
@@ -205,7 +205,7 @@
     "categories": [
       "themed"
     ],
-    "featured": false,
+    "featured": true,
     "length": "2m00s",
     "songs": "Pure Imagination (Fiona Apple), I Want Candy (Melanie C), Tootsie Roll (69 Boyz), Candy Shop (50 Cent)"
   },
@@ -452,7 +452,7 @@
       "production",
       "artist"
     ],
-    "featured": true,
+    "featured": false,
     "length": "4m55s",
     "songs": "Bloody Mary, Abracadabra, Judas, Poker Face, Bad Romance, Telephone, Born This Way (Lady Gaga)"
   },
@@ -770,7 +770,7 @@
       "hiphop",
       "artist"
     ],
-    "featured": true,
+    "featured": false,
     "length": "2m48s",
     "songs": "HUMBLE. (Kendrick Lamar), DNA. (Kendrick Lamar), Alright (Kendrick Lamar), King Kunta (Kendrick Lamar)"
   },
@@ -1138,7 +1138,7 @@
       "hiphop",
       "artist"
     ],
-    "featured": true,
+    "featured": false,
     "length": "1m59s",
     "songs": "Drop It Like It’s Hot, Signs, The Next Episode (Snoop Dogg)"
   },
