@@ -27,7 +27,7 @@
       "themed",
       "hiphop"
     ],
-    "featured": true,
+    "featured": false,
     "length": "2m27s",
     "songs": "Clique (Kanye), DOA Trump Money (Mix Mobster), Bring Em Out (TI), Yeah (Big Kuntry King)"
   },
@@ -111,7 +111,7 @@
     "categories": [
       "artist"
     ],
-    "featured": true,
+    "featured": false,
     "length": "2m08s",
     "songs": "Yaya, Sweet Honey Buckin, America Has a Problem (Beyonce)"
   },
@@ -205,7 +205,7 @@
     "categories": [
       "themed"
     ],
-    "featured": true,
+    "featured": false,
     "length": "2m00s",
     "songs": "Pure Imagination (Fiona Apple), I Want Candy (Melanie C), Tootsie Roll (69 Boyz), Candy Shop (50 Cent)"
   },
@@ -781,7 +781,7 @@
       "artist",
       "production"
     ],
-    "featured": false,
+    "featured": true,
     "length": "5m02s",
     "songs": "Applause, Just Dance, Rain on Me, Abracadabra, Edge of Glory, Bad Romance (Lady Gaga)"
   },
@@ -801,7 +801,7 @@
     "categories": [
       "themed"
     ],
-    "featured": false,
+    "featured": true,
     "length": "2m22s",
     "songs": "Magdalena (DLG), Lets Get Loud (Jennifer Lopez), Waka Waka (Shakira)"
   },
@@ -854,7 +854,7 @@
       "hiphop",
       "themed"
     ],
-    "featured": false,
+    "featured": true,
     "length": "3m33s",
     "songs": "Dandelion (Ariana Grande), Men in Black (Will Smith), The Sweet Escape (Gwen Stefani), Smooth Criminal (Michael Jackson)"
   },
