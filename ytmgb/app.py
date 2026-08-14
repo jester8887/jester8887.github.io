@@ -51,7 +51,8 @@ PAGE = r"""<!doctype html>
     </select>
     <button type="submit">Download Audio</button>
   </form>
-  <p class="small">Use only for media you own or have permission to download. MP3 requires a lossy conversion from YouTube's source audio.</p>
+  <p class="small">Private cloud downloader using yt-dlp + Deno + FFmpeg + automatic YouTube PO-token provider.</p>
+  <p class="small">Use only for media you own or have permission to download.</p>
   <p class="small"><a href="/logout">Sign out</a></p>
 {% endif %}
 </div>
@@ -108,24 +109,28 @@ def download():
         "noplaylist": True,
         "quiet": False,
         "no_warnings": False,
+        "format": "bestaudio/best",
         "js_runtimes": {"deno": {}},
+        "extractor_args": {
+            "youtube": {
+                "player_client": ["mweb"]
+            },
+            "youtubepot-bgutilscript": {
+                "server_home": ["/root/bgutil-ytdlp-pot-provider/server"]
+            }
+        },
     }
 
     if mode == "mp3":
-        ydl_opts.update({
-            "format": "bestaudio/best",
-            "postprocessors": [{
-                "key": "FFmpegExtractAudio",
-                "preferredcodec": "mp3",
-                "preferredquality": "0",
-            }],
-        })
-    else:
-        ydl_opts["format"] = "bestaudio/best"
+        ydl_opts["postprocessors"] = [{
+            "key": "FFmpegExtractAudio",
+            "preferredcodec": "mp3",
+            "preferredquality": "0",
+        }]
 
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            info = ydl.extract_info(url, download=True)
+            ydl.extract_info(url, download=True)
 
         candidates = list(workdir.glob("*.mp3")) if mode == "mp3" else [p for p in workdir.iterdir() if p.is_file()]
         if not candidates:

@@ -1,15 +1,11 @@
-# YTMGB Render Web App
+# YTMGB — PO Token Fix
 
-Deploy this folder as a Render Web Service using Docker.
+This update adds the bgutil YouTube PO-token provider (v1.3.1), using Deno.
 
-Render settings:
+Render settings remain:
 - Root Directory: `ytmgb`
 - Runtime: Docker
-- Dockerfile: `Dockerfile`
+- Dockerfile: `./Dockerfile`
 
-Required environment variable:
-- `WEB_PASSWORD`: choose the private password you will use to access the downloader.
-
-`SECRET_KEY` can be generated automatically by Render if using `render.yaml`.
-
-Use only for media you own or have permission to download.
+No new Render environment variables are required.
+Existing `WEB_PASSWORD` and `SECRET_KEY` remain unchanged.
