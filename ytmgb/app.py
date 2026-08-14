@@ -109,6 +109,7 @@ def download():
         "noplaylist": True,
         "quiet": False,
         "no_warnings": False,
+        "verbose": True,
         "format": "bestaudio/best",
         "js_runtimes": {"deno": {}},
         "extractor_args": {
