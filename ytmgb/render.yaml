@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: ytmgb
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    envVars:
+      - key: WEB_PASSWORD
+        sync: false
+      - key: SECRET_KEY
+        generateValue: true
