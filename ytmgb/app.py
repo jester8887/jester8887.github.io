@@ -116,8 +116,8 @@ def download():
             "youtube": {
                 "player_client": ["mweb"]
             },
-            "youtubepot-bgutilscript": {
-                "server_home": ["/root/bgutil-ytdlp-pot-provider/server"]
+            "youtubepot-bgutilhttp": {
+                "base_url": ["http://127.0.0.1:4416"]
             }
         },
     }

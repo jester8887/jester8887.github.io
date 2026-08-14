@@ -4,12 +4,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ffmpeg curl unzip ca-certificates git \
     && rm -rf /var/lib/apt/lists/*
 
-# Deno: used both by yt-dlp's JS challenge solver and the PO-token provider.
 RUN curl -fsSL https://deno.land/install.sh | sh
 ENV DENO_INSTALL=/root/.deno
 ENV PATH="/root/.deno/bin:${PATH}"
 
-# Install the current bgutil PO-token generator in its default/root location.
 RUN git clone --depth 1 --branch 1.3.1 \
     https://github.com/Brainicism/bgutil-ytdlp-pot-provider.git \
     /root/bgutil-ytdlp-pot-provider \
@@ -19,8 +17,8 @@ RUN git clone --depth 1 --branch 1.3.1 \
 WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
-
 COPY . .
 
 ENV PYTHONUNBUFFERED=1
-CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:${PORT:-10000} --workers 1 --timeout 300 app:app"]
+
+CMD ["sh", "-c", "cd /root/bgutil-ytdlp-pot-provider/server/node_modules && deno run --allow-env --allow-net --allow-ffi=. --allow-read=. ../src/main.ts --port 4416 & sleep 3; cd /app && gunicorn --bind 0.0.0.0:${PORT:-10000} --workers 1 --timeout 300 app:app"]
