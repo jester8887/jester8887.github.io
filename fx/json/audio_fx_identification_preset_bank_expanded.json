@@ -1,0 +1,2961 @@
+{
+  "version": 2,
+  "app": "Audio FX Workshop",
+  "quizTitle": "Audio FX Identification Preset Bank",
+  "instructions": "Randomly select one item, load its preset, and ask students to identify the active audio effect/module.",
+  "key": {
+    "s": "source title",
+    "m": "source meta/category",
+    "fx": "effect/module id",
+    "p": "module parameters",
+    "o": "master output dB",
+    "f": "frequency",
+    "q": "Q",
+    "g": "gain",
+    "th": "threshold",
+    "ra": "ratio",
+    "a": "attack",
+    "rel": "release",
+    "mk": "makeup gain",
+    "od": "overdrive",
+    "ds": "distortion",
+    "fz": "fuzz",
+    "out": "distortion output",
+    "t": "delay time",
+    "fb": "feedback",
+    "w": "wet",
+    "len": "reverb length",
+    "r": "rate",
+    "d": "depth",
+    "del": "flanger delay",
+    "mix": "mix"
+  },
+  "labels": {
+    "lowpass": "Low-Pass Filter",
+    "highpass": "High-Pass Filter",
+    "bandpass": "Band-Pass Filter",
+    "notch": "Band-Reject Filter",
+    "lowshelf": "Low Shelf",
+    "highshelf": "High Shelf",
+    "compressor": "Compressor",
+    "distortion": "Analog Drive Stack",
+    "delay": "Delay",
+    "reverb": "Reverb",
+    "tremolo": "Tremolo",
+    "vibrato": "Vibrato",
+    "chorus": "Chorus",
+    "flanger": "Flanger",
+    "noise-gate": "Noise Gate"
+  },
+  "items": [
+    {
+      "id": "001",
+      "s": "Acoustic Bass 1",
+      "m": "bass",
+      "fx": "lowpass",
+      "p": {
+        "f": 19.8
+      },
+      "o": 0
+    },
+    {
+      "id": "002",
+      "s": "Acoustic Bass 1",
+      "m": "bass",
+      "fx": "highpass",
+      "p": {
+        "f": 61.3
+      },
+      "o": 4
+    },
+    {
+      "id": "003",
+      "s": "Acoustic Bass 1",
+      "m": "bass",
+      "fx": "bandpass",
+      "p": {
+        "f": 46.9,
+        "q": 60.2
+      },
+      "o": 4
+    },
+    {
+      "id": "004",
+      "s": "Acoustic Bass 1",
+      "m": "bass",
+      "fx": "notch",
+      "p": {
+        "f": 52.8,
+        "q": 8.5
+      },
+      "o": 4
+    },
+    {
+      "id": "005",
+      "s": "Acoustic Bass 1",
+      "m": "bass",
+      "fx": "lowshelf",
+      "p": {
+        "f": 35,
+        "g": 4.7
+      },
+      "o": -3
+    },
+    {
+      "id": "006",
+      "s": "Acoustic Bass 1",
+      "m": "bass",
+      "fx": "lowshelf",
+      "p": {
+        "f": 35,
+        "g": -6.9
+      },
+      "o": -1
+    },
+    {
+      "id": "007",
+      "s": "Acoustic Bass 1",
+      "m": "bass",
+      "fx": "highshelf",
+      "p": {
+        "f": 70,
+        "g": 14.2
+      },
+      "o": -1
+    },
+    {
+      "id": "008",
+      "s": "Acoustic Bass 1",
+      "m": "bass",
+      "fx": "highshelf",
+      "p": {
+        "f": 55.8,
+        "g": -9.2
+      },
+      "o": -1
+    },
+    {
+      "id": "009",
+      "s": "Acoustic Bass 1",
+      "m": "bass",
+      "fx": "compressor",
+      "p": {
+        "th": -67,
+        "ra": 6.7,
+        "a": 0.062,
+        "rel": 0.25,
+        "mk": 5.8
+      },
+      "o": -1
+    },
+    {
+      "id": "010",
+      "s": "Acoustic Bass 1",
+      "m": "bass",
+      "fx": "delay",
+      "p": {
+        "t": 0.7,
+        "fb": 0,
+        "w": 0.39
+      },
+      "o": -1
+    },
+    {
+      "id": "011",
+      "s": "Acoustic Bass 1",
+      "m": "bass",
+      "fx": "delay",
+      "p": {
+        "t": 0.7,
+        "fb": 0.61,
+        "w": 0.39
+      },
+      "o": -5
+    },
+    {
+      "id": "012",
+      "s": "Acoustic Bass 1",
+      "m": "bass",
+      "fx": "reverb",
+      "p": {
+        "len": 3.1,
+        "w": 41,
+        "tone": 65
+      },
+      "o": -3
+    },
+    {
+      "id": "013",
+      "s": "Acoustic Bass 1",
+      "m": "bass",
+      "fx": "tremolo",
+      "p": {
+        "r": 2.5,
+        "d": 1
+      },
+      "o": -3
+    },
+    {
+      "id": "014",
+      "s": "Acoustic Bass 1",
+      "m": "bass",
+      "fx": "vibrato",
+      "p": {
+        "r": 3.5,
+        "d": 0.2
+      },
+      "o": -3
+    },
+    {
+      "id": "015",
+      "s": "Acoustic Bass 1",
+      "m": "bass",
+      "fx": "chorus",
+      "p": {
+        "r": 1.2,
+        "d": 0.003,
+        "mix": 0.5
+      },
+      "o": -1
+    },
+    {
+      "id": "016",
+      "s": "Clarinet 1",
+      "m": "woodwind",
+      "fx": "lowpass",
+      "p": {
+        "f": 50.4
+      },
+      "o": 0
+    },
+    {
+      "id": "017",
+      "s": "Clarinet 1",
+      "m": "woodwind",
+      "fx": "highpass",
+      "p": {
+        "f": 69.9
+      },
+      "o": 0
+    },
+    {
+      "id": "018",
+      "s": "Clarinet 1",
+      "m": "woodwind",
+      "fx": "delay",
+      "p": {
+        "t": 0.6,
+        "fb": 0.48,
+        "w": 0.33
+      },
+      "o": -8
+    },
+    {
+      "id": "019",
+      "s": "Clarinet 1",
+      "m": "woodwind",
+      "fx": "delay",
+      "p": {
+        "t": 0.6,
+        "fb": 0,
+        "w": 0.33
+      },
+      "o": -8
+    },
+    {
+      "id": "020",
+      "s": "Clarinet 1",
+      "m": "woodwind",
+      "fx": "reverb",
+      "p": {
+        "len": 4.4,
+        "w": 53,
+        "tone": 50
+      },
+      "o": -8
+    },
+    {
+      "id": "021",
+      "s": "Clarinet 1",
+      "m": "woodwind",
+      "fx": "vibrato",
+      "p": {
+        "r": 2.9,
+        "d": 0.14
+      },
+      "o": -8
+    },
+    {
+      "id": "022",
+      "s": "Clarinet 1",
+      "m": "woodwind",
+      "fx": "chorus",
+      "p": {
+        "r": 1.2,
+        "d": 0.003,
+        "mix": 0.5
+      },
+      "o": -8
+    },
+    {
+      "id": "023",
+      "s": "Drum Set 1",
+      "m": "drums",
+      "fx": "lowpass",
+      "p": {
+        "f": 45.5
+      },
+      "o": -8
+    },
+    {
+      "id": "024",
+      "s": "Drum Set 1",
+      "m": "drums",
+      "fx": "highpass",
+      "p": {
+        "f": 57.2
+      },
+      "o": -8
+    },
+    {
+      "id": "025",
+      "s": "Drum Set 1",
+      "m": "drums",
+      "fx": "bandpass",
+      "p": {
+        "f": 47.9,
+        "q": 47.9
+      },
+      "o": -8
+    },
+    {
+      "id": "026",
+      "s": "Drum Set 1",
+      "m": "drums",
+      "fx": "notch",
+      "p": {
+        "f": 57.4,
+        "q": 4.4
+      },
+      "o": -8
+    },
+    {
+      "id": "027",
+      "s": "Drum Set 1",
+      "m": "drums",
+      "fx": "lowshelf",
+      "p": {
+        "f": 35,
+        "g": 8.3
+      },
+      "o": -8
+    },
+    {
+      "id": "028",
+      "s": "Drum Set 1",
+      "m": "drums",
+      "fx": "lowshelf",
+      "p": {
+        "f": 35,
+        "g": -13.5
+      },
+      "o": -8
+    },
+    {
+      "id": "029",
+      "s": "Drum Set 1",
+      "m": "drums",
+      "fx": "highshelf",
+      "p": {
+        "f": 70,
+        "g": 9.4
+      },
+      "o": -8
+    },
+    {
+      "id": "030",
+      "s": "Drum Set 1",
+      "m": "drums",
+      "fx": "highshelf",
+      "p": {
+        "f": 70,
+        "g": -6.9
+      },
+      "o": -8
+    },
+    {
+      "id": "031",
+      "s": "Drum Set 1",
+      "m": "drums",
+      "fx": "compressor",
+      "p": {
+        "th": -67,
+        "ra": 7.9,
+        "a": 0.003,
+        "rel": 0.25,
+        "mk": 8.6
+      },
+      "o": -8
+    },
+    {
+      "id": "032",
+      "s": "Drum Set 1",
+      "m": "drums",
+      "fx": "distortion",
+      "p": {
+        "od": 48,
+        "ds": 0,
+        "fz": 0,
+        "out": -6
+      },
+      "o": -8
+    },
+    {
+      "id": "033",
+      "s": "Drum Set 1",
+      "m": "drums",
+      "fx": "distortion",
+      "p": {
+        "od": 0,
+        "ds": 42,
+        "fz": 0,
+        "out": -6
+      },
+      "o": -8
+    },
+    {
+      "id": "034",
+      "s": "Drum Set 1",
+      "m": "drums",
+      "fx": "distortion",
+      "p": {
+        "od": 0,
+        "ds": 0,
+        "fz": 37,
+        "out": -6
+      },
+      "o": -8
+    },
+    {
+      "id": "035",
+      "s": "Drum Set 1",
+      "m": "drums",
+      "fx": "delay",
+      "p": {
+        "t": 0.25,
+        "fb": 0,
+        "w": 0.25
+      },
+      "o": -8
+    },
+    {
+      "id": "036",
+      "s": "Drum Set 1",
+      "m": "drums",
+      "fx": "delay",
+      "p": {
+        "t": 0.25,
+        "fb": 0.82,
+        "w": 0.25
+      },
+      "o": -8
+    },
+    {
+      "id": "037",
+      "s": "Drum Set 1",
+      "m": "drums",
+      "fx": "reverb",
+      "p": {
+        "len": 4.6,
+        "w": 49,
+        "tone": 70
+      },
+      "o": -8
+    },
+    {
+      "id": "038",
+      "s": "Drum Set 1",
+      "m": "drums",
+      "fx": "tremolo",
+      "p": {
+        "r": 7.3,
+        "d": 1
+      },
+      "o": -8
+    },
+    {
+      "id": "039",
+      "s": "Drum Set 1",
+      "m": "drums",
+      "fx": "flanger",
+      "p": {
+        "r": 0.22,
+        "del": 0.0022,
+        "d": 0.0018,
+        "fb": 0.38,
+        "mix": 0.5,
+        "tone": 12000
+      },
+      "o": -8
+    },
+    {
+      "id": "040",
+      "s": "Drum Set 1",
+      "m": "drums",
+      "fx": "noise-gate",
+      "p": {
+        "th": 0.2,
+        "rel": 0.05,
+        "floor": 0.02
+      },
+      "o": -8
+    },
+    {
+      "id": "041",
+      "s": "Flute 1",
+      "m": "woodwind",
+      "fx": "lowpass",
+      "p": {
+        "f": 46.2
+      },
+      "o": -8
+    },
+    {
+      "id": "042",
+      "s": "Flute 1",
+      "m": "woodwind",
+      "fx": "highpass",
+      "p": {
+        "f": 71.1
+      },
+      "o": -8
+    },
+    {
+      "id": "043",
+      "s": "Flute 1",
+      "m": "woodwind",
+      "fx": "compressor",
+      "p": {
+        "th": -73,
+        "ra": 5.3,
+        "a": 0.003,
+        "rel": 0.25,
+        "mk": 7.4
+      },
+      "o": -8
+    },
+    {
+      "id": "044",
+      "s": "Flute 1",
+      "m": "woodwind",
+      "fx": "delay",
+      "p": {
+        "t": 0.56,
+        "fb": 0,
+        "w": 0.25
+      },
+      "o": -8
+    },
+    {
+      "id": "045",
+      "s": "Flute 1",
+      "m": "woodwind",
+      "fx": "delay",
+      "p": {
+        "t": 0.56,
+        "fb": 0.64,
+        "w": 0.25
+      },
+      "o": -8
+    },
+    {
+      "id": "046",
+      "s": "Flute 1",
+      "m": "woodwind",
+      "fx": "reverb",
+      "p": {
+        "len": 5.1,
+        "w": 53,
+        "tone": 55
+      },
+      "o": -8
+    },
+    {
+      "id": "047",
+      "s": "Flute 1",
+      "m": "woodwind",
+      "fx": "tremolo",
+      "p": {
+        "r": 9.3,
+        "d": 1
+      },
+      "o": -8
+    },
+    {
+      "id": "048",
+      "s": "Flute 1",
+      "m": "woodwind",
+      "fx": "vibrato",
+      "p": {
+        "r": 3,
+        "d": 0.2
+      },
+      "o": -8
+    },
+    {
+      "id": "049",
+      "s": "Flute 1",
+      "m": "woodwind",
+      "fx": "chorus",
+      "p": {
+        "r": 1.2,
+        "d": 0.003,
+        "mix": 0.5
+      },
+      "o": -8
+    },
+    {
+      "id": "050",
+      "s": "Acoustic Guitar 1",
+      "m": "guitar",
+      "fx": "lowpass",
+      "p": {
+        "f": 43.2
+      },
+      "o": -8
+    },
+    {
+      "id": "051",
+      "s": "Acoustic Guitar 1",
+      "m": "guitar",
+      "fx": "highpass",
+      "p": {
+        "f": 62.9
+      },
+      "o": -8
+    },
+    {
+      "id": "052",
+      "s": "Acoustic Guitar 1",
+      "m": "guitar",
+      "fx": "bandpass",
+      "p": {
+        "f": 46.5,
+        "q": 61.8
+      },
+      "o": -3
+    },
+    {
+      "id": "053",
+      "s": "Acoustic Guitar 1",
+      "m": "guitar",
+      "fx": "notch",
+      "p": {
+        "f": 40.8,
+        "q": 11.7
+      },
+      "o": -3
+    },
+    {
+      "id": "054",
+      "s": "Acoustic Guitar 1",
+      "m": "guitar",
+      "fx": "lowshelf",
+      "p": {
+        "f": 42.6,
+        "g": 7.7
+      },
+      "o": -8
+    },
+    {
+      "id": "055",
+      "s": "Acoustic Guitar 1",
+      "m": "guitar",
+      "fx": "lowshelf",
+      "p": {
+        "f": 42.6,
+        "g": -9.7
+      },
+      "o": -8
+    },
+    {
+      "id": "056",
+      "s": "Acoustic Guitar 1",
+      "m": "guitar",
+      "fx": "highshelf",
+      "p": {
+        "f": 70,
+        "g": 12.4
+      },
+      "o": -8
+    },
+    {
+      "id": "057",
+      "s": "Acoustic Guitar 1",
+      "m": "guitar",
+      "fx": "highshelf",
+      "p": {
+        "f": 53.5,
+        "g": -10.8
+      },
+      "o": -8
+    },
+    {
+      "id": "058",
+      "s": "Acoustic Guitar 1",
+      "m": "guitar",
+      "fx": "compressor",
+      "p": {
+        "th": -80,
+        "ra": 6.7,
+        "a": 0.003,
+        "rel": 0.25,
+        "mk": 12.2
+      },
+      "o": -8
+    },
+    {
+      "id": "059",
+      "s": "Acoustic Guitar 1",
+      "m": "guitar",
+      "fx": "distortion",
+      "p": {
+        "od": 52,
+        "ds": 0,
+        "fz": 0,
+        "out": -5
+      },
+      "o": -8
+    },
+    {
+      "id": "060",
+      "s": "Acoustic Guitar 1",
+      "m": "guitar",
+      "fx": "distortion",
+      "p": {
+        "od": 0,
+        "ds": 34,
+        "fz": 0,
+        "out": -5
+      },
+      "o": -8
+    },
+    {
+      "id": "061",
+      "s": "Acoustic Guitar 1",
+      "m": "guitar",
+      "fx": "distortion",
+      "p": {
+        "od": 0,
+        "ds": 0,
+        "fz": 33,
+        "out": -5
+      },
+      "o": -8
+    },
+    {
+      "id": "062",
+      "s": "Acoustic Guitar 1",
+      "m": "guitar",
+      "fx": "delay",
+      "p": {
+        "t": 0.49,
+        "fb": 0,
+        "w": 0.4
+      },
+      "o": -8
+    },
+    {
+      "id": "063",
+      "s": "Acoustic Guitar 1",
+      "m": "guitar",
+      "fx": "delay",
+      "p": {
+        "t": 0.49,
+        "fb": 0.71,
+        "w": 0.4
+      },
+      "o": -8
+    },
+    {
+      "id": "064",
+      "s": "Acoustic Guitar 1",
+      "m": "guitar",
+      "fx": "reverb",
+      "p": {
+        "len": 3.7,
+        "w": 48,
+        "tone": 50
+      },
+      "o": -8
+    },
+    {
+      "id": "065",
+      "s": "Acoustic Guitar 1",
+      "m": "guitar",
+      "fx": "tremolo",
+      "p": {
+        "r": 2.5,
+        "d": 1
+      },
+      "o": -8
+    },
+    {
+      "id": "066",
+      "s": "Acoustic Guitar 1",
+      "m": "guitar",
+      "fx": "vibrato",
+      "p": {
+        "r": 2.3,
+        "d": 0.2
+      },
+      "o": -8
+    },
+    {
+      "id": "067",
+      "s": "Acoustic Guitar 1",
+      "m": "guitar",
+      "fx": "chorus",
+      "p": {
+        "r": 1.2,
+        "d": 0.003,
+        "mix": 0.5
+      },
+      "o": -8
+    },
+    {
+      "id": "068",
+      "s": "Acoustic Guitar 1",
+      "m": "guitar",
+      "fx": "flanger",
+      "p": {
+        "r": 0.22,
+        "del": 0.0022,
+        "d": 0.0027,
+        "fb": 0.54,
+        "mix": 0.5,
+        "tone": 12000
+      },
+      "o": -8
+    },
+    {
+      "id": "069",
+      "s": "Acoustic Guitar 2",
+      "m": "guitar",
+      "fx": "lowpass",
+      "p": {
+        "f": 50.7
+      },
+      "o": -8
+    },
+    {
+      "id": "070",
+      "s": "Acoustic Guitar 2",
+      "m": "guitar",
+      "fx": "highpass",
+      "p": {
+        "f": 63.3
+      },
+      "o": -8
+    },
+    {
+      "id": "071",
+      "s": "Acoustic Guitar 2",
+      "m": "guitar",
+      "fx": "bandpass",
+      "p": {
+        "f": 57.7,
+        "q": 68.2
+      },
+      "o": 0
+    },
+    {
+      "id": "072",
+      "s": "Acoustic Guitar 2",
+      "m": "guitar",
+      "fx": "notch",
+      "p": {
+        "f": 51.9,
+        "q": 3.1
+      },
+      "o": 0
+    },
+    {
+      "id": "073",
+      "s": "Acoustic Guitar 2",
+      "m": "guitar",
+      "fx": "lowshelf",
+      "p": {
+        "f": 46.4,
+        "g": 6
+      },
+      "o": 0
+    },
+    {
+      "id": "074",
+      "s": "Acoustic Guitar 2",
+      "m": "guitar",
+      "fx": "lowshelf",
+      "p": {
+        "f": 46.4,
+        "g": -7.6
+      },
+      "o": 0
+    },
+    {
+      "id": "075",
+      "s": "Acoustic Guitar 2",
+      "m": "guitar",
+      "fx": "highshelf",
+      "p": {
+        "f": 70,
+        "g": 14.1
+      },
+      "o": 0
+    },
+    {
+      "id": "076",
+      "s": "Acoustic Guitar 2",
+      "m": "guitar",
+      "fx": "highshelf",
+      "p": {
+        "f": 70,
+        "g": -6.4
+      },
+      "o": 0
+    },
+    {
+      "id": "077",
+      "s": "Acoustic Guitar 2",
+      "m": "guitar",
+      "fx": "distortion",
+      "p": {
+        "od": 0,
+        "ds": 0,
+        "fz": 25,
+        "out": -11
+      },
+      "o": 0
+    },
+    {
+      "id": "078",
+      "s": "Acoustic Guitar 2",
+      "m": "guitar",
+      "fx": "distortion",
+      "p": {
+        "od": 0,
+        "ds": 38,
+        "fz": 0,
+        "out": -11
+      },
+      "o": 0
+    },
+    {
+      "id": "079",
+      "s": "Acoustic Guitar 2",
+      "m": "guitar",
+      "fx": "distortion",
+      "p": {
+        "od": 57,
+        "ds": 0,
+        "fz": 0,
+        "out": -11
+      },
+      "o": 0
+    },
+    {
+      "id": "080",
+      "s": "Acoustic Guitar 2",
+      "m": "guitar",
+      "fx": "delay",
+      "p": {
+        "t": 0.41,
+        "fb": 0,
+        "w": 0.37
+      },
+      "o": 0
+    },
+    {
+      "id": "081",
+      "s": "Acoustic Guitar 2",
+      "m": "guitar",
+      "fx": "delay",
+      "p": {
+        "t": 0.41,
+        "fb": 0.66,
+        "w": 0.37
+      },
+      "o": 0
+    },
+    {
+      "id": "082",
+      "s": "Acoustic Guitar 2",
+      "m": "guitar",
+      "fx": "reverb",
+      "p": {
+        "len": 4,
+        "w": 43,
+        "tone": 73
+      },
+      "o": 0
+    },
+    {
+      "id": "083",
+      "s": "Acoustic Guitar 2",
+      "m": "guitar",
+      "fx": "tremolo",
+      "p": {
+        "r": 5.5,
+        "d": 1
+      },
+      "o": 0
+    },
+    {
+      "id": "084",
+      "s": "Acoustic Guitar 2",
+      "m": "guitar",
+      "fx": "vibrato",
+      "p": {
+        "r": 2.2,
+        "d": 0.2
+      },
+      "o": 0
+    },
+    {
+      "id": "085",
+      "s": "Acoustic Guitar 2",
+      "m": "guitar",
+      "fx": "chorus",
+      "p": {
+        "r": 1.2,
+        "d": 0.003,
+        "mix": 0.5
+      },
+      "o": 0
+    },
+    {
+      "id": "086",
+      "s": "Acoustic Guitar 2",
+      "m": "guitar",
+      "fx": "flanger",
+      "p": {
+        "r": 0.48,
+        "del": 0.0022,
+        "d": 0.0018,
+        "fb": 0.38,
+        "mix": 0.5,
+        "tone": 12000
+      },
+      "o": 0
+    },
+    {
+      "id": "087",
+      "s": "Acoustic Guitar 2",
+      "m": "guitar",
+      "fx": "noise-gate",
+      "p": {
+        "th": 0.135,
+        "rel": 0.05,
+        "floor": 0
+      },
+      "o": 0
+    },
+    {
+      "id": "088",
+      "s": "Acoustic Guitar 2",
+      "m": "guitar",
+      "fx": "compressor",
+      "p": {
+        "th": -72,
+        "ra": 7.0,
+        "a": 0.003,
+        "rel": 0.25,
+        "mk": 9.0
+      },
+      "o": 0
+    },
+    {
+      "id": "089",
+      "s": "Acoustic Guitar 3",
+      "m": "guitar",
+      "fx": "lowpass",
+      "p": {
+        "f": 160
+      },
+      "o": -8
+    },
+    {
+      "id": "090",
+      "s": "Acoustic Guitar 3",
+      "m": "guitar",
+      "fx": "highpass",
+      "p": {
+        "f": 220
+      },
+      "o": -8
+    },
+    {
+      "id": "091",
+      "s": "Acoustic Guitar 3",
+      "m": "guitar",
+      "fx": "bandpass",
+      "p": {
+        "f": 500,
+        "q": 12
+      },
+      "o": -8
+    },
+    {
+      "id": "092",
+      "s": "Acoustic Guitar 3",
+      "m": "guitar",
+      "fx": "notch",
+      "p": {
+        "f": 500,
+        "q": 6
+      },
+      "o": -8
+    },
+    {
+      "id": "093",
+      "s": "Acoustic Guitar 3",
+      "m": "guitar",
+      "fx": "lowshelf",
+      "p": {
+        "f": 500,
+        "g": 10
+      },
+      "o": -8
+    },
+    {
+      "id": "094",
+      "s": "Acoustic Guitar 3",
+      "m": "guitar",
+      "fx": "lowshelf",
+      "p": {
+        "f": 500,
+        "g": -10
+      },
+      "o": -8
+    },
+    {
+      "id": "095",
+      "s": "Acoustic Guitar 3",
+      "m": "guitar",
+      "fx": "highshelf",
+      "p": {
+        "f": 500,
+        "g": 12
+      },
+      "o": -8
+    },
+    {
+      "id": "096",
+      "s": "Acoustic Guitar 3",
+      "m": "guitar",
+      "fx": "highshelf",
+      "p": {
+        "f": 500,
+        "g": -12
+      },
+      "o": -8
+    },
+    {
+      "id": "097",
+      "s": "Acoustic Guitar 3",
+      "m": "guitar",
+      "fx": "compressor",
+      "p": {
+        "th": -72,
+        "ra": 7.0,
+        "a": 0.003,
+        "rel": 0.25,
+        "mk": 9.0
+      },
+      "o": -8
+    },
+    {
+      "id": "098",
+      "s": "Acoustic Guitar 3",
+      "m": "guitar",
+      "fx": "delay",
+      "p": {
+        "t": 0.48,
+        "fb": 0,
+        "w": 0.38
+      },
+      "o": -8
+    },
+    {
+      "id": "099",
+      "s": "Acoustic Guitar 3",
+      "m": "guitar",
+      "fx": "delay",
+      "p": {
+        "t": 0.48,
+        "fb": 0.7,
+        "w": 0.38
+      },
+      "o": -8
+    },
+    {
+      "id": "100",
+      "s": "Acoustic Guitar 3",
+      "m": "guitar",
+      "fx": "reverb",
+      "p": {
+        "len": 4.1,
+        "w": 48,
+        "tone": 58
+      },
+      "o": -8
+    },
+    {
+      "id": "101",
+      "s": "Acoustic Guitar 3",
+      "m": "guitar",
+      "fx": "tremolo",
+      "p": {
+        "r": 4.0,
+        "d": 1
+      },
+      "o": -8
+    },
+    {
+      "id": "102",
+      "s": "Acoustic Guitar 3",
+      "m": "guitar",
+      "fx": "vibrato",
+      "p": {
+        "r": 2.6,
+        "d": 0.2
+      },
+      "o": -8
+    },
+    {
+      "id": "103",
+      "s": "Acoustic Guitar 3",
+      "m": "guitar",
+      "fx": "chorus",
+      "p": {
+        "r": 1.2,
+        "d": 0.003,
+        "mix": 0.5
+      },
+      "o": -8
+    },
+    {
+      "id": "104",
+      "s": "Acoustic Guitar 3",
+      "m": "guitar",
+      "fx": "flanger",
+      "p": {
+        "r": 0.35,
+        "del": 0.0022,
+        "d": 0.0024,
+        "fb": 0.46,
+        "mix": 0.5,
+        "tone": 12000
+      },
+      "o": -8
+    },
+    {
+      "id": "105",
+      "s": "Acoustic Guitar 3",
+      "m": "guitar",
+      "fx": "noise-gate",
+      "p": {
+        "th": 0.175,
+        "rel": 0.05,
+        "floor": 0
+      },
+      "o": -8
+    },
+    {
+      "id": "106",
+      "s": "Clean Electric Guitar 1",
+      "m": "guitar",
+      "fx": "lowpass",
+      "p": {
+        "f": 120
+      },
+      "o": -8
+    },
+    {
+      "id": "107",
+      "s": "Clean Electric Guitar 1",
+      "m": "guitar",
+      "fx": "highpass",
+      "p": {
+        "f": 220
+      },
+      "o": -8
+    },
+    {
+      "id": "108",
+      "s": "Clean Electric Guitar 1",
+      "m": "guitar",
+      "fx": "bandpass",
+      "p": {
+        "f": 400,
+        "q": 12
+      },
+      "o": -8
+    },
+    {
+      "id": "109",
+      "s": "Clean Electric Guitar 1",
+      "m": "guitar",
+      "fx": "notch",
+      "p": {
+        "f": 400,
+        "q": 6
+      },
+      "o": -8
+    },
+    {
+      "id": "110",
+      "s": "Clean Electric Guitar 1",
+      "m": "guitar",
+      "fx": "lowshelf",
+      "p": {
+        "f": 200,
+        "g": 10
+      },
+      "o": -8
+    },
+    {
+      "id": "111",
+      "s": "Clean Electric Guitar 1",
+      "m": "guitar",
+      "fx": "lowshelf",
+      "p": {
+        "f": 200,
+        "g": -10
+      },
+      "o": -8
+    },
+    {
+      "id": "112",
+      "s": "Clean Electric Guitar 1",
+      "m": "guitar",
+      "fx": "highshelf",
+      "p": {
+        "f": 200,
+        "g": 12
+      },
+      "o": -8
+    },
+    {
+      "id": "113",
+      "s": "Clean Electric Guitar 1",
+      "m": "guitar",
+      "fx": "highshelf",
+      "p": {
+        "f": 200,
+        "g": -12
+      },
+      "o": -8
+    },
+    {
+      "id": "114",
+      "s": "Clean Electric Guitar 1",
+      "m": "guitar",
+      "fx": "distortion",
+      "p": {
+        "od": 55,
+        "ds": 0,
+        "fz": 0,
+        "out": -8
+      },
+      "o": -8
+    },
+    {
+      "id": "115",
+      "s": "Clean Electric Guitar 1",
+      "m": "guitar",
+      "fx": "distortion",
+      "p": {
+        "od": 0,
+        "ds": 40,
+        "fz": 0,
+        "out": -8
+      },
+      "o": -8
+    },
+    {
+      "id": "116",
+      "s": "Clean Electric Guitar 1",
+      "m": "guitar",
+      "fx": "distortion",
+      "p": {
+        "od": 0,
+        "ds": 0,
+        "fz": 32,
+        "out": -8
+      },
+      "o": -8
+    },
+    {
+      "id": "117",
+      "s": "Clean Electric Guitar 1",
+      "m": "guitar",
+      "fx": "delay",
+      "p": {
+        "t": 0.43,
+        "fb": 0,
+        "w": 0.38
+      },
+      "o": -8
+    },
+    {
+      "id": "118",
+      "s": "Clean Electric Guitar 1",
+      "m": "guitar",
+      "fx": "delay",
+      "p": {
+        "t": 0.43,
+        "fb": 0.7,
+        "w": 0.38
+      },
+      "o": -8
+    },
+    {
+      "id": "119",
+      "s": "Clean Electric Guitar 1",
+      "m": "guitar",
+      "fx": "reverb",
+      "p": {
+        "len": 4.0,
+        "w": 48,
+        "tone": 60
+      },
+      "o": -8
+    },
+    {
+      "id": "120",
+      "s": "Clean Electric Guitar 1",
+      "m": "guitar",
+      "fx": "tremolo",
+      "p": {
+        "r": 5.5,
+        "d": 1
+      },
+      "o": -8
+    },
+    {
+      "id": "121",
+      "s": "Clean Electric Guitar 1",
+      "m": "guitar",
+      "fx": "vibrato",
+      "p": {
+        "r": 3.2,
+        "d": 0.2
+      },
+      "o": -8
+    },
+    {
+      "id": "122",
+      "s": "Clean Electric Guitar 1",
+      "m": "guitar",
+      "fx": "chorus",
+      "p": {
+        "r": 1.2,
+        "d": 0.003,
+        "mix": 0.5
+      },
+      "o": -8
+    },
+    {
+      "id": "123",
+      "s": "Clean Electric Guitar 1",
+      "m": "guitar",
+      "fx": "flanger",
+      "p": {
+        "r": 0.35,
+        "del": 0.0022,
+        "d": 0.0024,
+        "fb": 0.5,
+        "mix": 0.5,
+        "tone": 12000
+      },
+      "o": -8
+    },
+    {
+      "id": "124",
+      "s": "Distorted Electric Guitar 1",
+      "m": "guitar",
+      "fx": "lowpass",
+      "p": {
+        "f": 180
+      },
+      "o": -8
+    },
+    {
+      "id": "125",
+      "s": "Distorted Electric Guitar 1",
+      "m": "guitar",
+      "fx": "highpass",
+      "p": {
+        "f": 500
+      },
+      "o": -8
+    },
+    {
+      "id": "126",
+      "s": "Distorted Electric Guitar 1",
+      "m": "guitar",
+      "fx": "bandpass",
+      "p": {
+        "f": 300,
+        "q": 12
+      },
+      "o": -8
+    },
+    {
+      "id": "127",
+      "s": "Distorted Electric Guitar 1",
+      "m": "guitar",
+      "fx": "notch",
+      "p": {
+        "f": 300,
+        "q": 6
+      },
+      "o": -8
+    },
+    {
+      "id": "128",
+      "s": "Distorted Electric Guitar 1",
+      "m": "guitar",
+      "fx": "lowshelf",
+      "p": {
+        "f": 200,
+        "g": 10
+      },
+      "o": -8
+    },
+    {
+      "id": "129",
+      "s": "Distorted Electric Guitar 1",
+      "m": "guitar",
+      "fx": "lowshelf",
+      "p": {
+        "f": 200,
+        "g": -10
+      },
+      "o": -8
+    },
+    {
+      "id": "130",
+      "s": "Distorted Electric Guitar 1",
+      "m": "guitar",
+      "fx": "highshelf",
+      "p": {
+        "f": 200,
+        "g": 12
+      },
+      "o": -8
+    },
+    {
+      "id": "131",
+      "s": "Distorted Electric Guitar 1",
+      "m": "guitar",
+      "fx": "highshelf",
+      "p": {
+        "f": 200,
+        "g": -12
+      },
+      "o": -8
+    },
+    {
+      "id": "132",
+      "s": "Distorted Electric Guitar 1",
+      "m": "guitar",
+      "fx": "delay",
+      "p": {
+        "t": 0.36,
+        "fb": 0,
+        "w": 0.34
+      },
+      "o": -8
+    },
+    {
+      "id": "133",
+      "s": "Distorted Electric Guitar 1",
+      "m": "guitar",
+      "fx": "delay",
+      "p": {
+        "t": 0.36,
+        "fb": 0.68,
+        "w": 0.34
+      },
+      "o": -8
+    },
+    {
+      "id": "134",
+      "s": "Distorted Electric Guitar 1",
+      "m": "guitar",
+      "fx": "reverb",
+      "p": {
+        "len": 3.8,
+        "w": 44,
+        "tone": 60
+      },
+      "o": -8
+    },
+    {
+      "id": "135",
+      "s": "Distorted Electric Guitar 1",
+      "m": "guitar",
+      "fx": "tremolo",
+      "p": {
+        "r": 6.0,
+        "d": 1
+      },
+      "o": -8
+    },
+    {
+      "id": "136",
+      "s": "Distorted Electric Guitar 1",
+      "m": "guitar",
+      "fx": "flanger",
+      "p": {
+        "r": 0.3,
+        "del": 0.0022,
+        "d": 0.0025,
+        "fb": 0.52,
+        "mix": 0.5,
+        "tone": 12000
+      },
+      "o": -8
+    },
+    {
+      "id": "137",
+      "s": "Marimba 1",
+      "m": "percussion",
+      "fx": "lowpass",
+      "p": {
+        "f": 400
+      },
+      "o": -8
+    },
+    {
+      "id": "138",
+      "s": "Marimba 1",
+      "m": "percussion",
+      "fx": "highpass",
+      "p": {
+        "f": 650
+      },
+      "o": -8
+    },
+    {
+      "id": "139",
+      "s": "Marimba 1",
+      "m": "percussion",
+      "fx": "bandpass",
+      "p": {
+        "f": 500,
+        "q": 12
+      },
+      "o": -8
+    },
+    {
+      "id": "140",
+      "s": "Marimba 1",
+      "m": "percussion",
+      "fx": "lowshelf",
+      "p": {
+        "f": 500,
+        "g": 10
+      },
+      "o": -8
+    },
+    {
+      "id": "141",
+      "s": "Marimba 1",
+      "m": "percussion",
+      "fx": "lowshelf",
+      "p": {
+        "f": 500,
+        "g": -10
+      },
+      "o": -8
+    },
+    {
+      "id": "142",
+      "s": "Marimba 1",
+      "m": "percussion",
+      "fx": "highshelf",
+      "p": {
+        "f": 500,
+        "g": 12
+      },
+      "o": -8
+    },
+    {
+      "id": "143",
+      "s": "Marimba 1",
+      "m": "percussion",
+      "fx": "highshelf",
+      "p": {
+        "f": 500,
+        "g": -12
+      },
+      "o": -8
+    },
+    {
+      "id": "144",
+      "s": "Marimba 1",
+      "m": "percussion",
+      "fx": "distortion",
+      "p": {
+        "od": 52,
+        "ds": 0,
+        "fz": 0,
+        "out": -8
+      },
+      "o": -8
+    },
+    {
+      "id": "145",
+      "s": "Marimba 1",
+      "m": "percussion",
+      "fx": "distortion",
+      "p": {
+        "od": 0,
+        "ds": 40,
+        "fz": 0,
+        "out": -8
+      },
+      "o": -8
+    },
+    {
+      "id": "146",
+      "s": "Marimba 1",
+      "m": "percussion",
+      "fx": "distortion",
+      "p": {
+        "od": 0,
+        "ds": 0,
+        "fz": 32,
+        "out": -8
+      },
+      "o": -8
+    },
+    {
+      "id": "147",
+      "s": "Marimba 1",
+      "m": "percussion",
+      "fx": "delay",
+      "p": {
+        "t": 0.33,
+        "fb": 0,
+        "w": 0.34
+      },
+      "o": -8
+    },
+    {
+      "id": "148",
+      "s": "Marimba 1",
+      "m": "percussion",
+      "fx": "delay",
+      "p": {
+        "t": 0.33,
+        "fb": 0.72,
+        "w": 0.34
+      },
+      "o": -8
+    },
+    {
+      "id": "149",
+      "s": "Marimba 1",
+      "m": "percussion",
+      "fx": "reverb",
+      "p": {
+        "len": 4.3,
+        "w": 48,
+        "tone": 62
+      },
+      "o": -8
+    },
+    {
+      "id": "150",
+      "s": "Marimba 1",
+      "m": "percussion",
+      "fx": "chorus",
+      "p": {
+        "r": 1.2,
+        "d": 0.003,
+        "mix": 0.5
+      },
+      "o": -8
+    },
+    {
+      "id": "151",
+      "s": "Organ 1",
+      "m": "keys",
+      "fx": "lowpass",
+      "p": {
+        "f": 180
+      },
+      "o": -8
+    },
+    {
+      "id": "152",
+      "s": "Organ 1",
+      "m": "keys",
+      "fx": "highpass",
+      "p": {
+        "f": 350
+      },
+      "o": -8
+    },
+    {
+      "id": "153",
+      "s": "Organ 1",
+      "m": "keys",
+      "fx": "bandpass",
+      "p": {
+        "f": 500,
+        "q": 12
+      },
+      "o": -8
+    },
+    {
+      "id": "154",
+      "s": "Organ 1",
+      "m": "keys",
+      "fx": "notch",
+      "p": {
+        "f": 500,
+        "q": 6
+      },
+      "o": -8
+    },
+    {
+      "id": "155",
+      "s": "Organ 1",
+      "m": "keys",
+      "fx": "lowshelf",
+      "p": {
+        "f": 500,
+        "g": 10
+      },
+      "o": -8
+    },
+    {
+      "id": "156",
+      "s": "Organ 1",
+      "m": "keys",
+      "fx": "lowshelf",
+      "p": {
+        "f": 500,
+        "g": -10
+      },
+      "o": -8
+    },
+    {
+      "id": "157",
+      "s": "Organ 1",
+      "m": "keys",
+      "fx": "highshelf",
+      "p": {
+        "f": 500,
+        "g": 12
+      },
+      "o": -8
+    },
+    {
+      "id": "158",
+      "s": "Organ 1",
+      "m": "keys",
+      "fx": "highshelf",
+      "p": {
+        "f": 500,
+        "g": -12
+      },
+      "o": -8
+    },
+    {
+      "id": "159",
+      "s": "Organ 1",
+      "m": "keys",
+      "fx": "distortion",
+      "p": {
+        "od": 52,
+        "ds": 0,
+        "fz": 0,
+        "out": -8
+      },
+      "o": -8
+    },
+    {
+      "id": "160",
+      "s": "Organ 1",
+      "m": "keys",
+      "fx": "distortion",
+      "p": {
+        "od": 0,
+        "ds": 40,
+        "fz": 0,
+        "out": -8
+      },
+      "o": -8
+    },
+    {
+      "id": "161",
+      "s": "Organ 1",
+      "m": "keys",
+      "fx": "distortion",
+      "p": {
+        "od": 0,
+        "ds": 0,
+        "fz": 32,
+        "out": -8
+      },
+      "o": -8
+    },
+    {
+      "id": "162",
+      "s": "Organ 1",
+      "m": "keys",
+      "fx": "tremolo",
+      "p": {
+        "r": 7.0,
+        "d": 1
+      },
+      "o": -8
+    },
+    {
+      "id": "163",
+      "s": "Organ 1",
+      "m": "keys",
+      "fx": "vibrato",
+      "p": {
+        "r": 4.0,
+        "d": 0.2
+      },
+      "o": -8
+    },
+    {
+      "id": "164",
+      "s": "Piano 1",
+      "m": "keys",
+      "fx": "lowpass",
+      "p": {
+        "f": 300
+      },
+      "o": -8
+    },
+    {
+      "id": "165",
+      "s": "Piano 1",
+      "m": "keys",
+      "fx": "highpass",
+      "p": {
+        "f": 700
+      },
+      "o": -8
+    },
+    {
+      "id": "166",
+      "s": "Piano 1",
+      "m": "keys",
+      "fx": "bandpass",
+      "p": {
+        "f": 500,
+        "q": 12
+      },
+      "o": -8
+    },
+    {
+      "id": "167",
+      "s": "Piano 1",
+      "m": "keys",
+      "fx": "notch",
+      "p": {
+        "f": 500,
+        "q": 6
+      },
+      "o": -8
+    },
+    {
+      "id": "168",
+      "s": "Piano 1",
+      "m": "keys",
+      "fx": "lowshelf",
+      "p": {
+        "f": 500,
+        "g": 10
+      },
+      "o": -8
+    },
+    {
+      "id": "169",
+      "s": "Piano 1",
+      "m": "keys",
+      "fx": "lowshelf",
+      "p": {
+        "f": 500,
+        "g": -10
+      },
+      "o": -8
+    },
+    {
+      "id": "170",
+      "s": "Piano 1",
+      "m": "keys",
+      "fx": "highshelf",
+      "p": {
+        "f": 500,
+        "g": 12
+      },
+      "o": -8
+    },
+    {
+      "id": "171",
+      "s": "Piano 1",
+      "m": "keys",
+      "fx": "highshelf",
+      "p": {
+        "f": 500,
+        "g": -12
+      },
+      "o": -8
+    },
+    {
+      "id": "172",
+      "s": "Piano 1",
+      "m": "keys",
+      "fx": "compressor",
+      "p": {
+        "th": -55,
+        "ra": 10.0,
+        "a": 0.003,
+        "rel": 0.25,
+        "mk": 10.0
+      },
+      "o": -8
+    },
+    {
+      "id": "173",
+      "s": "Piano 1",
+      "m": "keys",
+      "fx": "distortion",
+      "p": {
+        "od": 55,
+        "ds": 0,
+        "fz": 0,
+        "out": -8
+      },
+      "o": -8
+    },
+    {
+      "id": "174",
+      "s": "Piano 1",
+      "m": "keys",
+      "fx": "distortion",
+      "p": {
+        "od": 0,
+        "ds": 40,
+        "fz": 0,
+        "out": -8
+      },
+      "o": -8
+    },
+    {
+      "id": "175",
+      "s": "Piano 1",
+      "m": "keys",
+      "fx": "distortion",
+      "p": {
+        "od": 0,
+        "ds": 0,
+        "fz": 32,
+        "out": -8
+      },
+      "o": -8
+    },
+    {
+      "id": "176",
+      "s": "Piano 1",
+      "m": "keys",
+      "fx": "reverb",
+      "p": {
+        "len": 4.8,
+        "w": 50,
+        "tone": 62
+      },
+      "o": -8
+    },
+    {
+      "id": "177",
+      "s": "Piano 1",
+      "m": "keys",
+      "fx": "chorus",
+      "p": {
+        "r": 1.2,
+        "d": 0.003,
+        "mix": 0.5
+      },
+      "o": -8
+    },
+    {
+      "id": "178",
+      "s": "Piano 1",
+      "m": "keys",
+      "fx": "noise-gate",
+      "p": {
+        "th": 0.3,
+        "rel": 0.05,
+        "floor": 0
+      },
+      "o": -8
+    },
+    {
+      "id": "179",
+      "s": "Trumpet 1",
+      "m": "brass",
+      "fx": "lowpass",
+      "p": {
+        "f": 700
+      },
+      "o": -8
+    },
+    {
+      "id": "180",
+      "s": "Trumpet 1",
+      "m": "brass",
+      "fx": "highpass",
+      "p": {
+        "f": 1500
+      },
+      "o": -8
+    },
+    {
+      "id": "181",
+      "s": "Trumpet 1",
+      "m": "brass",
+      "fx": "distortion",
+      "p": {
+        "od": 52,
+        "ds": 0,
+        "fz": 0,
+        "out": -8
+      },
+      "o": -8
+    },
+    {
+      "id": "182",
+      "s": "Trumpet 1",
+      "m": "brass",
+      "fx": "distortion",
+      "p": {
+        "od": 0,
+        "ds": 40,
+        "fz": 0,
+        "out": -8
+      },
+      "o": -8
+    },
+    {
+      "id": "183",
+      "s": "Trumpet 1",
+      "m": "brass",
+      "fx": "distortion",
+      "p": {
+        "od": 0,
+        "ds": 0,
+        "fz": 32,
+        "out": -8
+      },
+      "o": -8
+    },
+    {
+      "id": "184",
+      "s": "Trumpet 1",
+      "m": "brass",
+      "fx": "delay",
+      "p": {
+        "t": 0.45,
+        "fb": 0,
+        "w": 0.34
+      },
+      "o": -8
+    },
+    {
+      "id": "185",
+      "s": "Trumpet 1",
+      "m": "brass",
+      "fx": "delay",
+      "p": {
+        "t": 0.45,
+        "fb": 0.68,
+        "w": 0.34
+      },
+      "o": -8
+    },
+    {
+      "id": "186",
+      "s": "Trumpet 1",
+      "m": "brass",
+      "fx": "reverb",
+      "p": {
+        "len": 4.5,
+        "w": 48,
+        "tone": 60
+      },
+      "o": -8
+    },
+    {
+      "id": "187",
+      "s": "Trumpet 1",
+      "m": "brass",
+      "fx": "tremolo",
+      "p": {
+        "r": 6.5,
+        "d": 1
+      },
+      "o": -8
+    },
+    {
+      "id": "188",
+      "s": "Trumpet 1",
+      "m": "brass",
+      "fx": "vibrato",
+      "p": {
+        "r": 4.0,
+        "d": 0.2
+      },
+      "o": -8
+    },
+    {
+      "id": "189",
+      "s": "Trumpet 1",
+      "m": "brass",
+      "fx": "chorus",
+      "p": {
+        "r": 1.2,
+        "d": 0.003,
+        "mix": 0.5
+      },
+      "o": -8
+    },
+    {
+      "id": "190",
+      "s": "Female Vocal 1",
+      "m": "vocal",
+      "fx": "lowpass",
+      "p": {
+        "f": 900
+      },
+      "o": -8
+    },
+    {
+      "id": "191",
+      "s": "Female Vocal 1",
+      "m": "vocal",
+      "fx": "highpass",
+      "p": {
+        "f": 1500
+      },
+      "o": -8
+    },
+    {
+      "id": "192",
+      "s": "Female Vocal 1",
+      "m": "vocal",
+      "fx": "bandpass",
+      "p": {
+        "f": 800,
+        "q": 12
+      },
+      "o": -8
+    },
+    {
+      "id": "193",
+      "s": "Female Vocal 1",
+      "m": "vocal",
+      "fx": "highshelf",
+      "p": {
+        "f": 1000,
+        "g": 12
+      },
+      "o": -8
+    },
+    {
+      "id": "194",
+      "s": "Female Vocal 1",
+      "m": "vocal",
+      "fx": "highshelf",
+      "p": {
+        "f": 1000,
+        "g": -12
+      },
+      "o": -8
+    },
+    {
+      "id": "195",
+      "s": "Female Vocal 1",
+      "m": "vocal",
+      "fx": "compressor",
+      "p": {
+        "th": -50,
+        "ra": 7.0,
+        "a": 0.003,
+        "rel": 0.25,
+        "mk": 8.0
+      },
+      "o": -8
+    },
+    {
+      "id": "196",
+      "s": "Female Vocal 1",
+      "m": "vocal",
+      "fx": "distortion",
+      "p": {
+        "od": 52,
+        "ds": 0,
+        "fz": 0,
+        "out": -8
+      },
+      "o": -8
+    },
+    {
+      "id": "197",
+      "s": "Female Vocal 1",
+      "m": "vocal",
+      "fx": "distortion",
+      "p": {
+        "od": 0,
+        "ds": 40,
+        "fz": 0,
+        "out": -8
+      },
+      "o": -8
+    },
+    {
+      "id": "198",
+      "s": "Female Vocal 1",
+      "m": "vocal",
+      "fx": "distortion",
+      "p": {
+        "od": 0,
+        "ds": 0,
+        "fz": 32,
+        "out": -8
+      },
+      "o": -8
+    },
+    {
+      "id": "199",
+      "s": "Female Vocal 1",
+      "m": "vocal",
+      "fx": "delay",
+      "p": {
+        "t": 0.42,
+        "fb": 0,
+        "w": 0.34
+      },
+      "o": -8
+    },
+    {
+      "id": "200",
+      "s": "Female Vocal 1",
+      "m": "vocal",
+      "fx": "delay",
+      "p": {
+        "t": 0.42,
+        "fb": 0.68,
+        "w": 0.34
+      },
+      "o": -8
+    },
+    {
+      "id": "201",
+      "s": "Female Vocal 1",
+      "m": "vocal",
+      "fx": "reverb",
+      "p": {
+        "len": 4.4,
+        "w": 48,
+        "tone": 60
+      },
+      "o": -8
+    },
+    {
+      "id": "202",
+      "s": "Female Vocal 1",
+      "m": "vocal",
+      "fx": "tremolo",
+      "p": {
+        "r": 6.0,
+        "d": 1
+      },
+      "o": -8
+    },
+    {
+      "id": "203",
+      "s": "Female Vocal 1",
+      "m": "vocal",
+      "fx": "vibrato",
+      "p": {
+        "r": 3.5,
+        "d": 0.2
+      },
+      "o": -8
+    },
+    {
+      "id": "204",
+      "s": "Female Vocal 1",
+      "m": "vocal",
+      "fx": "chorus",
+      "p": {
+        "r": 1.2,
+        "d": 0.003,
+        "mix": 0.5
+      },
+      "o": -8
+    },
+    {
+      "id": "205",
+      "s": "Female Vocal 1",
+      "m": "vocal",
+      "fx": "noise-gate",
+      "p": {
+        "th": 0.15,
+        "rel": 0.05,
+        "floor": 0
+      },
+      "o": -8
+    },
+    {
+      "id": "206",
+      "s": "Hip-Hop Vocal 1",
+      "m": "vocal",
+      "fx": "lowpass",
+      "p": {
+        "f": 700
+      },
+      "o": -8
+    },
+    {
+      "id": "207",
+      "s": "Hip-Hop Vocal 1",
+      "m": "vocal",
+      "fx": "highpass",
+      "p": {
+        "f": 1200
+      },
+      "o": -8
+    },
+    {
+      "id": "208",
+      "s": "Hip-Hop Vocal 1",
+      "m": "vocal",
+      "fx": "bandpass",
+      "p": {
+        "f": 800,
+        "q": 12
+      },
+      "o": -8
+    },
+    {
+      "id": "209",
+      "s": "Hip-Hop Vocal 1",
+      "m": "vocal",
+      "fx": "highshelf",
+      "p": {
+        "f": 1000,
+        "g": 12
+      },
+      "o": -8
+    },
+    {
+      "id": "210",
+      "s": "Hip-Hop Vocal 1",
+      "m": "vocal",
+      "fx": "highshelf",
+      "p": {
+        "f": 1000,
+        "g": -12
+      },
+      "o": -8
+    },
+    {
+      "id": "211",
+      "s": "Hip-Hop Vocal 1",
+      "m": "vocal",
+      "fx": "compressor",
+      "p": {
+        "th": -50,
+        "ra": 7.0,
+        "a": 0.003,
+        "rel": 0.25,
+        "mk": 8.0
+      },
+      "o": -8
+    },
+    {
+      "id": "212",
+      "s": "Hip-Hop Vocal 1",
+      "m": "vocal",
+      "fx": "distortion",
+      "p": {
+        "od": 52,
+        "ds": 0,
+        "fz": 0,
+        "out": -8
+      },
+      "o": -8
+    },
+    {
+      "id": "213",
+      "s": "Hip-Hop Vocal 1",
+      "m": "vocal",
+      "fx": "distortion",
+      "p": {
+        "od": 0,
+        "ds": 40,
+        "fz": 0,
+        "out": -8
+      },
+      "o": -8
+    },
+    {
+      "id": "214",
+      "s": "Hip-Hop Vocal 1",
+      "m": "vocal",
+      "fx": "distortion",
+      "p": {
+        "od": 0,
+        "ds": 0,
+        "fz": 32,
+        "out": -8
+      },
+      "o": -8
+    },
+    {
+      "id": "215",
+      "s": "Hip-Hop Vocal 1",
+      "m": "vocal",
+      "fx": "delay",
+      "p": {
+        "t": 0.42,
+        "fb": 0,
+        "w": 0.34
+      },
+      "o": -8
+    },
+    {
+      "id": "216",
+      "s": "Hip-Hop Vocal 1",
+      "m": "vocal",
+      "fx": "delay",
+      "p": {
+        "t": 0.42,
+        "fb": 0.68,
+        "w": 0.34
+      },
+      "o": -8
+    },
+    {
+      "id": "217",
+      "s": "Hip-Hop Vocal 1",
+      "m": "vocal",
+      "fx": "reverb",
+      "p": {
+        "len": 4.4,
+        "w": 48,
+        "tone": 60
+      },
+      "o": -8
+    },
+    {
+      "id": "218",
+      "s": "Hip-Hop Vocal 1",
+      "m": "vocal",
+      "fx": "tremolo",
+      "p": {
+        "r": 6.0,
+        "d": 1
+      },
+      "o": -8
+    },
+    {
+      "id": "219",
+      "s": "Hip-Hop Vocal 1",
+      "m": "vocal",
+      "fx": "vibrato",
+      "p": {
+        "r": 3.5,
+        "d": 0.2
+      },
+      "o": -8
+    },
+    {
+      "id": "220",
+      "s": "Hip-Hop Vocal 1",
+      "m": "vocal",
+      "fx": "chorus",
+      "p": {
+        "r": 1.2,
+        "d": 0.003,
+        "mix": 0.5
+      },
+      "o": -8
+    },
+    {
+      "id": "221",
+      "s": "Hip-Hop Vocal 1",
+      "m": "vocal",
+      "fx": "noise-gate",
+      "p": {
+        "th": 0.175,
+        "rel": 0.05,
+        "floor": 0
+      },
+      "o": -8
+    },
+    {
+      "id": "222",
+      "s": "Male Vocal 1",
+      "m": "vocal",
+      "fx": "lowpass",
+      "p": {
+        "f": 700
+      },
+      "o": -8
+    },
+    {
+      "id": "223",
+      "s": "Male Vocal 1",
+      "m": "vocal",
+      "fx": "highpass",
+      "p": {
+        "f": 1200
+      },
+      "o": -8
+    },
+    {
+      "id": "224",
+      "s": "Male Vocal 1",
+      "m": "vocal",
+      "fx": "bandpass",
+      "p": {
+        "f": 800,
+        "q": 12
+      },
+      "o": -8
+    },
+    {
+      "id": "225",
+      "s": "Male Vocal 1",
+      "m": "vocal",
+      "fx": "highshelf",
+      "p": {
+        "f": 1000,
+        "g": 12
+      },
+      "o": -8
+    },
+    {
+      "id": "226",
+      "s": "Male Vocal 1",
+      "m": "vocal",
+      "fx": "highshelf",
+      "p": {
+        "f": 1000,
+        "g": -12
+      },
+      "o": -8
+    },
+    {
+      "id": "227",
+      "s": "Male Vocal 1",
+      "m": "vocal",
+      "fx": "compressor",
+      "p": {
+        "th": -50,
+        "ra": 7.0,
+        "a": 0.003,
+        "rel": 0.25,
+        "mk": 8.0
+      },
+      "o": -8
+    },
+    {
+      "id": "228",
+      "s": "Male Vocal 1",
+      "m": "vocal",
+      "fx": "distortion",
+      "p": {
+        "od": 52,
+        "ds": 0,
+        "fz": 0,
+        "out": -8
+      },
+      "o": -8
+    },
+    {
+      "id": "229",
+      "s": "Male Vocal 1",
+      "m": "vocal",
+      "fx": "distortion",
+      "p": {
+        "od": 0,
+        "ds": 40,
+        "fz": 0,
+        "out": -8
+      },
+      "o": -8
+    },
+    {
+      "id": "230",
+      "s": "Male Vocal 1",
+      "m": "vocal",
+      "fx": "distortion",
+      "p": {
+        "od": 0,
+        "ds": 0,
+        "fz": 32,
+        "out": -8
+      },
+      "o": -8
+    },
+    {
+      "id": "231",
+      "s": "Male Vocal 1",
+      "m": "vocal",
+      "fx": "delay",
+      "p": {
+        "t": 0.42,
+        "fb": 0,
+        "w": 0.34
+      },
+      "o": -8
+    },
+    {
+      "id": "232",
+      "s": "Male Vocal 1",
+      "m": "vocal",
+      "fx": "delay",
+      "p": {
+        "t": 0.42,
+        "fb": 0.68,
+        "w": 0.34
+      },
+      "o": -8
+    },
+    {
+      "id": "233",
+      "s": "Male Vocal 1",
+      "m": "vocal",
+      "fx": "reverb",
+      "p": {
+        "len": 4.4,
+        "w": 48,
+        "tone": 60
+      },
+      "o": -8
+    },
+    {
+      "id": "234",
+      "s": "Male Vocal 1",
+      "m": "vocal",
+      "fx": "tremolo",
+      "p": {
+        "r": 6.0,
+        "d": 1
+      },
+      "o": -8
+    },
+    {
+      "id": "235",
+      "s": "Male Vocal 1",
+      "m": "vocal",
+      "fx": "vibrato",
+      "p": {
+        "r": 3.5,
+        "d": 0.2
+      },
+      "o": -8
+    },
+    {
+      "id": "236",
+      "s": "Male Vocal 1",
+      "m": "vocal",
+      "fx": "chorus",
+      "p": {
+        "r": 1.2,
+        "d": 0.003,
+        "mix": 0.5
+      },
+      "o": -8
+    },
+    {
+      "id": "237",
+      "s": "Male Vocal 1",
+      "m": "vocal",
+      "fx": "noise-gate",
+      "p": {
+        "th": 0.225,
+        "rel": 0.05,
+        "floor": 0
+      },
+      "o": -8
+    },
+    {
+      "id": "238",
+      "s": "Speech Vocal 1",
+      "m": "vocal",
+      "fx": "lowpass",
+      "p": {
+        "f": 400
+      },
+      "o": -8
+    },
+    {
+      "id": "239",
+      "s": "Speech Vocal 1",
+      "m": "vocal",
+      "fx": "highpass",
+      "p": {
+        "f": 700
+      },
+      "o": -8
+    },
+    {
+      "id": "240",
+      "s": "Speech Vocal 1",
+      "m": "vocal",
+      "fx": "bandpass",
+      "p": {
+        "f": 800,
+        "q": 12
+      },
+      "o": -8
+    },
+    {
+      "id": "241",
+      "s": "Speech Vocal 1",
+      "m": "vocal",
+      "fx": "highshelf",
+      "p": {
+        "f": 1000,
+        "g": 12
+      },
+      "o": -8
+    },
+    {
+      "id": "242",
+      "s": "Speech Vocal 1",
+      "m": "vocal",
+      "fx": "highshelf",
+      "p": {
+        "f": 1000,
+        "g": -12
+      },
+      "o": -8
+    },
+    {
+      "id": "243",
+      "s": "Speech Vocal 1",
+      "m": "vocal",
+      "fx": "delay",
+      "p": {
+        "t": 0.42,
+        "fb": 0,
+        "w": 0.34
+      },
+      "o": -8
+    },
+    {
+      "id": "244",
+      "s": "Speech Vocal 1",
+      "m": "vocal",
+      "fx": "delay",
+      "p": {
+        "t": 0.42,
+        "fb": 0.68,
+        "w": 0.34
+      },
+      "o": -8
+    },
+    {
+      "id": "245",
+      "s": "Speech Vocal 1",
+      "m": "vocal",
+      "fx": "reverb",
+      "p": {
+        "len": 4.4,
+        "w": 48,
+        "tone": 60
+      },
+      "o": -8
+    },
+    {
+      "id": "246",
+      "s": "Speech Vocal 1",
+      "m": "vocal",
+      "fx": "tremolo",
+      "p": {
+        "r": 6.0,
+        "d": 1
+      },
+      "o": -8
+    },
+    {
+      "id": "247",
+      "s": "Speech Vocal 1",
+      "m": "vocal",
+      "fx": "vibrato",
+      "p": {
+        "r": 3.5,
+        "d": 0.2
+      },
+      "o": -8
+    },
+    {
+      "id": "248",
+      "s": "Speech Vocal 1",
+      "m": "vocal",
+      "fx": "chorus",
+      "p": {
+        "r": 1.2,
+        "d": 0.003,
+        "mix": 0.5
+      },
+      "o": -8
+    },
+    {
+      "id": "249",
+      "s": "Speech Vocal 1",
+      "m": "vocal",
+      "fx": "noise-gate",
+      "p": {
+        "th": 0.225,
+        "rel": 0.05,
+        "floor": 0
+      },
+      "o": -8
+    }
+  ],
+  "designNotes": {
+    "expanded": "2026-09-26",
+    "principle": "Presets are intentionally obvious/instructive for effect identification, not subtle mix-ready settings.",
+    "dynamics": "Noise-gate thresholds use the upgraded 50 ms unsmoothed peak/RMS analysis and are intentionally aggressive.",
+    "userSpecifiedCentersHz": {
+      "Acoustic Guitar 3 bandpass/notch": 500,
+      "Clean Electric Guitar 1 bandpass/notch": 400,
+      "Distorted Electric Guitar 1 bandpass/notch": 300,
+      "Marimba 1 shelves": 500,
+      "Organ 1 shelves": 500,
+      "Piano 1 shelves": 500,
+      "Clean Electric Guitar 1 shelves": 200,
+      "Distorted Electric Guitar 1 shelves": 200,
+      "Vocal bandpass": 800
+    }
+  }
+}
