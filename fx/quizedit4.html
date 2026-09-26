@@ -1,0 +1,1660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Audio FX Preset Editor V2</title>
+  <style>
+    :root {
+      --bg: #0f1115;
+      --panel: #171a21;
+      --panel-2: #1f2430;
+      --text: #eef2f7;
+      --muted: #a9b3c3;
+      --accent: #63b3ff;
+      --border: #2a3140;
+      --success: #4ade80;
+      --warn: #facc15;
+      --danger: #fb7185;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #0d1016, #121723);
+      color: var(--text);
+    }
+
+    button,
+    input[type="radio"],
+    input[type="checkbox"] {
+      accent-color: var(--accent);
+    }
+
+    button {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--panel-2);
+      color: var(--text);
+      padding: 12px 14px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: 0.15s ease;
+    }
+
+    button:hover:not(:disabled) {
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.55;
+    }
+
+    .quiz-page {
+      width: min(920px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 36px;
+    }
+
+    .quiz-header {
+      margin-bottom: 18px;
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: rgba(15, 17, 21, 0.92);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    .quiz-header h1 {
+      margin: 0 0 8px;
+      font-size: clamp(25px, 4vw, 36px);
+    }
+
+    .quiz-header p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .quiz-card {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: var(--panel);
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    .fx-filter-panel {
+      margin-bottom: 18px;
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .fx-filter-panel h2 {
+      margin: 0 0 12px;
+      font-size: 18px;
+      line-height: 1.25;
+    }
+
+    .fx-filter-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .fx-filter-grid label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--panel-2);
+      color: var(--text);
+      cursor: pointer;
+      line-height: 1.25;
+      user-select: none;
+    }
+
+    .fx-filter-grid label:hover {
+      border-color: var(--accent);
+    }
+
+    .fx-filter-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .quiz-topline {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .quiz-status {
+      color: var(--muted);
+    }
+
+    .quiz-prompt {
+      margin: 0 0 14px;
+      font-size: 20px;
+      line-height: 1.35;
+    }
+
+    .quiz-source {
+      margin-bottom: 18px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .play-controls {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .answer-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .answer-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 48px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--panel-2);
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .answer-option:hover {
+      border-color: var(--accent);
+    }
+
+    .answer-option input {
+      flex: 0 0 auto;
+    }
+
+    .submit-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .primary-button {
+      background: rgba(99, 179, 255, 0.18);
+      border-color: rgba(99, 179, 255, 0.55);
+    }
+
+    .feedback {
+      min-height: 24px;
+      margin-top: 16px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.03);
+      line-height: 1.45;
+    }
+
+    .feedback.correct {
+      color: var(--success);
+      border-color: rgba(74, 222, 128, 0.45);
+      background: rgba(74, 222, 128, 0.08);
+    }
+
+    .feedback.incorrect {
+      color: #ffd1d8;
+      border-color: rgba(251, 113, 133, 0.45);
+      background: rgba(251, 113, 133, 0.08);
+    }
+
+    .hidden-workshop {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    .transport-master .master-meter,
+    .meter {
+      height: 1px;
+      width: 1px;
+    }
+
+
+    /* --- Compact preset editor V2 --- */
+    .fx-filter-panel,
+    #quizForm,
+    #quizFeedback,
+    #quizPrompt {
+      display: none;
+    }
+
+    .quiz-page {
+      width: min(1180px, calc(100% - 20px));
+      padding: 10px 0 18px;
+    }
+
+    .quiz-header {
+      padding: 12px 14px;
+      margin-bottom: 10px;
+      border-radius: 12px;
+    }
+
+    .quiz-header h1 {
+      font-size: 23px;
+      margin-bottom: 3px;
+    }
+
+    .quiz-header p {
+      font-size: 13px;
+    }
+
+    .quiz-card {
+      padding: 12px;
+      border-radius: 12px;
+    }
+
+    .quiz-topline {
+      margin-bottom: 8px;
+      font-size: 12px;
+    }
+
+    .quiz-source {
+      margin-bottom: 8px;
+      font-size: 12px;
+    }
+
+    .play-controls {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 7px;
+      margin-bottom: 9px;
+    }
+
+    button {
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 13px;
+    }
+
+    .editor-panel {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: rgba(255,255,255,.025);
+      padding: 10px;
+    }
+
+    .editor-top {
+      display: grid;
+      grid-template-columns: 1.4fr auto;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .editor-titleline {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: baseline;
+      min-width: 0;
+    }
+
+    .editor-titleline strong {
+      font-size: 16px;
+    }
+
+    .editor-muted {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .editor-status {
+      font-weight: 700;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .editor-status[data-status="good"] { color: var(--success); }
+    .editor-status[data-status="too-subtle"] { color: var(--warn); }
+    .editor-status[data-status="bad"] { color: var(--danger); }
+    .editor-status[data-status="remove"] { color: #ff8ea1; }
+    .editor-status[data-status="skipped"] { color: var(--muted); }
+
+    .editor-nav,
+    .editor-actions,
+    .editor-export {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .editor-nav {
+      margin-bottom: 8px;
+    }
+
+    .editor-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(310px, .8fr);
+      gap: 10px;
+      align-items: start;
+    }
+
+    .editor-box {
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 9px;
+      background: #11151c;
+    }
+
+    .editor-box h3 {
+      margin: 0 0 7px;
+      font-size: 13px;
+    }
+
+    .param-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(105px, 1fr));
+      gap: 7px;
+    }
+
+    .param-field {
+      display: grid;
+      gap: 3px;
+    }
+
+    .param-field label {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .param-slider-row {
+      display: grid;
+      grid-template-columns: minmax(120px, 1fr) 72px;
+      gap: 7px;
+      align-items: center;
+    }
+
+    .param-slider {
+      width: 100%;
+      min-width: 0;
+      accent-color: var(--accent);
+      padding: 0;
+      background: transparent;
+      border: 0;
+    }
+
+    .param-readout {
+      font-size: 11px;
+      color: var(--text);
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    .param-field input,
+    .editor-note,
+    .jump-input {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      background: #0b0e13;
+      color: var(--text);
+      font: inherit;
+    }
+
+    .param-field input[type="number"] {
+      padding: 7px 8px;
+      font-size: 13px;
+    }
+
+    .jump-input {
+      width: 78px;
+      padding: 7px 8px;
+      font-size: 13px;
+    }
+
+    .editor-note {
+      min-height: 76px;
+      resize: vertical;
+      padding: 8px;
+      font-size: 12px;
+      margin-bottom: 7px;
+    }
+
+    .compact-meta {
+      display: grid;
+      grid-template-columns: 82px 1fr;
+      gap: 3px 8px;
+      font-size: 12px;
+      margin: 0 0 8px;
+    }
+
+    .compact-meta dt {
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .compact-meta dd {
+      margin: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .edit-warning {
+      margin-top: 7px;
+      color: var(--warn);
+      font-size: 11px;
+      min-height: 14px;
+    }
+
+    .btn-good { border-color: rgba(74,222,128,.55); background: rgba(74,222,128,.09); }
+    .btn-subtle { border-color: rgba(250,204,21,.55); background: rgba(250,204,21,.09); }
+    .btn-bad { border-color: rgba(251,113,133,.55); background: rgba(251,113,133,.09); }
+    .btn-remove { border-color: rgba(255,90,110,.8); background: rgba(255,90,110,.18); }
+    .btn-apply { border-color: rgba(99,179,255,.65); background: rgba(99,179,255,.18); }
+
+    .counts {
+      color: var(--muted);
+      font-size: 11px;
+      margin-left: auto;
+    }
+
+    #editorImportInput { display:none; }
+
+    @media (max-width: 720px) {
+      .quiz-page {
+        width: min(100% - 20px, 920px);
+        padding-top: 10px;
+      }
+
+      .fx-filter-grid,
+      .play-controls,
+      .answer-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="quiz-page">
+    <header class="quiz-header">
+      <h1>Audio FX Preset Editor V2</h1>
+      <p>Audition, edit, flag, remove, and export exact preset-change instructions.</p>
+    </header>
+
+    <section class="quiz-card" aria-live="polite">
+      <section class="fx-filter-panel" aria-label="Choose FX Filter">
+        <h2>Choose FX Filter</h2>
+
+        <div class="fx-filter-grid">
+          <label>
+            <input type="checkbox" class="fx-filter-check" value="eq" checked />
+            EQ
+          </label>
+
+          <label>
+            <input type="checkbox" class="fx-filter-check" value="modulation" checked />
+            Modulation
+          </label>
+
+          <label>
+            <input type="checkbox" class="fx-filter-check" value="dynamics" checked />
+            Dynamics
+          </label>
+
+          <label>
+            <input type="checkbox" class="fx-filter-check" value="delayReverb" checked />
+            Delay/Reverb
+          </label>
+
+          <label>
+            <input type="checkbox" class="fx-filter-check" value="distortion" checked />
+            Distortion/Drive/Fuzz
+          </label>
+        </div>
+
+        <div class="fx-filter-actions">
+          <button id="selectAllFxBtn" type="button">All</button>
+          <button id="generateQuizBtn" class="primary-button" type="button">Generate Quiz</button>
+        </div>
+      </section>
+
+      <div class="quiz-topline">
+        <div id="quizProgress">Loading quiz...</div>
+        <div id="quizStatus" class="quiz-status">Preparing audio engine...</div>
+      </div>
+
+      <h2 id="quizPrompt" class="quiz-prompt">Listen and identify the active effect.</h2>
+      <div id="quizSource" class="quiz-source">Source: loading...</div>
+
+      <div class="play-controls">
+        <button id="quizPlayCleanBtn" type="button" disabled>Play Clean</button>
+        <button id="quizPlayEffectBtn" class="primary-button" type="button" disabled>Play Effect</button>
+        <button id="quizStopBtn" type="button" disabled>Stop</button>
+      </div>
+
+      <section class="editor-panel" aria-label="Preset editor tools">
+        <div class="editor-top">
+          <div class="editor-titleline">
+            <strong id="editorHeading">Preset —</strong>
+            <span id="editorEffect" class="editor-muted">—</span>
+            <span id="editorPosition" class="editor-muted">— / —</span>
+          </div>
+          <span id="editorStatus" class="editor-status" data-status="">UNREVIEWED</span>
+        </div>
+
+        <div class="editor-nav">
+          <button id="editorPrevBtn" type="button">← Prev</button>
+          <button id="editorNextBtn" type="button">Next →</button>
+          <button id="editorNextUnreviewedBtn" type="button">Next Unreviewed</button>
+          <button id="editorNextFlaggedBtn" type="button">Next Flagged</button>
+          <input id="editorJumpId" class="jump-input" type="text" inputmode="numeric" placeholder="ID" />
+          <button id="editorJumpBtn" type="button">Jump</button>
+          <span id="editorCounts" class="counts">Loading…</span>
+        </div>
+
+        <div class="editor-grid">
+          <div class="editor-box">
+            <h3>Current preset parameters</h3>
+            <dl class="compact-meta">
+              <dt>Source</dt><dd id="editorSource">—</dd>
+              <dt>Effect</dt><dd id="editorEffectLong">—</dd>
+            </dl>
+
+            <div id="editorParamGrid" class="param-grid"></div>
+            <div id="editorEditWarning" class="edit-warning"></div>
+
+            <div class="editor-actions" style="margin-top:8px;">
+              <button id="editorApplyBtn" class="btn-apply" type="button">Apply Changes & Reload</button>
+              <button id="editorRevertBtn" type="button">Revert This Preset</button>
+              <button id="editorCopyBtn" type="button">Copy Details</button>
+            </div>
+          </div>
+
+          <div class="editor-box">
+            <h3>Review / instruction</h3>
+            <textarea id="editorNote" class="editor-note" placeholder="Optional instruction for ChatGPT, e.g. ‘make gate much more aggressive’"></textarea>
+
+            <div class="editor-actions" style="margin-bottom:8px;">
+              <button id="editorGoodBtn" class="btn-good" type="button">✓ Good</button>
+              <button id="editorSubtleBtn" class="btn-subtle" type="button">⚠ Too Subtle</button>
+              <button id="editorBadBtn" class="btn-bad" type="button">✕ Bad/Wrong</button>
+              <button id="editorRemoveBtn" class="btn-remove" type="button">REMOVE</button>
+              <button id="editorSkipBtn" type="button">Skip</button>
+              <button id="editorClearBtn" type="button">Clear</button>
+            </div>
+
+            <div class="editor-export">
+              <button id="editorExportBtn" class="primary-button" type="button">Export Instructions</button>
+              <button id="editorImportBtn" type="button">Import</button>
+              <input id="editorImportInput" type="file" accept="application/json,.json" />
+              <button id="editorResetAllBtn" type="button">Reset All</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <form id="quizForm">
+        <div id="answerChoices" class="answer-grid"></div>
+
+        <div class="submit-row">
+          <button id="submitAnswerBtn" class="primary-button" type="submit" disabled>Submit Answer</button>
+          <button id="nextQuestionBtn" type="button" disabled>Next Example</button>
+        </div>
+      </form>
+
+      <div id="quizFeedback" class="feedback">The first example will load automatically.</div>
+    </section>
+  </main>
+
+  <div class="hidden-workshop" aria-hidden="true">
+    <button id="playBtn" type="button">Play</button>
+    <button id="pauseBtn" type="button">Pause</button>
+    <button id="stopBtn" type="button">Stop</button>
+    <button id="resetBtn" type="button">Reset FX</button>
+
+    <input type="checkbox" id="loopToggle" />
+
+    <div id="masterOutputHost"></div>
+    <div id="activeSourceText">Active source: none loaded</div>
+    <div id="statusText">Loading source library...</div>
+
+    <div class="meter">
+      <div class="meter-fill" id="meterFill"></div>
+    </div>
+
+    <select id="categoryFilter">
+      <option value="all">All categories</option>
+    </select>
+
+    <input type="text" id="searchInput" />
+    <input type="file" id="uploadInput" accept="audio/*" />
+
+    <div id="libraryList"></div>
+    <div id="effectsContainer"></div>
+
+    <section id="presetCodePanel" class="preset-code-panel collapsed">
+      <button id="presetCodeToggle" type="button" aria-expanded="false">Preset Code Builder</button>
+      <textarea id="presetCodeField"></textarea>
+      <button id="copyPresetCodeBtn" type="button">Copy Code</button>
+      <button id="loadPresetCodeBtn" type="button">Load Code</button>
+    </section>
+  </div>
+
+  <script>
+    /* quizedit V2: capture the full bank, apply any locally edited parameter overrides,
+       then feed the quiz engine exactly one preset for playback. */
+    (() => {
+      const nativeFetch = window.fetch.bind(window);
+      const REVIEW_STORAGE_KEY = "audioFxQuizPresetReviews.v2";
+      const EDIT_STORAGE_KEY = "audioFxQuizPresetEdits.v2";
+      const LAST_PRESET_KEY = "audioFxQuizPresetReviews.lastPresetId";
+
+      window.FX_QUIZ_REVIEW_STORAGE_KEY = REVIEW_STORAGE_KEY;
+      window.FX_QUIZ_EDIT_STORAGE_KEY = EDIT_STORAGE_KEY;
+      window.FX_QUIZ_REVIEW_LAST_PRESET_KEY = LAST_PRESET_KEY;
+
+      function loadEdits() {
+        try {
+          const value = JSON.parse(localStorage.getItem(EDIT_STORAGE_KEY) || "{}");
+          return value && typeof value === "object" ? value : {};
+        } catch (_) {
+          return {};
+        }
+      }
+
+      window.fetch = async (...args) => {
+        const response = await nativeFetch(...args);
+        const requestUrl = String(args[0] && args[0].url ? args[0].url : args[0] || "");
+        const bankUrl = String(window.FX_QUIZ_BANK_URL || "json/audio_fx_quiz_bank.json");
+
+        if (!requestUrl.includes(bankUrl) && !requestUrl.includes("audio_fx_quiz_bank.json")) {
+          return response;
+        }
+
+        try {
+          const originalBank = await response.clone().json();
+          const originalItems = Array.isArray(originalBank.items) ? originalBank.items : [];
+          window.FX_QUIZ_EDITOR_ORIGINAL_BANK = JSON.parse(JSON.stringify(originalBank));
+
+          const edits = loadEdits();
+          const fullBank = JSON.parse(JSON.stringify(originalBank));
+          fullBank.items = originalItems.map(original => {
+            const edited = edits[String(original.id)];
+            if (!edited) return { ...original, p: { ...(original.p || {}) } };
+            return {
+              ...original,
+              p: edited.p ? { ...edited.p } : { ...(original.p || {}) },
+              o: edited.o !== undefined ? edited.o : original.o
+            };
+          });
+
+          const allItems = fullBank.items;
+          window.FX_QUIZ_EDITOR_FULL_BANK = fullBank;
+
+          const params = new URLSearchParams(window.location.search);
+          const requested = params.get("preset") || localStorage.getItem(LAST_PRESET_KEY) || (allItems[0] && allItems[0].id);
+          let item = allItems.find(entry => String(entry.id) === String(requested));
+          if (!item) item = allItems[0] || null;
+
+          if (item) localStorage.setItem(LAST_PRESET_KEY, String(item.id));
+          window.FX_QUIZ_EDITOR_CURRENT_ID = item ? String(item.id) : "";
+
+          window.dispatchEvent(new CustomEvent("fxQuizEditorBankReady", {
+            detail: { bank: fullBank, currentItem: item }
+          }));
+
+          return new Response(JSON.stringify({ ...fullBank, items: item ? [item] : [] }), {
+            status: response.status,
+            statusText: response.statusText,
+            headers: { "Content-Type": "application/json" }
+          });
+        } catch (error) {
+          console.error("Quiz editor could not prepare the preset bank:", error);
+          return response;
+        }
+      };
+    })();
+  </script>
+
+  <script>
+    window.FX_QUIZ_BANK_URL = "json/audio_fx_quiz_bank.json";
+
+    window.FX_QUIZ_DEFAULT_PROMPT =
+      "Listen to the processed audio. Which effect or processing module is active?";
+
+    window.FX_QUIZ_LABELS = {
+      lowpass: "Low-Pass Filter",
+      highpass: "High-Pass Filter",
+      bandpass: "Band-Pass Filter",
+      notch: "Band-Reject Filter",
+      lowshelf: "Low Shelf",
+      highshelf: "High Shelf",
+      compressor: "Compressor",
+      delay: "Delay",
+      reverb: "Reverb",
+      tremolo: "Tremolo",
+      vibrato: "Vibrato",
+      chorus: "Chorus",
+      flanger: "Flanger",
+      "noise-gate": "Noise Gate",
+      overdrive: "Overdrive",
+      distortion: "Distortion",
+      fuzz: "Fuzz"
+    };
+
+    window.FX_QUIZ_ANSWER_ORDER = [
+      "lowpass",
+      "highpass",
+      "bandpass",
+      "notch",
+      "lowshelf",
+      "highshelf",
+      "compressor",
+      "delay",
+      "reverb",
+      "tremolo",
+      "vibrato",
+      "chorus",
+      "flanger",
+      "noise-gate",
+      "overdrive",
+      "distortion",
+      "fuzz"
+    ];
+
+    window.FX_QUIZ_CATEGORIES = {
+      eq: [
+        "lowpass",
+        "highpass",
+        "bandpass",
+        "notch",
+        "lowshelf",
+        "highshelf"
+      ],
+      modulation: [
+        "tremolo",
+        "vibrato",
+        "chorus",
+        "flanger"
+      ],
+      dynamics: [
+        "compressor",
+        "noise-gate"
+      ],
+      delayReverb: [
+        "delay",
+        "reverb"
+      ],
+      distortion: [
+        "overdrive",
+        "distortion",
+        "fuzz"
+      ]
+    };
+
+    window.FX_QUIZ_PARAM_MAP = {
+      lowpass: {
+        f: "#lowpass-freq"
+      },
+      highpass: {
+        f: "#highpass-freq"
+      },
+      bandpass: {
+        f: "#bandpass-freq",
+        q: "#bandpass-q"
+      },
+      notch: {
+        f: "#notch-freq",
+        q: "#notch-q"
+      },
+      lowshelf: {
+        f: "#lowshelf-freq",
+        g: "#lowshelf-gain"
+      },
+      highshelf: {
+        f: "#highshelf-freq",
+        g: "#highshelf-gain"
+      },
+      compressor: {
+        th: "#compressor-threshold",
+        ra: "#compressor-ratio",
+        a: "#compressor-attack",
+        rel: "#compressor-release",
+        mk: "#compressor-makeup"
+      },
+      delay: {
+        t: "#delay-time",
+        fb: "#delay-feedback",
+        w: "#delay-wet"
+      },
+      reverb: {
+        len: "#reverb-length",
+        w: "#reverb-wet",
+        tone: "#reverb-tone"
+      },
+      tremolo: {
+        r: "#tremolo-rate",
+        d: "#tremolo-depth"
+      },
+      vibrato: {
+        r: "#vibrato-rate",
+        d: "#vibrato-depth"
+      },
+      chorus: {
+        r: "#chorus-rate",
+        d: "#chorus-depth",
+        mix: "#chorus-mix"
+      },
+      flanger: {
+        r: "#flanger-rate",
+        del: "#flanger-delay",
+        d: "#flanger-depth",
+        fb: "#flanger-feedback",
+        mix: "#flanger-mix",
+        tone: "#flanger-tone"
+      },
+      "noise-gate": {
+        th: "#noise-gate-threshold",
+        rel: "#noise-gate-release",
+        floor: "#noise-gate-floor"
+      },
+      distortion: {
+        od: "#distortion-overdrive",
+        ds: "#distortion-distortion",
+        fz: "#distortion-fuzz",
+        out: "#distortion-output"
+      }
+    };
+
+    window.FX_QUIZ_ENABLE_MAP = {
+      lowpass: "#lowpass-enabled",
+      highpass: "#highpass-enabled",
+      bandpass: "#bandpass-enabled",
+      notch: "#notch-enabled",
+      lowshelf: "#lowshelf-enabled",
+      highshelf: "#highshelf-enabled",
+      compressor: "#compressor-enabled",
+      delay: "#delay-enabled",
+      reverb: "#reverb-enabled",
+      tremolo: "#tremolo-enabled",
+      vibrato: "#vibrato-enabled",
+      chorus: "#chorus-enabled",
+      flanger: "#flanger-enabled",
+      "noise-gate": "#noise-gate-enabled",
+      distortion: "#distortion-enabled"
+    };
+
+    window.resolveFxQuizAnswerId = function (item) {
+      if (!item) {
+        return "";
+      }
+
+      if (item.answerId) {
+        return String(item.answerId);
+      }
+
+      if (item.fx === "distortion") {
+        const p = item.p || {};
+        const od = Number(p.od || 0);
+        const ds = Number(p.ds || 0);
+        const fz = Number(p.fz || 0);
+
+        if (od > 0 && od >= ds && od >= fz) {
+          return "overdrive";
+        }
+
+        if (ds > 0 && ds >= od && ds >= fz) {
+          return "distortion";
+        }
+
+        if (fz > 0 && fz >= od && fz >= ds) {
+          return "fuzz";
+        }
+
+        return "distortion";
+      }
+
+      return String(item.fx || "");
+    };
+
+    window.getFxQuizAnswerLabel = function (answerId) {
+      return window.FX_QUIZ_LABELS[answerId] || String(answerId || "");
+    };
+
+    window.getSelectedFxQuizCategories = function () {
+      return Array.from(document.querySelectorAll(".fx-filter-check:checked"))
+        .map(input => input.value);
+    };
+
+    window.getSelectedFxQuizAnswerIds = function () {
+      const selectedCategories = window.getSelectedFxQuizCategories();
+
+      return selectedCategories.flatMap(category => {
+        return window.FX_QUIZ_CATEGORIES[category] || [];
+      });
+    };
+
+    window.fxQuizEffectMatchesSelectedCategories = function (itemOrEffectName) {
+      const selectedAnswerIds = window.getSelectedFxQuizAnswerIds();
+
+      if (!selectedAnswerIds.length) {
+        return false;
+      }
+
+      const answerId = typeof itemOrEffectName === "object"
+        ? window.resolveFxQuizAnswerId(itemOrEffectName)
+        : String(itemOrEffectName || "");
+
+      return selectedAnswerIds.includes(answerId);
+    };
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const selectAllFxBtn = document.getElementById("selectAllFxBtn");
+      const generateQuizBtn = document.getElementById("generateQuizBtn");
+
+      if (selectAllFxBtn) {
+        selectAllFxBtn.addEventListener("click", () => {
+          document.querySelectorAll(".fx-filter-check").forEach(input => {
+            input.checked = true;
+          });
+        });
+      }
+
+      if (generateQuizBtn) {
+        generateQuizBtn.addEventListener("click", () => {
+          window.dispatchEvent(new CustomEvent("fxQuizGenerateRequested", {
+            detail: {
+              categories: window.getSelectedFxQuizCategories(),
+              answerIds: window.getSelectedFxQuizAnswerIds()
+            }
+          }));
+        });
+      }
+    });
+  </script>
+
+  <script src="js/app-state.js"></script>
+  <script src="js/dom-elements.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/module-registry.js"></script>
+  <script src="js/audio-engine.js"></script>
+  <script src="js/library-manager.js"></script>
+  <script src="js/upload-manager.js"></script>
+  <script src="js/transport-controls.js"></script>
+  <script src="js/meter.js"></script>
+  <script src="js/reset-fx.js"></script>
+
+  <script src="js/modules/master-module.js"></script>
+  <script src="js/modules/lowpass-module.js"></script>
+  <script src="js/modules/highpass-module.js"></script>
+  <script src="js/modules/bandpass-module.js"></script>
+  <script src="js/modules/notch-module.js"></script>
+  <script src="js/modules/lowshelf-module.js"></script>
+  <script src="js/modules/highshelf-module.js"></script>
+  <script src="js/modules/compressor-module.js"></script>
+  <script src="js/modules/distortion-module.js"></script>
+  <script src="js/modules/delay-module.js"></script>
+  <script src="js/modules/reverb-module.js"></script>
+  <script src="js/modules/tremolo-module.js"></script>
+  <script src="js/modules/vibrato-module.js"></script>
+  <script src="js/modules/chorus-module.js"></script>
+  <script src="js/modules/flanger-module.js"></script>
+  <script src="js/modules/noise-gate-module.js"></script>
+
+  <script src="js/preset-codes.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/audio-fx-quiz.js"></script>
+
+  <script>
+    (() => {
+      const REVIEW_KEY = window.FX_QUIZ_REVIEW_STORAGE_KEY || "audioFxQuizPresetReviews.v2";
+      const EDIT_KEY = window.FX_QUIZ_EDIT_STORAGE_KEY || "audioFxQuizPresetEdits.v2";
+      const LAST_KEY = window.FX_QUIZ_REVIEW_LAST_PRESET_KEY || "audioFxQuizPresetReviews.lastPresetId";
+      const $ = id => document.getElementById(id);
+
+      const PARAM_LABELS = {
+        f: "Frequency",
+        q: "Q",
+        g: "Gain",
+        th: "Threshold",
+        ra: "Ratio",
+        a: "Attack",
+        rel: "Release",
+        mk: "Makeup",
+        od: "Overdrive",
+        ds: "Distortion",
+        fz: "Fuzz",
+        out: "Drive Output",
+        t: "Delay Time",
+        fb: "Feedback",
+        w: "Wet",
+        len: "Reverb Length",
+        r: "Rate",
+        d: "Depth",
+        del: "Flanger Delay",
+        mix: "Mix",
+        tone: "Tone",
+        floor: "Floor"
+      };
+
+      function loadObject(key) {
+        try {
+          const parsed = JSON.parse(localStorage.getItem(key) || "{}");
+          return parsed && typeof parsed === "object" ? parsed : {};
+        } catch (_) { return {}; }
+      }
+      function saveObject(key, value) { localStorage.setItem(key, JSON.stringify(value)); }
+
+      function bankItems() {
+        return window.FX_QUIZ_EDITOR_FULL_BANK && Array.isArray(window.FX_QUIZ_EDITOR_FULL_BANK.items)
+          ? window.FX_QUIZ_EDITOR_FULL_BANK.items : [];
+      }
+      function originalItems() {
+        return window.FX_QUIZ_EDITOR_ORIGINAL_BANK && Array.isArray(window.FX_QUIZ_EDITOR_ORIGINAL_BANK.items)
+          ? window.FX_QUIZ_EDITOR_ORIGINAL_BANK.items : [];
+      }
+      function currentId() { return String(window.FX_QUIZ_EDITOR_CURRENT_ID || ""); }
+      function currentItem() { return bankItems().find(x => String(x.id) === currentId()) || null; }
+      function originalItem(id=currentId()) { return originalItems().find(x => String(x.id) === String(id)) || null; }
+
+      function sortedItems() {
+        return bankItems().slice().sort((a,b) => Number(a.id) - Number(b.id));
+      }
+
+      function answerId(item) {
+        return typeof window.resolveFxQuizAnswerId === "function"
+          ? window.resolveFxQuizAnswerId(item)
+          : String(item && item.fx || "");
+      }
+      function answerLabel(item) {
+        const id = answerId(item);
+        return (window.FX_QUIZ_LABELS && window.FX_QUIZ_LABELS[id]) || id;
+      }
+      function statusLabel(s) {
+        return ({good:"GOOD","too-subtle":"TOO SUBTLE",bad:"BAD / WRONG",remove:"REMOVE",skipped:"SKIPPED"})[s] || "UNREVIEWED";
+      }
+
+      function setCurrentUrl(id) {
+        if (!id) return;
+        localStorage.setItem(LAST_KEY, String(id));
+        const url = new URL(location.href);
+        url.searchParams.set("preset", String(id));
+        location.href = url.toString();
+      }
+
+      function adjacentId(dir) {
+        const items = sortedItems();
+        const i = items.findIndex(x => String(x.id) === currentId());
+        const n = Math.max(0, Math.min(items.length - 1, i + dir));
+        return items[n] ? String(items[n].id) : "";
+      }
+
+      function nextBy(predicate) {
+        const items = sortedItems();
+        const i = Math.max(0, items.findIndex(x => String(x.id) === currentId()));
+        for (let off=1; off<=items.length; off++) {
+          const item = items[(i+off)%items.length];
+          if (predicate(item)) return String(item.id);
+        }
+        return "";
+      }
+
+      const PARAM_RANGES = {
+        generic: {
+          f:     {min:0, max:100, step:0.1, unit:"freqpos"},
+          q:     {min:0.1, max:100, step:0.1, unit:""},
+          g:     {min:-24, max:24, step:0.1, unit:" dB"},
+          th:    {min:-100, max:0, step:0.5, unit:" dB"},
+          ra:    {min:1, max:20, step:0.1, unit:":1"},
+          a:     {min:0.001, max:0.5, step:0.001, scale:"log", unit:" s"},
+          rel:   {min:0.01, max:2, step:0.01, scale:"log", unit:" s"},
+          mk:    {min:0, max:24, step:0.1, unit:" dB"},
+          od:    {min:0, max:100, step:1, unit:""},
+          ds:    {min:0, max:100, step:1, unit:""},
+          fz:    {min:0, max:100, step:1, unit:""},
+          out:   {min:-24, max:0, step:0.5, unit:" dB"},
+          t:     {min:0.01, max:2, step:0.01, unit:" s"},
+          fb:    {min:0, max:0.95, step:0.01, unit:""},
+          w:     {min:0, max:1, step:0.01, unit:""},
+          len:   {min:0.1, max:10, step:0.1, unit:" s"},
+          r:     {min:0.1, max:20, step:0.1, unit:" Hz"},
+          d:     {min:0, max:1, step:0.01, unit:""},
+          del:   {min:0.0001, max:0.02, step:0.0001, scale:"log", unit:" s"},
+          mix:   {min:0, max:1, step:0.01, unit:""},
+          tone:  {min:500, max:20000, step:10, scale:"log", unit:" Hz"},
+          floor: {min:0, max:1, step:0.01, unit:""}
+        },
+        reverb: {
+          w: {min:0, max:100, step:1, unit:"%"},
+          tone: {min:0, max:100, step:1, unit:""}
+        },
+        tremolo: {
+          d: {min:0, max:1, step:0.01, unit:""}
+        },
+        vibrato: {
+          d: {min:0, max:0.5, step:0.005, unit:""}
+        },
+        chorus: {
+          d: {min:0, max:0.03, step:0.0005, unit:" s"}
+        },
+        flanger: {
+          d: {min:0, max:0.02, step:0.0001, unit:" s"}
+        },
+        "noise-gate": {
+          th: {min:0, max:1, step:0.005, unit:""},
+          rel: {min:0.01, max:1, step:0.01, unit:" s"},
+          floor: {min:0, max:1, step:0.01, unit:""}
+        }
+      };
+
+      function getRangeSpec(item, key) {
+        const fxSpec = (PARAM_RANGES[item.fx] || {})[key];
+        return fxSpec || PARAM_RANGES.generic[key] || {min:0, max:100, step:0.1, unit:""};
+      }
+
+      function clamp(v, min, max) {
+        return Math.min(max, Math.max(min, v));
+      }
+
+      function toSliderValue(value, spec) {
+        const v = clamp(Number(value), spec.min, spec.max);
+        if (spec.scale === "log") {
+          const lo = Math.log(spec.min);
+          const hi = Math.log(spec.max);
+          return ((Math.log(v) - lo) / (hi - lo)) * 1000;
+        }
+        return ((v - spec.min) / (spec.max - spec.min)) * 1000;
+      }
+
+      function fromSliderValue(raw, spec) {
+        const n = Number(raw) / 1000;
+        let v;
+        if (spec.scale === "log") {
+          const lo = Math.log(spec.min);
+          const hi = Math.log(spec.max);
+          v = Math.exp(lo + n * (hi - lo));
+        } else {
+          v = spec.min + n * (spec.max - spec.min);
+        }
+
+        const step = Number(spec.step || 0);
+        if (step > 0) v = Math.round(v / step) * step;
+        return clamp(v, spec.min, spec.max);
+      }
+
+      function decimalsForStep(step) {
+        const s = String(step);
+        if (s.includes("e-")) return Number(s.split("e-")[1]);
+        const p = s.indexOf(".");
+        return p < 0 ? 0 : s.length - p - 1;
+      }
+
+      function freqPositionToHz(position) {
+        // Workshop filter sliders use 0–100 internally and map logarithmically:
+        // 0 = 20 Hz, 100 = 20 kHz.
+        return 20 * Math.pow(1000, Number(position) / 100);
+      }
+
+      function formatParamValue(value, spec) {
+        if (spec.unit === "freqpos") {
+          const hz = freqPositionToHz(value);
+          if (hz >= 1000) {
+            const khz = hz / 1000;
+            return `${khz.toFixed(khz >= 10 ? 1 : 2).replace(/\.0+$/, "")} kHz`;
+          }
+          return `${Math.round(hz)} Hz`;
+        }
+
+        const decimals = Math.min(5, decimalsForStep(spec.step || 1));
+        let text = Number(value).toFixed(decimals);
+        text = text.replace(/(\.\d*?[1-9])0+$|\.0+$/, "$1");
+        if (spec.unit === "Hz" && Number(value) >= 1000) {
+          const khz = Number(value) / 1000;
+          return `${khz.toFixed(khz >= 10 ? 1 : 2).replace(/\.0+$/, "")} kHz`;
+        }
+        return `${text}${spec.unit || ""}`;
+      }
+
+      function readFormValues() {
+        const p = {};
+        document.querySelectorAll("[data-param-key]").forEach(slider => {
+          const key = slider.dataset.paramKey;
+          const spec = JSON.parse(slider.dataset.paramSpec);
+          p[key] = fromSliderValue(slider.value, spec);
+        });
+
+        const outputInput = document.querySelector("[data-master-output]");
+        const rawOut = outputInput ? outputInput.value.trim() : "";
+        const out = rawOut === "" || !Number.isFinite(Number(rawOut)) ? rawOut : Number(rawOut);
+        return {p, o: out};
+      }
+
+      function renderParams(item) {
+        const grid = $("editorParamGrid");
+        grid.innerHTML = "";
+        const params = item.p || {};
+
+        Object.keys(params).forEach(key => {
+          const spec = getRangeSpec(item, key);
+
+          const wrap = document.createElement("div");
+          wrap.className = "param-field";
+
+          const label = document.createElement("label");
+          label.textContent = PARAM_LABELS[key] || key;
+
+          const row = document.createElement("div");
+          row.className = "param-slider-row";
+
+          const slider = document.createElement("input");
+          slider.type = "range";
+          slider.min = "0";
+          slider.max = "1000";
+          slider.step = "1";
+          slider.className = "param-slider";
+          slider.dataset.paramKey = key;
+          slider.dataset.paramSpec = JSON.stringify(spec);
+          slider.value = String(toSliderValue(params[key], spec));
+
+          const readout = document.createElement("span");
+          readout.className = "param-readout";
+          readout.textContent = formatParamValue(params[key], spec);
+
+          slider.addEventListener("input", () => {
+            readout.textContent = formatParamValue(fromSliderValue(slider.value, spec), spec);
+          });
+
+          row.append(slider, readout);
+          wrap.append(label, row);
+          grid.appendChild(wrap);
+        });
+
+        // Master Output remains numeric; only effect parameters use sliders.
+        const wrap = document.createElement("div");
+        wrap.className = "param-field";
+        const label = document.createElement("label");
+        label.textContent = "Master Output dB";
+        const input = document.createElement("input");
+        input.type = "number";
+        input.step = "any";
+        input.value = item.o ?? 0;
+        input.dataset.masterOutput = "1";
+        wrap.append(label, input);
+        grid.appendChild(wrap);
+
+        const original = originalItem(item.id);
+        const edits = loadObject(EDIT_KEY);
+        if (edits[String(item.id)] && original) {
+          $("editorEditWarning").textContent =
+            `Edited locally. Original: ${JSON.stringify(original.p || {})}, output ${original.o} dB.`;
+        } else {
+          $("editorEditWarning").textContent = "Playback is using the bank values shown above.";
+        }
+      }
+
+      function applyChanges() {
+        const item = currentItem();
+        if (!item) return;
+        const values = readFormValues();
+        const edits = loadObject(EDIT_KEY);
+        edits[String(item.id)] = {
+          id: String(item.id),
+          p: values.p,
+          o: values.o,
+          updatedAt: new Date().toISOString()
+        };
+        saveObject(EDIT_KEY, edits);
+        setCurrentUrl(item.id);
+      }
+
+      function revertCurrent() {
+        const id = currentId();
+        const edits = loadObject(EDIT_KEY);
+        delete edits[id];
+        saveObject(EDIT_KEY, edits);
+        setCurrentUrl(id);
+      }
+
+      function saveNoteIfMarked() {
+        const reviews = loadObject(REVIEW_KEY);
+        const id = currentId();
+        if (reviews[id]) {
+          reviews[id].note = $("editorNote").value.trim();
+          reviews[id].updatedAt = new Date().toISOString();
+          saveObject(REVIEW_KEY, reviews);
+        }
+      }
+
+      function mark(status, advance=true) {
+        const item = currentItem();
+        if (!item) return;
+        const reviews = loadObject(REVIEW_KEY);
+        reviews[String(item.id)] = {
+          id: String(item.id),
+          source: item.s || "",
+          effect: answerId(item),
+          effectLabel: answerLabel(item),
+          status,
+          note: $("editorNote").value.trim(),
+          updatedAt: new Date().toISOString()
+        };
+        saveObject(REVIEW_KEY, reviews);
+        render();
+        if (advance) {
+          const next = adjacentId(1);
+          if (next && next !== currentId()) setCurrentUrl(next);
+        }
+      }
+
+      function clearMark() {
+        const reviews = loadObject(REVIEW_KEY);
+        delete reviews[currentId()];
+        saveObject(REVIEW_KEY, reviews);
+        $("editorNote").value = "";
+        render();
+      }
+
+      function renderParams(item) {
+        const grid = $("editorParamGrid");
+        grid.innerHTML = "";
+        const params = item.p || {};
+
+        Object.keys(params).forEach(key => {
+          const wrap = document.createElement("div");
+          wrap.className = "param-field";
+          const label = document.createElement("label");
+          label.textContent = PARAM_LABELS[key] || key;
+          const input = document.createElement("input");
+          input.type = "number";
+          input.step = "any";
+          input.value = params[key];
+          input.dataset.paramKey = key;
+          wrap.append(label, input);
+          grid.appendChild(wrap);
+        });
+
+        const wrap = document.createElement("div");
+        wrap.className = "param-field";
+        const label = document.createElement("label");
+        label.textContent = "Master Output dB";
+        const input = document.createElement("input");
+        input.type = "number";
+        input.step = "any";
+        input.value = item.o ?? 0;
+        input.dataset.masterOutput = "1";
+        wrap.append(label, input);
+        grid.appendChild(wrap);
+
+        const original = originalItem(item.id);
+        const edits = loadObject(EDIT_KEY);
+        if (edits[String(item.id)] && original) {
+          $("editorEditWarning").textContent =
+            `Edited locally. Original: ${JSON.stringify(original.p || {})}, output ${original.o} dB.`;
+        } else {
+          $("editorEditWarning").textContent = "Playback is using the bank values shown above.";
+        }
+      }
+
+      function render() {
+        const item = currentItem();
+        const items = sortedItems();
+        if (!item || !items.length) return;
+
+        const reviews = loadObject(REVIEW_KEY);
+        const review = reviews[String(item.id)] || {};
+        const index = items.findIndex(x => String(x.id) === String(item.id));
+
+        $("editorHeading").textContent = `Preset ${item.id} — ${item.s || ""}`;
+        $("editorEffect").textContent = answerLabel(item);
+        $("editorPosition").textContent = `${index+1} / ${items.length}`;
+        $("editorSource").textContent = item.s || "—";
+        $("editorEffectLong").textContent = `${answerLabel(item)} (${answerId(item)})`;
+
+        const statusEl = $("editorStatus");
+        statusEl.textContent = statusLabel(review.status);
+        statusEl.dataset.status = review.status || "";
+
+        if (document.activeElement !== $("editorNote")) {
+          $("editorNote").value = review.note || "";
+        }
+
+        renderParams(item);
+
+        const vals = Object.values(reviews);
+        const edits = loadObject(EDIT_KEY);
+        const count = s => vals.filter(r => r.status === s).length;
+        const reviewedIds = new Set(vals.map(r => String(r.id)));
+        const unreviewed = items.filter(i => !reviewedIds.has(String(i.id))).length;
+        $("editorCounts").textContent =
+          `Good ${count("good")} • Subtle ${count("too-subtle")} • Bad ${count("bad")} • Remove ${count("remove")} • Edited ${Object.keys(edits).length} • Unreviewed ${unreviewed}`;
+
+        $("editorPrevBtn").disabled = index <= 0;
+        $("editorNextBtn").disabled = index >= items.length-1;
+      }
+
+      function copyDetails() {
+        const item = currentItem();
+        if (!item) return;
+        const orig = originalItem(item.id);
+        const reviews = loadObject(REVIEW_KEY);
+        const review = reviews[String(item.id)] || {};
+        const text = [
+          `Preset ${item.id}`,
+          `Source: ${item.s}`,
+          `Effect: ${answerLabel(item)} (${answerId(item)})`,
+          `Original parameters: ${JSON.stringify(orig ? orig.p : {})}`,
+          `Current parameters: ${JSON.stringify(item.p || {})}`,
+          `Original output dB: ${orig ? orig.o : ""}`,
+          `Current output dB: ${item.o}`,
+          `Status: ${statusLabel(review.status)}`,
+          `Instruction: ${review.note || ""}`
+        ].join("\n");
+        navigator.clipboard?.writeText(text).catch(() => window.prompt("Copy:", text));
+      }
+
+      function exportInstructions() {
+        saveNoteIfMarked();
+        const reviews = loadObject(REVIEW_KEY);
+        const edits = loadObject(EDIT_KEY);
+        const items = sortedItems();
+
+        const instructions = items.map(item => {
+          const id = String(item.id);
+          const review = reviews[id] || null;
+          const edit = edits[id] || null;
+          if (!review && !edit) return null;
+          const orig = originalItem(id);
+          return {
+            id,
+            source: item.s || "",
+            effect: answerId(item),
+            effectLabel: answerLabel(item),
+            action: review && review.status === "remove" ? "remove" :
+                    edit ? "apply-parameter-edit" :
+                    review && review.status === "too-subtle" ? "make-more-obvious" :
+                    review && review.status === "bad" ? "rework" :
+                    review && review.status === "good" ? "keep" :
+                    review && review.status === "skipped" ? "skip" : "review",
+            status: review ? review.status : "edited",
+            note: review ? review.note || "" : "",
+            original: orig ? {p: orig.p || {}, o: orig.o} : null,
+            edited: edit ? {p: edit.p || {}, o: edit.o} : null
+          };
+        }).filter(Boolean);
+
+        const payload = {
+          format: "Audio FX Quiz Editor V2 Instructions",
+          version: 2,
+          exportedAt: new Date().toISOString(),
+          bankTitle: window.FX_QUIZ_EDITOR_FULL_BANK?.quizTitle || "",
+          bankVersion: window.FX_QUIZ_EDITOR_FULL_BANK?.version ?? null,
+          totalPresets: items.length,
+          instructionsForChatGPT: [
+            "Use preset ID as the authoritative reference.",
+            "For action=remove, delete that preset completely from the quiz bank.",
+            "For action=apply-parameter-edit, use the edited p and o values exactly unless the note explicitly asks for additional changes.",
+            "For action=make-more-obvious, preserve the effect/source pairing but strengthen it pedagogically.",
+            "For action=rework, reassess the preset and note; substantially revise or remove only if the note requests removal.",
+            "For action=keep, do not change the preset.",
+            "Preserve unaffected presets and IDs whenever possible."
+          ],
+          instructions
+        };
+
+        const blob = new Blob([JSON.stringify(payload, null, 2)], {type:"application/json"});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `audio-fx-quiz-editor-instructions-${new Date().toISOString().slice(0,10)}.json`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      }
+
+      function importData(file) {
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+          try {
+            const data = JSON.parse(String(reader.result || "{}"));
+            const reviews = loadObject(REVIEW_KEY);
+            const edits = loadObject(EDIT_KEY);
+
+            if (Array.isArray(data.instructions)) {
+              data.instructions.forEach(x => {
+                if (!x || x.id == null) return;
+                const id = String(x.id);
+                if (x.status && x.status !== "edited") {
+                  reviews[id] = {
+                    id,
+                    source: x.source || "",
+                    effect: x.effect || "",
+                    effectLabel: x.effectLabel || "",
+                    status: x.status,
+                    note: x.note || "",
+                    updatedAt: new Date().toISOString()
+                  };
+                }
+                if (x.edited) {
+                  edits[id] = {id, p: x.edited.p || {}, o: x.edited.o, updatedAt:new Date().toISOString()};
+                }
+              });
+            } else if (Array.isArray(data.reviews)) {
+              data.reviews.forEach(x => { if (x && x.id != null) reviews[String(x.id)] = x; });
+            }
+
+            saveObject(REVIEW_KEY, reviews);
+            saveObject(EDIT_KEY, edits);
+            setCurrentUrl(currentId());
+          } catch (_) {
+            alert("That file is not a valid quiz editor/review JSON.");
+          }
+        };
+        reader.readAsText(file);
+      }
+
+      function wire() {
+        $("editorPrevBtn").onclick = () => { saveNoteIfMarked(); setCurrentUrl(adjacentId(-1)); };
+        $("editorNextBtn").onclick = () => { saveNoteIfMarked(); setCurrentUrl(adjacentId(1)); };
+        $("editorNextUnreviewedBtn").onclick = () => {
+          saveNoteIfMarked();
+          const reviews = loadObject(REVIEW_KEY);
+          const id = nextBy(item => !reviews[String(item.id)]);
+          id ? setCurrentUrl(id) : alert("No unreviewed presets remain.");
+        };
+        $("editorNextFlaggedBtn").onclick = () => {
+          saveNoteIfMarked();
+          const reviews = loadObject(REVIEW_KEY);
+          const id = nextBy(item => {
+            const r = reviews[String(item.id)];
+            return r && ["too-subtle","bad","remove"].includes(r.status);
+          });
+          id ? setCurrentUrl(id) : alert("No flagged presets found.");
+        };
+
+        const jump = () => {
+          saveNoteIfMarked();
+          const raw = $("editorJumpId").value.trim();
+          const match = sortedItems().find(x => String(Number(x.id)) === String(Number(raw)));
+          match ? setCurrentUrl(match.id) : alert(`Preset ${raw || "?"} not found.`);
+        };
+        $("editorJumpBtn").onclick = jump;
+        $("editorJumpId").addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); jump(); } });
+
+        $("editorApplyBtn").onclick = applyChanges;
+        $("editorRevertBtn").onclick = revertCurrent;
+        $("editorCopyBtn").onclick = copyDetails;
+
+        $("editorGoodBtn").onclick = () => mark("good");
+        $("editorSubtleBtn").onclick = () => mark("too-subtle");
+        $("editorBadBtn").onclick = () => mark("bad");
+        $("editorRemoveBtn").onclick = () => mark("remove");
+        $("editorSkipBtn").onclick = () => mark("skipped");
+        $("editorClearBtn").onclick = clearMark;
+        $("editorNote").addEventListener("change", saveNoteIfMarked);
+
+        $("editorExportBtn").onclick = exportInstructions;
+        $("editorImportBtn").onclick = () => $("editorImportInput").click();
+        $("editorImportInput").onchange = e => {
+          importData(e.target.files && e.target.files[0]);
+          e.target.value = "";
+        };
+
+        $("editorResetAllBtn").onclick = () => {
+          if (!confirm("Clear ALL review marks AND parameter edits stored by Quiz Editor V2?")) return;
+          localStorage.removeItem(REVIEW_KEY);
+          localStorage.removeItem(EDIT_KEY);
+          setCurrentUrl(currentId());
+        };
+      }
+
+      function start() {
+        wire();
+        render();
+      }
+
+      window.addEventListener("fxQuizEditorBankReady", () => setTimeout(render, 0));
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", () => setTimeout(start, 0));
+      } else {
+        setTimeout(start, 0);
+      }
+    })();
+  </script>
+</body>
+</html>
