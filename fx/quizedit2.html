@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Audio FX Preset Review Console</title>
+  <style>
+    :root {
+      --bg: #0f1115;
+      --panel: #171a21;
+      --panel-2: #1f2430;
+      --text: #eef2f7;
+      --muted: #a9b3c3;
+      --accent: #63b3ff;
+      --border: #2a3140;
+      --success: #4ade80;
+      --warn: #facc15;
+      --danger: #fb7185;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #0d1016, #121723);
+      color: var(--text);
+    }
+
+    button,
+    input[type="radio"],
+    input[type="checkbox"] {
+      accent-color: var(--accent);
+    }
+
+    button {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--panel-2);
+      color: var(--text);
+      padding: 12px 14px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: 0.15s ease;
+    }
+
+    button:hover:not(:disabled) {
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.55;
+    }
+
+    .quiz-page {
+      width: min(920px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 36px;
+    }
+
+    .quiz-header {
+      margin-bottom: 18px;
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: rgba(15, 17, 21, 0.92);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    .quiz-header h1 {
+      margin: 0 0 8px;
+      font-size: clamp(25px, 4vw, 36px);
+    }
+
+    .quiz-header p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .quiz-card {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: var(--panel);
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    .fx-filter-panel {
+      margin-bottom: 18px;
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .fx-filter-panel h2 {
+      margin: 0 0 12px;
+      font-size: 18px;
+      line-height: 1.25;
+    }
+
+    .fx-filter-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .fx-filter-grid label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--panel-2);
+      color: var(--text);
+      cursor: pointer;
+      line-height: 1.25;
+      user-select: none;
+    }
+
+    .fx-filter-grid label:hover {
+      border-color: var(--accent);
+    }
+
+    .fx-filter-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .quiz-topline {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .quiz-status {
+      color: var(--muted);
+    }
+
+    .quiz-prompt {
+      margin: 0 0 14px;
+      font-size: 20px;
+      line-height: 1.35;
+    }
+
+    .quiz-source {
+      margin-bottom: 18px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .play-controls {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .answer-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .answer-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 48px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--panel-2);
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .answer-option:hover {
+      border-color: var(--accent);
+    }
+
+    .answer-option input {
+      flex: 0 0 auto;
+    }
+
+    .submit-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .primary-button {
+      background: rgba(99, 179, 255, 0.18);
+      border-color: rgba(99, 179, 255, 0.55);
+    }
+
+    .feedback {
+      min-height: 24px;
+      margin-top: 16px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.03);
+      line-height: 1.45;
+    }
+
+    .feedback.correct {
+      color: var(--success);
+      border-color: rgba(74, 222, 128, 0.45);
+      background: rgba(74, 222, 128, 0.08);
+    }
+
+    .feedback.incorrect {
+      color: #ffd1d8;
+      border-color: rgba(251, 113, 133, 0.45);
+      background: rgba(251, 113, 133, 0.08);
+    }
+
+    .hidden-workshop {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    .transport-master .master-meter,
+    .meter {
+      height: 1px;
+      width: 1px;
+    }
+
+
+    /* --- Preset review console --- */
+    .fx-filter-panel,
+    #quizForm,
+    #quizFeedback,
+    #quizPrompt {
+      display: none;
+    }
+
+    .review-panel {
+      margin-top: 18px;
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.035);
+    }
+
+    .review-heading-row,
+    .review-nav-row,
+    .review-action-row,
+    .review-io-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .review-heading-row {
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .review-heading-row h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .review-badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--muted);
+      background: var(--panel-2);
+      font-size: 13px;
+    }
+
+    .review-details {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 7px 12px;
+      margin: 12px 0 14px;
+      font-size: 14px;
+    }
+
+    .review-details dt {
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .review-details dd {
+      margin: 0;
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .review-params {
+      margin: 0 0 14px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #0d1016;
+      color: #dbeafe;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      font: 13px/1.45 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    .review-note {
+      width: 100%;
+      min-height: 76px;
+      resize: vertical;
+      margin: 0 0 12px;
+      padding: 11px 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #0d1016;
+      color: var(--text);
+      font: inherit;
+    }
+
+    .review-action-row { margin-bottom: 14px; }
+    .review-nav-row { margin-bottom: 14px; }
+
+    .review-good { border-color: rgba(74,222,128,.6); background: rgba(74,222,128,.10); }
+    .review-subtle { border-color: rgba(250,204,21,.6); background: rgba(250,204,21,.10); }
+    .review-bad { border-color: rgba(251,113,133,.6); background: rgba(251,113,133,.10); }
+
+    .review-jump {
+      width: 95px;
+      padding: 11px 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #0d1016;
+      color: var(--text);
+      font: inherit;
+    }
+
+    .review-summary {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .review-current-status {
+      font-weight: 700;
+    }
+
+    .review-current-status[data-status="good"] { color: var(--success); }
+    .review-current-status[data-status="too-subtle"] { color: var(--warn); }
+    .review-current-status[data-status="bad"] { color: var(--danger); }
+    .review-current-status[data-status="skipped"] { color: var(--muted); }
+
+    #reviewImportInput { display: none; }
+
+    @media (max-width: 720px) {
+      .quiz-page {
+        width: min(100% - 20px, 920px);
+        padding-top: 10px;
+      }
+
+      .fx-filter-grid,
+      .play-controls,
+      .answer-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="quiz-page">
+    <header class="quiz-header">
+      <h1>Audio FX Preset Review Console</h1>
+      <p>Audition each preset, mark anything that needs work, and export the review list for revision.</p>
+    </header>
+
+    <section class="quiz-card" aria-live="polite">
+      <section class="fx-filter-panel" aria-label="Choose FX Filter">
+        <h2>Choose FX Filter</h2>
+
+        <div class="fx-filter-grid">
+          <label>
+            <input type="checkbox" class="fx-filter-check" value="eq" checked />
+            EQ
+          </label>
+
+          <label>
+            <input type="checkbox" class="fx-filter-check" value="modulation" checked />
+            Modulation
+          </label>
+
+          <label>
+            <input type="checkbox" class="fx-filter-check" value="dynamics" checked />
+            Dynamics
+          </label>
+
+          <label>
+            <input type="checkbox" class="fx-filter-check" value="delayReverb" checked />
+            Delay/Reverb
+          </label>
+
+          <label>
+            <input type="checkbox" class="fx-filter-check" value="distortion" checked />
+            Distortion/Drive/Fuzz
+          </label>
+        </div>
+
+        <div class="fx-filter-actions">
+          <button id="selectAllFxBtn" type="button">All</button>
+          <button id="generateQuizBtn" class="primary-button" type="button">Generate Quiz</button>
+        </div>
+      </section>
+
+      <div class="quiz-topline">
+        <div id="quizProgress">Loading quiz...</div>
+        <div id="quizStatus" class="quiz-status">Preparing audio engine...</div>
+      </div>
+
+      <h2 id="quizPrompt" class="quiz-prompt">Listen and identify the active effect.</h2>
+      <div id="quizSource" class="quiz-source">Source: loading...</div>
+
+      <div class="play-controls">
+        <button id="quizPlayCleanBtn" type="button" disabled>Play Clean</button>
+        <button id="quizPlayEffectBtn" class="primary-button" type="button" disabled>Play Effect</button>
+        <button id="quizStopBtn" type="button" disabled>Stop</button>
+      </div>
+
+      <section class="review-panel" aria-label="Preset review tools">
+        <div class="review-heading-row">
+          <h2>Preset QA</h2>
+          <span id="reviewCurrentStatus" class="review-current-status" data-status="">UNREVIEWED</span>
+        </div>
+
+        <div class="review-nav-row">
+          <button id="reviewPrevBtn" type="button">← Previous</button>
+          <button id="reviewNextBtn" type="button">Next →</button>
+          <button id="reviewNextUnreviewedBtn" type="button">Next Unreviewed</button>
+          <button id="reviewNextFlaggedBtn" type="button">Next Flagged</button>
+          <input id="reviewJumpId" class="review-jump" type="text" inputmode="numeric" placeholder="Preset ID" aria-label="Jump to preset ID" />
+          <button id="reviewJumpBtn" type="button">Jump</button>
+        </div>
+
+        <div class="review-heading-row">
+          <span id="reviewPosition" class="review-badge">Preset — / —</span>
+          <span id="reviewCounts" class="review-badge">Loading review data…</span>
+        </div>
+
+        <dl class="review-details">
+          <dt>Reference ID</dt><dd id="reviewPresetId">—</dd>
+          <dt>Source</dt><dd id="reviewSource">—</dd>
+          <dt>Effect</dt><dd id="reviewEffect">—</dd>
+          <dt>Master output</dt><dd id="reviewOutput">—</dd>
+        </dl>
+
+        <pre id="reviewParams" class="review-params">Loading preset…</pre>
+        <textarea id="reviewNote" class="review-note" placeholder="Optional note — e.g. ‘Needs more compression’ or ‘Gate is chopping too much.’"></textarea>
+
+        <div class="review-action-row">
+          <button id="reviewGoodBtn" class="review-good" type="button">✓ GOOD</button>
+          <button id="reviewSubtleBtn" class="review-subtle" type="button">⚠ TOO SUBTLE</button>
+          <button id="reviewBadBtn" class="review-bad" type="button">✕ BAD / WRONG</button>
+          <button id="reviewSkipBtn" type="button">→ SKIP</button>
+          <button id="reviewClearBtn" type="button">Clear Mark</button>
+        </div>
+
+        <div class="review-io-row">
+          <button id="reviewCopyBtn" type="button">Copy Preset Details</button>
+          <button id="reviewExportBtn" class="primary-button" type="button">Export Review List</button>
+          <button id="reviewImportBtn" type="button">Import Review List</button>
+          <input id="reviewImportInput" type="file" accept="application/json,.json" />
+          <button id="reviewResetAllBtn" type="button">Reset All Reviews</button>
+        </div>
+
+        <div id="reviewSummary" class="review-summary">Reviews are saved automatically in this browser.</div>
+      </section>
+
+      <form id="quizForm">
+        <div id="answerChoices" class="answer-grid"></div>
+
+        <div class="submit-row">
+          <button id="submitAnswerBtn" class="primary-button" type="submit" disabled>Submit Answer</button>
+          <button id="nextQuestionBtn" type="button" disabled>Next Example</button>
+        </div>
+      </form>
+
+      <div id="quizFeedback" class="feedback">The first example will load automatically.</div>
+    </section>
+  </main>
+
+  <div class="hidden-workshop" aria-hidden="true">
+    <button id="playBtn" type="button">Play</button>
+    <button id="pauseBtn" type="button">Pause</button>
+    <button id="stopBtn" type="button">Stop</button>
+    <button id="resetBtn" type="button">Reset FX</button>
+
+    <input type="checkbox" id="loopToggle" />
+
+    <div id="masterOutputHost"></div>
+    <div id="activeSourceText">Active source: none loaded</div>
+    <div id="statusText">Loading source library...</div>
+
+    <div class="meter">
+      <div class="meter-fill" id="meterFill"></div>
+    </div>
+
+    <select id="categoryFilter">
+      <option value="all">All categories</option>
+    </select>
+
+    <input type="text" id="searchInput" />
+    <input type="file" id="uploadInput" accept="audio/*" />
+
+    <div id="libraryList"></div>
+    <div id="effectsContainer"></div>
+
+    <section id="presetCodePanel" class="preset-code-panel collapsed">
+      <button id="presetCodeToggle" type="button" aria-expanded="false">Preset Code Builder</button>
+      <textarea id="presetCodeField"></textarea>
+      <button id="copyPresetCodeBtn" type="button">Copy Code</button>
+      <button id="loadPresetCodeBtn" type="button">Load Code</button>
+    </section>
+  </div>
+
+  <script>
+    /* quizedit.html: capture the full bank, then feed the quiz engine exactly one preset.
+       This lets the existing quiz/audio engine do all playback and FX work unchanged. */
+    (() => {
+      const nativeFetch = window.fetch.bind(window);
+      const REVIEW_STORAGE_KEY = "audioFxQuizPresetReviews.v1";
+      const LAST_PRESET_KEY = "audioFxQuizPresetReviews.lastPresetId";
+
+      window.FX_QUIZ_REVIEW_STORAGE_KEY = REVIEW_STORAGE_KEY;
+      window.FX_QUIZ_REVIEW_LAST_PRESET_KEY = LAST_PRESET_KEY;
+
+      window.fetch = async (...args) => {
+        const response = await nativeFetch(...args);
+        const requestUrl = String(args[0] && args[0].url ? args[0].url : args[0] || "");
+        const bankUrl = String(window.FX_QUIZ_BANK_URL || "json/audio_fx_quiz_bank.json");
+
+        if (!requestUrl.includes(bankUrl) && !requestUrl.includes("audio_fx_quiz_bank.json")) {
+          return response;
+        }
+
+        try {
+          const fullBank = await response.clone().json();
+          const allItems = Array.isArray(fullBank.items) ? fullBank.items : [];
+          window.FX_QUIZ_EDITOR_FULL_BANK = fullBank;
+
+          const params = new URLSearchParams(window.location.search);
+          const requested = params.get("preset") || localStorage.getItem(LAST_PRESET_KEY) || (allItems[0] && allItems[0].id);
+          let item = allItems.find(entry => String(entry.id) === String(requested));
+          if (!item) item = allItems[0] || null;
+
+          if (item) {
+            localStorage.setItem(LAST_PRESET_KEY, String(item.id));
+          }
+
+          window.FX_QUIZ_EDITOR_CURRENT_ID = item ? String(item.id) : "";
+          const oneItemBank = { ...fullBank, items: item ? [item] : [] };
+
+          window.dispatchEvent(new CustomEvent("fxQuizEditorBankReady", {
+            detail: { bank: fullBank, currentItem: item }
+          }));
+
+          return new Response(JSON.stringify(oneItemBank), {
+            status: response.status,
+            statusText: response.statusText,
+            headers: { "Content-Type": "application/json" }
+          });
+        } catch (error) {
+          console.error("Quiz editor could not prepare the preset bank:", error);
+          return response;
+        }
+      };
+    })();
+  </script>
+
+  <script>
+    window.FX_QUIZ_BANK_URL = "json/audio_fx_quiz_bank.json";
+
+    window.FX_QUIZ_DEFAULT_PROMPT =
+      "Listen to the processed audio. Which effect or processing module is active?";
+
+    window.FX_QUIZ_LABELS = {
+      lowpass: "Low-Pass Filter",
+      highpass: "High-Pass Filter",
+      bandpass: "Band-Pass Filter",
+      notch: "Band-Reject Filter",
+      lowshelf: "Low Shelf",
+      highshelf: "High Shelf",
+      compressor: "Compressor",
+      delay: "Delay",
+      reverb: "Reverb",
+      tremolo: "Tremolo",
+      vibrato: "Vibrato",
+      chorus: "Chorus",
+      flanger: "Flanger",
+      "noise-gate": "Noise Gate",
+      overdrive: "Overdrive",
+      distortion: "Distortion",
+      fuzz: "Fuzz"
+    };
+
+    window.FX_QUIZ_ANSWER_ORDER = [
+      "lowpass",
+      "highpass",
+      "bandpass",
+      "notch",
+      "lowshelf",
+      "highshelf",
+      "compressor",
+      "delay",
+      "reverb",
+      "tremolo",
+      "vibrato",
+      "chorus",
+      "flanger",
+      "noise-gate",
+      "overdrive",
+      "distortion",
+      "fuzz"
+    ];
+
+    window.FX_QUIZ_CATEGORIES = {
+      eq: [
+        "lowpass",
+        "highpass",
+        "bandpass",
+        "notch",
+        "lowshelf",
+        "highshelf"
+      ],
+      modulation: [
+        "tremolo",
+        "vibrato",
+        "chorus",
+        "flanger"
+      ],
+      dynamics: [
+        "compressor",
+        "noise-gate"
+      ],
+      delayReverb: [
+        "delay",
+        "reverb"
+      ],
+      distortion: [
+        "overdrive",
+        "distortion",
+        "fuzz"
+      ]
+    };
+
+    window.FX_QUIZ_PARAM_MAP = {
+      lowpass: {
+        f: "#lowpass-freq"
+      },
+      highpass: {
+        f: "#highpass-freq"
+      },
+      bandpass: {
+        f: "#bandpass-freq",
+        q: "#bandpass-q"
+      },
+      notch: {
+        f: "#notch-freq",
+        q: "#notch-q"
+      },
+      lowshelf: {
+        f: "#lowshelf-freq",
+        g: "#lowshelf-gain"
+      },
+      highshelf: {
+        f: "#highshelf-freq",
+        g: "#highshelf-gain"
+      },
+      compressor: {
+        th: "#compressor-threshold",
+        ra: "#compressor-ratio",
+        a: "#compressor-attack",
+        rel: "#compressor-release",
+        mk: "#compressor-makeup"
+      },
+      delay: {
+        t: "#delay-time",
+        fb: "#delay-feedback",
+        w: "#delay-wet"
+      },
+      reverb: {
+        len: "#reverb-length",
+        w: "#reverb-wet",
+        tone: "#reverb-tone"
+      },
+      tremolo: {
+        r: "#tremolo-rate",
+        d: "#tremolo-depth"
+      },
+      vibrato: {
+        r: "#vibrato-rate",
+        d: "#vibrato-depth"
+      },
+      chorus: {
+        r: "#chorus-rate",
+        d: "#chorus-depth",
+        mix: "#chorus-mix"
+      },
+      flanger: {
+        r: "#flanger-rate",
+        del: "#flanger-delay",
+        d: "#flanger-depth",
+        fb: "#flanger-feedback",
+        mix: "#flanger-mix",
+        tone: "#flanger-tone"
+      },
+      "noise-gate": {
+        th: "#noise-gate-threshold",
+        rel: "#noise-gate-release",
+        floor: "#noise-gate-floor"
+      },
+      distortion: {
+        od: "#distortion-overdrive",
+        ds: "#distortion-distortion",
+        fz: "#distortion-fuzz",
+        out: "#distortion-output"
+      }
+    };
+
+    window.FX_QUIZ_ENABLE_MAP = {
+      lowpass: "#lowpass-enabled",
+      highpass: "#highpass-enabled",
+      bandpass: "#bandpass-enabled",
+      notch: "#notch-enabled",
+      lowshelf: "#lowshelf-enabled",
+      highshelf: "#highshelf-enabled",
+      compressor: "#compressor-enabled",
+      delay: "#delay-enabled",
+      reverb: "#reverb-enabled",
+      tremolo: "#tremolo-enabled",
+      vibrato: "#vibrato-enabled",
+      chorus: "#chorus-enabled",
+      flanger: "#flanger-enabled",
+      "noise-gate": "#noise-gate-enabled",
+      distortion: "#distortion-enabled"
+    };
+
+    window.resolveFxQuizAnswerId = function (item) {
+      if (!item) {
+        return "";
+      }
+
+      if (item.answerId) {
+        return String(item.answerId);
+      }
+
+      if (item.fx === "distortion") {
+        const p = item.p || {};
+        const od = Number(p.od || 0);
+        const ds = Number(p.ds || 0);
+        const fz = Number(p.fz || 0);
+
+        if (od > 0 && od >= ds && od >= fz) {
+          return "overdrive";
+        }
+
+        if (ds > 0 && ds >= od && ds >= fz) {
+          return "distortion";
+        }
+
+        if (fz > 0 && fz >= od && fz >= ds) {
+          return "fuzz";
+        }
+
+        return "distortion";
+      }
+
+      return String(item.fx || "");
+    };
+
+    window.getFxQuizAnswerLabel = function (answerId) {
+      return window.FX_QUIZ_LABELS[answerId] || String(answerId || "");
+    };
+
+    window.getSelectedFxQuizCategories = function () {
+      return Array.from(document.querySelectorAll(".fx-filter-check:checked"))
+        .map(input => input.value);
+    };
+
+    window.getSelectedFxQuizAnswerIds = function () {
+      const selectedCategories = window.getSelectedFxQuizCategories();
+
+      return selectedCategories.flatMap(category => {
+        return window.FX_QUIZ_CATEGORIES[category] || [];
+      });
+    };
+
+    window.fxQuizEffectMatchesSelectedCategories = function (itemOrEffectName) {
+      const selectedAnswerIds = window.getSelectedFxQuizAnswerIds();
+
+      if (!selectedAnswerIds.length) {
+        return false;
+      }
+
+      const answerId = typeof itemOrEffectName === "object"
+        ? window.resolveFxQuizAnswerId(itemOrEffectName)
+        : String(itemOrEffectName || "");
+
+      return selectedAnswerIds.includes(answerId);
+    };
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const selectAllFxBtn = document.getElementById("selectAllFxBtn");
+      const generateQuizBtn = document.getElementById("generateQuizBtn");
+
+      if (selectAllFxBtn) {
+        selectAllFxBtn.addEventListener("click", () => {
+          document.querySelectorAll(".fx-filter-check").forEach(input => {
+            input.checked = true;
+          });
+        });
+      }
+
+      if (generateQuizBtn) {
+        generateQuizBtn.addEventListener("click", () => {
+          window.dispatchEvent(new CustomEvent("fxQuizGenerateRequested", {
+            detail: {
+              categories: window.getSelectedFxQuizCategories(),
+              answerIds: window.getSelectedFxQuizAnswerIds()
+            }
+          }));
+        });
+      }
+    });
+  </script>
+
+  <script src="js/app-state.js"></script>
+  <script src="js/dom-elements.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/module-registry.js"></script>
+  <script src="js/audio-engine.js"></script>
+  <script src="js/library-manager.js"></script>
+  <script src="js/upload-manager.js"></script>
+  <script src="js/transport-controls.js"></script>
+  <script src="js/meter.js"></script>
+  <script src="js/reset-fx.js"></script>
+
+  <script src="js/modules/master-module.js"></script>
+  <script src="js/modules/lowpass-module.js"></script>
+  <script src="js/modules/highpass-module.js"></script>
+  <script src="js/modules/bandpass-module.js"></script>
+  <script src="js/modules/notch-module.js"></script>
+  <script src="js/modules/lowshelf-module.js"></script>
+  <script src="js/modules/highshelf-module.js"></script>
+  <script src="js/modules/compressor-module.js"></script>
+  <script src="js/modules/distortion-module.js"></script>
+  <script src="js/modules/delay-module.js"></script>
+  <script src="js/modules/reverb-module.js"></script>
+  <script src="js/modules/tremolo-module.js"></script>
+  <script src="js/modules/vibrato-module.js"></script>
+  <script src="js/modules/chorus-module.js"></script>
+  <script src="js/modules/flanger-module.js"></script>
+  <script src="js/modules/noise-gate-module.js"></script>
+
+  <script src="js/preset-codes.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/audio-fx-quiz.js"></script>
+
+  <script>
+    (() => {
+      const STORAGE_KEY = window.FX_QUIZ_REVIEW_STORAGE_KEY || "audioFxQuizPresetReviews.v1";
+      const LAST_PRESET_KEY = window.FX_QUIZ_REVIEW_LAST_PRESET_KEY || "audioFxQuizPresetReviews.lastPresetId";
+
+      const $ = id => document.getElementById(id);
+
+      function loadReviews() {
+        try {
+          const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+          return parsed && typeof parsed === "object" ? parsed : {};
+        } catch (_) {
+          return {};
+        }
+      }
+
+      function saveReviews(reviews) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(reviews));
+      }
+
+      function bankItems() {
+        return (window.FX_QUIZ_EDITOR_FULL_BANK && Array.isArray(window.FX_QUIZ_EDITOR_FULL_BANK.items))
+          ? window.FX_QUIZ_EDITOR_FULL_BANK.items
+          : [];
+      }
+
+      function currentId() {
+        return String(window.FX_QUIZ_EDITOR_CURRENT_ID || "");
+      }
+
+      function currentItem() {
+        return bankItems().find(item => String(item.id) === currentId()) || null;
+      }
+
+      function answerId(item) {
+        if (!item) return "";
+        if (typeof window.resolveFxQuizAnswerId === "function") {
+          return window.resolveFxQuizAnswerId(item);
+        }
+        return String(item.fx || "");
+      }
+
+      function answerLabel(item) {
+        const id = answerId(item);
+        return (window.FX_QUIZ_LABELS && window.FX_QUIZ_LABELS[id]) || id || String(item && item.fx || "");
+      }
+
+      function statusLabel(status) {
+        return {
+          good: "GOOD",
+          "too-subtle": "TOO SUBTLE",
+          bad: "BAD / WRONG",
+          skipped: "SKIPPED"
+        }[status] || "UNREVIEWED";
+      }
+
+      function setCurrentUrl(id) {
+        if (!id) return;
+        localStorage.setItem(LAST_PRESET_KEY, String(id));
+        const url = new URL(window.location.href);
+        url.searchParams.set("preset", String(id));
+        window.location.href = url.toString();
+      }
+
+      function sortedItems() {
+        return bankItems().slice().sort((a, b) => {
+          const an = Number(a.id), bn = Number(b.id);
+          if (Number.isFinite(an) && Number.isFinite(bn)) return an - bn;
+          return String(a.id).localeCompare(String(b.id), undefined, { numeric: true });
+        });
+      }
+
+      function adjacentId(direction) {
+        const items = sortedItems();
+        const idx = items.findIndex(item => String(item.id) === currentId());
+        if (idx < 0 || !items.length) return "";
+        const nextIdx = Math.max(0, Math.min(items.length - 1, idx + direction));
+        return String(items[nextIdx].id);
+      }
+
+      function findNextBy(predicate) {
+        const items = sortedItems();
+        if (!items.length) return "";
+        const idx = Math.max(0, items.findIndex(item => String(item.id) === currentId()));
+        for (let offset = 1; offset <= items.length; offset++) {
+          const item = items[(idx + offset) % items.length];
+          if (predicate(item)) return String(item.id);
+        }
+        return "";
+      }
+
+      function saveCurrentNoteOnly() {
+        const id = currentId();
+        if (!id) return;
+        const reviews = loadReviews();
+        const note = $("reviewNote") ? $("reviewNote").value.trim() : "";
+        if (reviews[id]) {
+          reviews[id].note = note;
+          reviews[id].updatedAt = new Date().toISOString();
+          saveReviews(reviews);
+        }
+      }
+
+      function markCurrent(status, goNext = true) {
+        const item = currentItem();
+        if (!item) return;
+        const reviews = loadReviews();
+        const note = $("reviewNote") ? $("reviewNote").value.trim() : "";
+        reviews[String(item.id)] = {
+          id: String(item.id),
+          source: item.s || "",
+          effect: answerId(item),
+          effectLabel: answerLabel(item),
+          status,
+          note,
+          params: item.p || {},
+          masterOutputDb: item.o,
+          updatedAt: new Date().toISOString()
+        };
+        saveReviews(reviews);
+        render();
+        if (goNext) {
+          const next = adjacentId(1);
+          if (next && next !== currentId()) setCurrentUrl(next);
+        }
+      }
+
+      function clearCurrent() {
+        const id = currentId();
+        const reviews = loadReviews();
+        delete reviews[id];
+        saveReviews(reviews);
+        if ($("reviewNote")) $("reviewNote").value = "";
+        render();
+      }
+
+      function copyPresetDetails() {
+        const item = currentItem();
+        if (!item) return;
+        const reviews = loadReviews();
+        const review = reviews[String(item.id)] || {};
+        const text = [
+          `Preset ${item.id}`,
+          `Source: ${item.s || ""}`,
+          `Effect: ${answerLabel(item)} (${answerId(item)})`,
+          `Parameters: ${JSON.stringify(item.p || {})}`,
+          `Master output dB: ${item.o}`,
+          `Review: ${statusLabel(review.status)}`,
+          `Note: ${review.note || ""}`
+        ].join("\n");
+
+        navigator.clipboard.writeText(text).then(() => {
+          if ($("reviewSummary")) $("reviewSummary").textContent = `Copied preset ${item.id} details to clipboard.`;
+        }).catch(() => {
+          window.prompt("Copy preset details:", text);
+        });
+      }
+
+      function exportReviews() {
+        saveCurrentNoteOnly();
+        const reviews = loadReviews();
+        const items = sortedItems();
+        const orderedReviews = items
+          .map(item => reviews[String(item.id)])
+          .filter(Boolean);
+
+        const payload = {
+          format: "Audio FX Quiz Preset Review",
+          version: 1,
+          exportedAt: new Date().toISOString(),
+          bankTitle: window.FX_QUIZ_EDITOR_FULL_BANK && window.FX_QUIZ_EDITOR_FULL_BANK.quizTitle,
+          bankVersion: window.FX_QUIZ_EDITOR_FULL_BANK && window.FX_QUIZ_EDITOR_FULL_BANK.version,
+          totalPresets: items.length,
+          counts: {
+            reviewed: orderedReviews.length,
+            good: orderedReviews.filter(r => r.status === "good").length,
+            tooSubtle: orderedReviews.filter(r => r.status === "too-subtle").length,
+            bad: orderedReviews.filter(r => r.status === "bad").length,
+            skipped: orderedReviews.filter(r => r.status === "skipped").length,
+            unreviewed: Math.max(0, items.length - orderedReviews.length)
+          },
+          reviews: orderedReviews
+        };
+
+        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        const stamp = new Date().toISOString().slice(0, 10);
+        a.href = url;
+        a.download = `audio-fx-quiz-review-${stamp}.json`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      }
+
+      function importReviews(file) {
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+          try {
+            const parsed = JSON.parse(String(reader.result || "{}"));
+            const imported = Array.isArray(parsed.reviews) ? parsed.reviews : [];
+            const reviews = loadReviews();
+            imported.forEach(review => {
+              if (!review || review.id == null) return;
+              reviews[String(review.id)] = review;
+            });
+            saveReviews(reviews);
+            render();
+            if ($("reviewSummary")) $("reviewSummary").textContent = `Imported ${imported.length} review records.`;
+          } catch (error) {
+            alert("That file is not a valid quiz review JSON file.");
+          }
+        };
+        reader.readAsText(file);
+      }
+
+      function render() {
+        const items = sortedItems();
+        const item = currentItem();
+        if (!item || !items.length) return;
+        const reviews = loadReviews();
+        const review = reviews[String(item.id)] || null;
+        const index = items.findIndex(entry => String(entry.id) === String(item.id));
+        const status = review && review.status || "";
+
+        $("reviewPresetId").textContent = String(item.id);
+        $("reviewSource").textContent = item.s || "—";
+        $("reviewEffect").textContent = `${answerLabel(item)} (${answerId(item)})`;
+        $("reviewOutput").textContent = `${item.o} dB`;
+        $("reviewParams").textContent = JSON.stringify(item.p || {}, null, 2);
+        $("reviewPosition").textContent = `Preset ${index + 1} / ${items.length}`;
+
+        const statusEl = $("reviewCurrentStatus");
+        statusEl.textContent = statusLabel(status);
+        statusEl.dataset.status = status;
+
+        if (document.activeElement !== $("reviewNote")) {
+          $("reviewNote").value = review && review.note || "";
+        }
+
+        const allReviews = Object.values(reviews);
+        const good = allReviews.filter(r => r.status === "good").length;
+        const subtle = allReviews.filter(r => r.status === "too-subtle").length;
+        const bad = allReviews.filter(r => r.status === "bad").length;
+        const skipped = allReviews.filter(r => r.status === "skipped").length;
+        const reviewedIds = new Set(allReviews.map(r => String(r.id)));
+        const reviewed = items.filter(i => reviewedIds.has(String(i.id))).length;
+        const unreviewed = Math.max(0, items.length - reviewed);
+        $("reviewCounts").textContent = `Good ${good} • Subtle ${subtle} • Bad ${bad} • Skip ${skipped} • Unreviewed ${unreviewed}`;
+        $("reviewSummary").textContent = "Reviews save automatically in this browser. Export the review list when you want the flagged presets revised.";
+
+        $("reviewPrevBtn").disabled = index <= 0;
+        $("reviewNextBtn").disabled = index >= items.length - 1;
+      }
+
+      function wire() {
+        $("reviewPrevBtn").addEventListener("click", () => { saveCurrentNoteOnly(); setCurrentUrl(adjacentId(-1)); });
+        $("reviewNextBtn").addEventListener("click", () => { saveCurrentNoteOnly(); setCurrentUrl(adjacentId(1)); });
+        $("reviewNextUnreviewedBtn").addEventListener("click", () => {
+          saveCurrentNoteOnly();
+          const reviews = loadReviews();
+          const id = findNextBy(item => !reviews[String(item.id)]);
+          if (id) setCurrentUrl(id); else alert("No unreviewed presets remain.");
+        });
+        $("reviewNextFlaggedBtn").addEventListener("click", () => {
+          saveCurrentNoteOnly();
+          const reviews = loadReviews();
+          const id = findNextBy(item => {
+            const r = reviews[String(item.id)];
+            return r && (r.status === "too-subtle" || r.status === "bad");
+          });
+          if (id) setCurrentUrl(id); else alert("No flagged presets were found.");
+        });
+
+        const doJump = () => {
+          saveCurrentNoteOnly();
+          const raw = $("reviewJumpId").value.trim();
+          const match = sortedItems().find(item => String(item.id) === raw || String(Number(item.id)) === String(Number(raw)));
+          if (match) setCurrentUrl(match.id); else alert(`Preset ${raw || "?"} was not found in this bank.`);
+        };
+        $("reviewJumpBtn").addEventListener("click", doJump);
+        $("reviewJumpId").addEventListener("keydown", event => {
+          if (event.key === "Enter") { event.preventDefault(); doJump(); }
+        });
+
+        $("reviewGoodBtn").addEventListener("click", () => markCurrent("good"));
+        $("reviewSubtleBtn").addEventListener("click", () => markCurrent("too-subtle"));
+        $("reviewBadBtn").addEventListener("click", () => markCurrent("bad"));
+        $("reviewSkipBtn").addEventListener("click", () => markCurrent("skipped"));
+        $("reviewClearBtn").addEventListener("click", clearCurrent);
+        $("reviewNote").addEventListener("change", saveCurrentNoteOnly);
+
+        $("reviewCopyBtn").addEventListener("click", copyPresetDetails);
+        $("reviewExportBtn").addEventListener("click", exportReviews);
+        $("reviewImportBtn").addEventListener("click", () => $("reviewImportInput").click());
+        $("reviewImportInput").addEventListener("change", event => {
+          importReviews(event.target.files && event.target.files[0]);
+          event.target.value = "";
+        });
+        $("reviewResetAllBtn").addEventListener("click", () => {
+          if (!confirm("Clear every saved review mark and note for this browser?")) return;
+          localStorage.removeItem(STORAGE_KEY);
+          render();
+        });
+      }
+
+      function initWhenReady() {
+        if (!window.FX_QUIZ_EDITOR_FULL_BANK || !currentId()) {
+          setTimeout(initWhenReady, 100);
+          return;
+        }
+        wire();
+        render();
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initWhenReady, { once: true });
+      } else {
+        initWhenReady();
+      }
+    })();
+  </script>
+</body>
+</html>
