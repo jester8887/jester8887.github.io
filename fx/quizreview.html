@@ -1,0 +1,1659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Audio FX Workshop — Preset Review</title>
+  <style>
+    :root {
+      --bg: #0f1115;
+      --panel: #171a21;
+      --panel-2: #1f2430;
+      --text: #eef2f7;
+      --muted: #a9b3c3;
+      --accent: #63b3ff;
+      --border: #2a3140;
+      --success: #4ade80;
+      --warn: #facc15;
+      --danger: #fb7185;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #0d1016, #121723);
+      color: var(--text);
+    }
+
+    header {
+      padding: 20px 24px 14px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 17, 21, 0.95);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(8px);
+    }
+
+    header h1 {
+      margin: 0 0 6px 0;
+      font-size: 28px;
+    }
+
+    header p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .transport-bar {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .transport-left {
+      display: grid;
+      gap: 10px;
+    }
+
+    .transport-buttons {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(90px, 120px));
+      gap: 10px;
+      align-items: center;
+    }
+
+    .transport-right {
+      display: grid;
+      gap: 10px;
+      min-width: 260px;
+    }
+
+    .status-block {
+      display: grid;
+      gap: 8px;
+    }
+
+    .status {
+      font-size: 13px;
+      color: var(--muted);
+      min-height: 18px;
+    }
+
+    .active-source {
+      font-size: 13px;
+      color: var(--text);
+      min-height: 18px;
+    }
+
+    .meter {
+      height: 10px;
+      width: 100%;
+      background: #0f1115;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .meter-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--success), var(--warn), var(--danger));
+      transition: width 0.08s linear;
+    }
+
+    .loop-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--panel-2);
+      height: 42px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    .panel h2 {
+      margin: 0 0 14px;
+      font-size: 20px;
+    }
+
+    .source-actions {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .row {
+      display: grid;
+      gap: 8px;
+    }
+
+    label {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    input[type="text"],
+    select,
+    input[type="file"],
+    button {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--panel-2);
+      color: var(--text);
+      padding: 10px 12px;
+      font-size: 14px;
+    }
+
+    input[type="checkbox"] {
+      accent-color: var(--accent);
+    }
+
+    button {
+      cursor: pointer;
+      transition: 0.15s ease;
+    }
+
+    button:hover {
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .library {
+      max-height: 540px;
+      overflow: auto;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    .library-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .library-item:last-child {
+      border-bottom: 0;
+    }
+
+    .library-item.active {
+      background: rgba(99, 179, 255, 0.08);
+      outline: 1px solid rgba(99, 179, 255, 0.25);
+    }
+
+    .library-item-title {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .library-item-meta {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: capitalize;
+    }
+
+    .library-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .library-grid-button {
+      width: 100%;
+      min-height: 72px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 4px;
+      text-align: left;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--panel-2);
+      color: var(--text);
+      padding: 12px;
+    }
+
+    .library-grid-button:hover {
+      border-color: var(--accent);
+    }
+
+    .library-grid-button.active {
+      background: rgba(99, 179, 255, 0.1);
+      border-color: rgba(99, 179, 255, 0.45);
+      box-shadow: inset 0 0 0 1px rgba(99, 179, 255, 0.15);
+    }
+
+    .library-grid-title {
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    .library-grid-meta {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: capitalize;
+      line-height: 1.2;
+    }
+
+    .effects-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    .effects-header h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .effects-help {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .effect-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    .effect-card h3 {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin: 0 0 12px;
+      font-size: 17px;
+    }
+
+    .effect-card .controls {
+      display: grid;
+      gap: 12px;
+    }
+
+    .slider-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .slider-row .value {
+      font-size: 12px;
+      color: var(--muted);
+      min-width: 74px;
+      text-align: right;
+    }
+
+    input[type="range"] {
+      width: 100%;
+    }
+
+    .inline-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .module-placeholder {
+      border: 1px dashed var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .note {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .master-card {
+      order: -999;
+    }
+
+    .meter-wrap {
+      margin-top: 10px;
+    }
+
+    .meter-ruler {
+      position: relative;
+      height: 14px;
+      font-size: 10px;
+      color: #ccc;
+    }
+
+    .meter-ruler span {
+      position: absolute;
+      transform: translateX(-50%);
+    }
+
+    .zone {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+    }
+
+    .green {
+      left: 0%;
+      width: 66.6%;
+      background: #123c12;
+    }
+
+    .yellow {
+      left: 66.6%;
+      width: 16.6%;
+      background: #5c5c12;
+    }
+
+    .orange {
+      left: 83.3%;
+      width: 8.3%;
+      background: #6b3c12;
+    }
+
+    .red {
+      left: 91.6%;
+      width: 8.3%;
+      background: #6b1212;
+    }
+
+    .overlay {
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.8);
+    }
+
+    .peak {
+      position: absolute;
+      width: 2px;
+      top: 0;
+      bottom: 0;
+      background: white;
+    }
+
+    .meter-readout {
+      font-size: 11px;
+      margin-top: 4px;
+    }
+
+    .transport-master-host {
+      min-height: 0;
+    }
+
+    .transport-master {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px 16px;
+    }
+
+    .transport-master h3 {
+      margin: 0 0 12px;
+      font-size: 17px;
+    }
+
+    .transport-master .master-top-row {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .transport-master .master-top-row label {
+      margin: 0;
+      white-space: nowrap;
+    }
+
+    .transport-master .master-value {
+      font-size: 13px;
+      color: var(--text);
+      min-width: 52px;
+      text-align: right;
+    }
+
+    .transport-master .meter-wrap {
+      display: grid;
+      gap: 6px;
+    }
+
+    .transport-master .meter-ruler {
+      position: relative;
+      height: 14px;
+      font-size: 10px;
+      color: #ccc;
+    }
+
+    .transport-master .meter-ruler span {
+      position: absolute;
+      transform: translateX(-50%);
+    }
+
+    .transport-master .meter-ruler span:last-child {
+      transform: translateX(-100%);
+    }
+
+    .transport-master .master-meter {
+      position: relative;
+      height: 16px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: #111;
+      border: 1px solid #444;
+    }
+
+    .transport-master .zone {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+    }
+
+    .transport-master .green {
+      left: 0%;
+      width: 66.6667%;
+      background: #123c12;
+    }
+
+    .transport-master .yellow {
+      left: 66.6667%;
+      width: 16.6667%;
+      background: #5c5c12;
+    }
+
+    .transport-master .orange {
+      left: 83.3333%;
+      width: 8.3333%;
+      background: #6b3c12;
+    }
+
+    .transport-master .red {
+      left: 91.6667%;
+      width: 8.3333%;
+      background: #6b1212;
+    }
+
+    .transport-master .overlay {
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.8);
+    }
+
+    .transport-master .peak {
+      position: absolute;
+      width: 2px;
+      top: 0;
+      bottom: 0;
+      background: white;
+    }
+
+    .transport-master .meter-readout {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 1100px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .transport-bar {
+        grid-template-columns: 1fr;
+      }
+
+      .transport-buttons {
+        grid-template-columns: repeat(2, minmax(120px, 1fr));
+      }
+
+      .transport-right {
+        min-width: 0;
+      }
+
+      .transport-master .master-top-row {
+        grid-template-columns: 1fr;
+        align-items: start;
+      }
+
+      .transport-master .master-value {
+        text-align: left;
+      }
+
+      .library-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+   @media (max-width: 700px) {
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    padding: 8px 10px;
+    backdrop-filter: none;
+  }
+
+  header h1 {
+    font-size: 19px;
+    margin: 0 0 2px;
+    line-height: 1.1;
+  }
+
+  header p {
+    display: none;
+  }
+
+  .transport-bar {
+    margin-top: 7px;
+    gap: 7px;
+  }
+
+  .transport-left {
+    gap: 6px;
+  }
+
+  .transport-buttons {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+  }
+
+  .transport-buttons button {
+    min-height: 32px;
+    padding: 6px 4px;
+    font-size: 12px;
+    border-radius: 8px;
+  }
+
+  .transport-right {
+    display: none;
+  }
+
+  .transport-master {
+    padding: 7px 9px;
+    border-radius: 10px;
+  }
+
+  .transport-master h3 {
+    display: none;
+  }
+
+  .transport-master .master-top-row {
+    grid-template-columns: 44px 1fr 40px;
+    gap: 6px;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+
+  .transport-master .master-top-row label {
+    font-size: 11px;
+  }
+
+  .transport-master .master-value {
+    font-size: 11px;
+    min-width: 40px;
+    text-align: right;
+  }
+
+  .transport-master input[type="range"] {
+    margin: 0;
+  }
+
+  .transport-master .meter-wrap {
+    gap: 3px;
+  }
+
+  .transport-master .meter-ruler {
+    height: 10px;
+    font-size: 8px;
+  }
+
+  .transport-master .master-meter {
+    height: 11px;
+  }
+
+  .transport-master .meter-readout {
+    display: none;
+  }
+
+  .layout {
+    padding: 10px;
+    gap: 10px;
+  }
+
+  .panel {
+    padding: 10px;
+    border-radius: 12px;
+  }
+
+  .panel h2,
+  .effects-header h2 {
+    font-size: 17px;
+    margin-bottom: 8px;
+  }
+
+  .source-actions {
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .row {
+    gap: 4px;
+  }
+
+  label {
+    font-size: 11px;
+  }
+
+  input[type="text"],
+  select,
+  input[type="file"],
+  button {
+    padding: 8px 9px;
+    font-size: 13px;
+    border-radius: 8px;
+  }
+
+  .library {
+    max-height: none;
+  }
+
+  .library-grid {
+    grid-template-columns: 1fr;
+    gap: 7px;
+  }
+
+  .library-grid-button {
+    min-height: 52px;
+    padding: 9px;
+    border-radius: 10px;
+  }
+
+  .library-grid-title {
+    font-size: 13px;
+  }
+
+  .library-grid-meta {
+    font-size: 11px;
+  }
+
+  .effects-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+    margin-bottom: 8px;
+  }
+
+  .effects-grid {
+    gap: 10px;
+  }
+
+  .effect-card {
+    padding: 10px;
+    border-radius: 12px;
+  }
+
+  .effect-card h3 {
+    font-size: 15px;
+    margin-bottom: 8px;
+  }
+
+  .effect-card .controls {
+    gap: 8px;
+  }
+
+  .slider-row {
+    gap: 6px;
+  }
+
+  .slider-row .value {
+    min-width: 58px;
+    font-size: 11px;
+  }
+
+  .inline-toggle {
+    font-size: 12px;
+  }
+}
+
+.preset-code-panel {
+  margin: 14px auto 0;
+  max-width: 1200px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--panel);
+  overflow: hidden;
+}
+
+.preset-code-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 0;
+  color: var(--text);
+  background: var(--panel-2);
+  cursor: pointer;
+}
+
+.preset-code-title {
+  font-weight: 700;
+}
+
+.preset-code-body {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+}
+
+.preset-code-panel.collapsed .preset-code-body {
+  display: none;
+}
+
+.preset-code-field {
+  width: 100%;
+  min-height: 62px;
+  resize: vertical;
+  color: var(--text);
+  background: #0f1115;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 12px;
+}
+
+.preset-code-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+  
+    /* ===== Preset Review Bar ===== */
+    .preset-review-bar {
+      margin-top: 10px;
+      display: grid;
+      gap: 7px;
+      padding: 9px 10px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: rgba(23, 26, 33, 0.96);
+    }
+
+    .preset-review-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .preset-review-id {
+      font-weight: 700;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .preset-review-meta {
+      color: var(--muted);
+      font-size: 12px;
+      min-width: 0;
+      flex: 1 1 260px;
+    }
+
+    .preset-review-status {
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .preset-review-status[data-status="good"] { color: var(--success); }
+    .preset-review-status[data-status="too-subtle"] { color: var(--warn); }
+    .preset-review-status[data-status="bad"] { color: var(--danger); }
+    .preset-review-status[data-status="remove"] { color: #ff8ea1; }
+    .preset-review-status[data-status="skipped"] { color: var(--muted); }
+
+    .preset-review-bar button,
+    .preset-review-bar input[type="text"] {
+      width: auto;
+      padding: 6px 9px;
+      font-size: 12px;
+      border-radius: 8px;
+    }
+
+    .preset-review-bar .review-note {
+      flex: 1 1 280px;
+      min-width: 180px;
+      width: auto;
+    }
+
+    .preset-review-bar .jump-input {
+      width: 66px !important;
+    }
+
+    .review-good { border-color: rgba(74,222,128,.55) !important; }
+    .review-subtle { border-color: rgba(250,204,21,.55) !important; }
+    .review-bad { border-color: rgba(251,113,133,.55) !important; }
+    .review-remove {
+      border-color: rgba(255,90,110,.8) !important;
+      background: rgba(255,90,110,.12) !important;
+    }
+    .review-apply {
+      border-color: rgba(99,179,255,.65) !important;
+      background: rgba(99,179,255,.14) !important;
+    }
+
+    .preset-review-counts {
+      color: var(--muted);
+      font-size: 11px;
+      margin-left: auto;
+      white-space: nowrap;
+    }
+
+    #presetReviewImportInput { display: none; }
+
+    @media (max-width: 700px) {
+      .preset-review-bar {
+        margin-top: 7px;
+        padding: 7px;
+      }
+      .preset-review-meta {
+        flex-basis: 100%;
+      }
+      .preset-review-counts {
+        width: 100%;
+        margin-left: 0;
+      }
+    }
+
+</style>
+</head>
+<body>
+  <header>
+    <h1>Audio FX Workshop</h1>
+    <p>Choose a built-in source or upload your own file, then experiment with effect settings in real time.</p>
+
+    <div class="transport-bar">
+      <div class="transport-left">
+        <div class="transport-buttons">
+          <button id="playBtn" type="button">Play</button>
+          <button id="pauseBtn" type="button">Pause</button>
+          <button id="stopBtn" type="button">Stop</button>
+          <button id="resetBtn" type="button">Reset FX</button>
+        </div>
+
+        <div id="masterOutputHost" class="transport-master-host"></div>
+      </div>
+
+      <div class="transport-right">
+        <label class="loop-wrap">
+          <input type="checkbox" id="loopToggle" />
+          <span>Loop playback</span>
+        </label>
+
+        <div class="status-block">
+          <div class="active-source" id="activeSourceText">Active source: none loaded</div>
+          <div class="status" id="statusText">Loading source library...</div>
+          <div class="meter">
+            <div class="meter-fill" id="meterFill"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <section id="presetReviewBar" class="preset-review-bar" aria-label="Preset review controls">
+      <div class="preset-review-row">
+        <span id="presetReviewId" class="preset-review-id">Preset —</span>
+        <span id="presetReviewMeta" class="preset-review-meta">Loading preset bank…</span>
+        <span id="presetReviewStatus" class="preset-review-status" data-status="">UNREVIEWED</span>
+
+        <button id="presetPrevBtn" type="button">← Prev</button>
+        <button id="presetNextBtn" type="button">Next →</button>
+        <input id="presetJumpInput" class="jump-input" type="text" inputmode="numeric" placeholder="ID" />
+        <button id="presetJumpBtn" type="button">Jump</button>
+      </div>
+
+      <div class="preset-review-row">
+        <button id="presetApplyBtn" class="review-apply" type="button">Apply Edit</button>
+        <button id="presetRevertBtn" type="button">Revert Edit</button>
+
+        <button id="presetGoodBtn" class="review-good" type="button">✓ Good</button>
+        <button id="presetSubtleBtn" class="review-subtle" type="button">⚠ Too Subtle</button>
+        <button id="presetBadBtn" class="review-bad" type="button">✕ Bad/Wrong</button>
+        <button id="presetRemoveBtn" class="review-remove" type="button">REMOVE</button>
+        <button id="presetSkipBtn" type="button">Skip</button>
+
+        <input id="presetReviewNote" class="review-note" type="text" placeholder="Optional note/instruction" />
+
+        <button id="presetExportBtn" type="button">Export</button>
+        <button id="presetImportBtn" type="button">Import</button>
+        <input id="presetReviewImportInput" type="file" accept="application/json,.json" />
+        <span id="presetReviewCounts" class="preset-review-counts"></span>
+      </div>
+    </section>
+  </header>
+
+
+  <section id="presetCodePanel" class="preset-code-panel collapsed">
+    <button id="presetCodeToggle" class="preset-code-header" type="button" aria-expanded="false">
+      <span class="preset-code-title">Preset Code Builder</span>
+      <span>Show / hide</span>
+    </button>
+
+    <div class="preset-code-body">
+      <textarea id="presetCodeField" class="preset-code-field" spellcheck="false" aria-label="Generated preset code"></textarea>
+      <div class="preset-code-actions">
+        <button id="copyPresetCodeBtn" type="button">Copy Code</button>
+        <button id="loadPresetCodeBtn" type="button">Load Code</button>
+      </div>
+    </div>
+  </section>
+
+  <main class="layout">
+    <section class="panel">
+      <h2>Source</h2>
+
+      <div class="source-actions">
+        <div class="row">
+          <label for="categoryFilter">Filter by category</label>
+          <select id="categoryFilter">
+            <option value="all">All categories</option>
+          </select>
+        </div>
+
+        <div class="row">
+          <label for="searchInput">Search library</label>
+          <input type="text" id="searchInput" placeholder="Type part of a source name..." />
+        </div>
+
+        <div class="row">
+          <label for="uploadInput">Upload your own audio file</label>
+          <input type="file" id="uploadInput" accept="audio/*" />
+        </div>
+      </div>
+
+      <div class="library" id="libraryList"></div>
+
+      <div class="note">
+      </div>
+    </section>
+
+    <section>
+      <div class="effects-header">
+        <h2>Effects</h2>
+        <div class="effects-help"></div>
+      </div>
+
+      <div id="effectsContainer" class="effects-grid">
+        <div class="module-placeholder">
+          Effect modules have not loaded yet.
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/app-state.js"></script>
+  <script src="js/dom-elements.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/module-registry.js"></script>
+  <script src="js/audio-engine.js"></script>
+  <script src="js/library-manager.js"></script>
+  <script src="js/upload-manager.js"></script>
+  <script src="js/transport-controls.js"></script>
+  <script src="js/meter.js"></script>
+  <script src="js/reset-fx.js"></script>
+
+  <script src="js/modules/master-module.js"></script>
+  <script src="js/modules/lowpass-module.js"></script>
+  <script src="js/modules/highpass-module.js"></script>
+  <script src="js/modules/bandpass-module.js"></script>
+  <script src="js/modules/notch-module.js"></script>
+  <script src="js/modules/lowshelf-module.js"></script>
+  <script src="js/modules/highshelf-module.js"></script>
+  <script src="js/modules/compressor-module.js"></script>
+  <script src="js/modules/distortion-module.js"></script>
+  <script src="js/modules/delay-module.js"></script>
+  <script src="js/modules/reverb-module.js"></script>
+  <script src="js/modules/tremolo-module.js"></script>
+  <script src="js/modules/vibrato-module.js"></script>
+  <script src="js/modules/chorus-module.js"></script>
+  <script src="js/modules/flanger-module.js"></script>
+  <script src="js/modules/noise-gate-module.js"></script>
+
+  <script src="js/preset-codes.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    (() => {
+      const BANK_URL = "json/audio_fx_quiz_bank.json";
+      const REVIEW_KEY = "audioFxWorkshopPresetReview.v1";
+      const EDIT_KEY = "audioFxWorkshopPresetEdits.v1";
+      const LAST_KEY = "audioFxWorkshopPresetLastId.v1";
+
+      const PARAM_MAP = {
+        lowpass:   { f: "#lowpass-freq" },
+        highpass:  { f: "#highpass-freq" },
+        bandpass:  { f: "#bandpass-freq", q: "#bandpass-q" },
+        notch:     { f: "#notch-freq", q: "#notch-q" },
+        lowshelf:  { f: "#lowshelf-freq", g: "#lowshelf-gain" },
+        highshelf: { f: "#highshelf-freq", g: "#highshelf-gain" },
+        compressor:{ th:"#compressor-threshold", ra:"#compressor-ratio", a:"#compressor-attack", rel:"#compressor-release", mk:"#compressor-makeup" },
+        delay:     { t:"#delay-time", fb:"#delay-feedback", w:"#delay-wet" },
+        reverb:    { len:"#reverb-length", w:"#reverb-wet", tone:"#reverb-tone" },
+        tremolo:   { r:"#tremolo-rate", d:"#tremolo-depth" },
+        vibrato:   { r:"#vibrato-rate", d:"#vibrato-depth" },
+        chorus:    { r:"#chorus-rate", d:"#chorus-depth", mix:"#chorus-mix" },
+        flanger:   { r:"#flanger-rate", del:"#flanger-delay", d:"#flanger-depth", fb:"#flanger-feedback", mix:"#flanger-mix", tone:"#flanger-tone" },
+        "noise-gate": { th:"#noise-gate-threshold", rel:"#noise-gate-release", floor:"#noise-gate-floor" },
+        distortion:{ od:"#distortion-overdrive", ds:"#distortion-distortion", fz:"#distortion-fuzz", out:"#distortion-output" }
+      };
+
+      const ENABLE_MAP = {
+        lowpass:"#lowpass-enabled",
+        highpass:"#highpass-enabled",
+        bandpass:"#bandpass-enabled",
+        notch:"#notch-enabled",
+        lowshelf:"#lowshelf-enabled",
+        highshelf:"#highshelf-enabled",
+        compressor:"#compressor-enabled",
+        delay:"#delay-enabled",
+        reverb:"#reverb-enabled",
+        tremolo:"#tremolo-enabled",
+        vibrato:"#vibrato-enabled",
+        chorus:"#chorus-enabled",
+        flanger:"#flanger-enabled",
+        "noise-gate":"#noise-gate-enabled",
+        distortion:"#distortion-enabled"
+      };
+
+      const LABELS = {
+        lowpass:"Low-Pass Filter",
+        highpass:"High-Pass Filter",
+        bandpass:"Band-Pass Filter",
+        notch:"Band-Reject Filter",
+        lowshelf:"Low Shelf",
+        highshelf:"High Shelf",
+        compressor:"Compressor",
+        delay:"Delay",
+        reverb:"Reverb",
+        tremolo:"Tremolo",
+        vibrato:"Vibrato",
+        chorus:"Chorus",
+        flanger:"Flanger",
+        "noise-gate":"Noise Gate",
+        overdrive:"Overdrive",
+        distortion:"Distortion",
+        fuzz:"Fuzz"
+      };
+
+      const $ = id => document.getElementById(id);
+      let originalBank = null;
+      let workingItems = [];
+      let currentIndex = -1;
+      let loadToken = 0;
+
+      function loadObject(key) {
+        try {
+          const x = JSON.parse(localStorage.getItem(key) || "{}");
+          return x && typeof x === "object" ? x : {};
+        } catch (_) {
+          return {};
+        }
+      }
+
+      function saveObject(key, obj) {
+        localStorage.setItem(key, JSON.stringify(obj));
+      }
+
+      function resolveAnswerId(item) {
+        if (!item) return "";
+        if (item.answerId) return String(item.answerId);
+        if (item.fx === "distortion") {
+          const p = item.p || {};
+          const od = Number(p.od || 0), ds = Number(p.ds || 0), fz = Number(p.fz || 0);
+          if (od > 0 && od >= ds && od >= fz) return "overdrive";
+          if (ds > 0 && ds >= od && ds >= fz) return "distortion";
+          if (fz > 0 && fz >= od && fz >= ds) return "fuzz";
+        }
+        return String(item.fx || "");
+      }
+
+      function statusLabel(status) {
+        return ({
+          good:"GOOD",
+          "too-subtle":"TOO SUBTLE",
+          bad:"BAD / WRONG",
+          remove:"REMOVE",
+          skipped:"SKIPPED"
+        })[status] || "UNREVIEWED";
+      }
+
+      function originalItemById(id) {
+        return originalBank?.items?.find(x => String(x.id) === String(id)) || null;
+      }
+
+      function refreshWorkingItems() {
+        const edits = loadObject(EDIT_KEY);
+        workingItems = (originalBank?.items || []).map(item => {
+          const e = edits[String(item.id)];
+          if (!e) return JSON.parse(JSON.stringify(item));
+          return {
+            ...JSON.parse(JSON.stringify(item)),
+            p: e.p ? { ...e.p } : { ...(item.p || {}) },
+            o: e.o !== undefined ? e.o : item.o
+          };
+        }).sort((a,b) => Number(a.id) - Number(b.id));
+      }
+
+      function currentItem() {
+        return workingItems[currentIndex] || null;
+      }
+
+      function setControlValue(selector, value) {
+        const el = document.querySelector(selector);
+        if (!el) return false;
+        el.value = String(value);
+        el.dispatchEvent(new Event("input", { bubbles:true }));
+        el.dispatchEvent(new Event("change", { bubbles:true }));
+        return true;
+      }
+
+      function setCheckbox(selector, checked) {
+        const el = document.querySelector(selector);
+        if (!el) return false;
+        if (el.checked !== checked) {
+          el.checked = checked;
+          el.dispatchEvent(new Event("input", { bubbles:true }));
+          el.dispatchEvent(new Event("change", { bubbles:true }));
+        } else if (checked) {
+          // Re-fire change so the audio graph is definitely synchronized.
+          el.dispatchEvent(new Event("change", { bubbles:true }));
+        }
+        return true;
+      }
+
+      function turnAllEffectsOff() {
+        Object.values(ENABLE_MAP).forEach(selector => setCheckbox(selector, false));
+      }
+
+      function setMasterOutput(value) {
+        const host = document.getElementById("masterOutputHost");
+        if (!host) return false;
+        const slider = host.querySelector('input[type="range"]');
+        if (!slider) return false;
+        slider.value = String(value);
+        slider.dispatchEvent(new Event("input", { bubbles:true }));
+        slider.dispatchEvent(new Event("change", { bubbles:true }));
+        return true;
+      }
+
+      function readMasterOutput() {
+        const host = document.getElementById("masterOutputHost");
+        const slider = host?.querySelector('input[type="range"]');
+        return slider ? Number(slider.value) : 0;
+      }
+
+      function clearSourceFilters() {
+        const category = $("categoryFilter");
+        if (category) {
+          category.value = "all";
+          category.dispatchEvent(new Event("change", { bubbles:true }));
+        }
+        const search = $("searchInput");
+        if (search) {
+          search.value = "";
+          search.dispatchEvent(new Event("input", { bubbles:true }));
+        }
+      }
+
+      async function loadSourceByName(sourceName, token) {
+        clearSourceFilters();
+
+        for (let tries = 0; tries < 60; tries++) {
+          if (token !== loadToken) return false;
+
+          const buttons = Array.from(document.querySelectorAll("#libraryList .library-grid-button, #libraryList button, #libraryList .library-item"));
+          const match = buttons.find(btn => {
+            const title = btn.querySelector?.(".library-grid-title, .library-item-title")?.textContent?.trim();
+            return title === sourceName || btn.textContent.trim().startsWith(sourceName);
+          });
+
+          if (match) {
+            match.click();
+            return true;
+          }
+          await new Promise(r => setTimeout(r, 100));
+        }
+        return false;
+      }
+
+      async function waitForControls(token) {
+        for (let tries = 0; tries < 60; tries++) {
+          if (token !== loadToken) return false;
+          const item = currentItem();
+          if (!item) return false;
+          const map = PARAM_MAP[item.fx] || {};
+          const enable = ENABLE_MAP[item.fx];
+          const selectors = [...Object.values(map), enable].filter(Boolean);
+          if (selectors.every(sel => document.querySelector(sel))) return true;
+          await new Promise(r => setTimeout(r, 100));
+        }
+        return false;
+      }
+
+      async function loadPresetAt(index) {
+        if (!workingItems.length) return;
+
+        currentIndex = Math.max(0, Math.min(workingItems.length - 1, index));
+        const item = currentItem();
+        const token = ++loadToken;
+
+        localStorage.setItem(LAST_KEY, String(item.id));
+        renderReviewBar();
+
+        // Stop playback before reconfiguring.
+        $("stopBtn")?.click();
+
+        // User requirement: all effects OFF first.
+        turnAllEffectsOff();
+
+        // Load the preset's source automatically.
+        const sourceLoaded = await loadSourceByName(item.s, token);
+        if (token !== loadToken) return;
+
+        await waitForControls(token);
+        if (token !== loadToken) return;
+
+        // Apply preset parameters into the actual Workshop controls.
+        const map = PARAM_MAP[item.fx] || {};
+        Object.entries(item.p || {}).forEach(([key, value]) => {
+          const selector = map[key];
+          if (selector) setControlValue(selector, value);
+        });
+
+        // Apply master output.
+        setMasterOutput(item.o ?? 0);
+
+        // User requirement: enable only the intended plugin.
+        turnAllEffectsOff();
+        setCheckbox(ENABLE_MAP[item.fx], true);
+
+        renderReviewBar();
+
+        if (!sourceLoaded) {
+          $("presetReviewMeta").textContent += " — SOURCE NOT FOUND";
+        }
+      }
+
+      function readCurrentEffectValues() {
+        const item = currentItem();
+        if (!item) return { p:{}, o:0 };
+
+        const map = PARAM_MAP[item.fx] || {};
+        const p = {};
+
+        Object.keys(item.p || {}).forEach(key => {
+          const selector = map[key];
+          const el = selector ? document.querySelector(selector) : null;
+          p[key] = el ? Number(el.value) : item.p[key];
+        });
+
+        return { p, o: readMasterOutput() };
+      }
+
+      function applyCurrentEdit() {
+        const item = currentItem();
+        if (!item) return;
+
+        const values = readCurrentEffectValues();
+        const edits = loadObject(EDIT_KEY);
+        edits[String(item.id)] = {
+          id: String(item.id),
+          p: values.p,
+          o: values.o,
+          updatedAt: new Date().toISOString()
+        };
+        saveObject(EDIT_KEY, edits);
+
+        refreshWorkingItems();
+        currentIndex = workingItems.findIndex(x => String(x.id) === String(item.id));
+        renderReviewBar();
+
+        const meta = $("presetReviewMeta");
+        if (meta) meta.textContent += " — EDIT APPLIED";
+      }
+
+      function revertCurrentEdit() {
+        const item = currentItem();
+        if (!item) return;
+
+        const edits = loadObject(EDIT_KEY);
+        delete edits[String(item.id)];
+        saveObject(EDIT_KEY, edits);
+
+        refreshWorkingItems();
+        currentIndex = workingItems.findIndex(x => String(x.id) === String(item.id));
+        loadPresetAt(currentIndex);
+      }
+
+      function saveCurrentNoteIfMarked() {
+        const item = currentItem();
+        if (!item) return;
+        const reviews = loadObject(REVIEW_KEY);
+        const r = reviews[String(item.id)];
+        if (!r) return;
+        r.note = $("presetReviewNote")?.value.trim() || "";
+        r.updatedAt = new Date().toISOString();
+        saveObject(REVIEW_KEY, reviews);
+      }
+
+      function markCurrent(status, advance=true) {
+        const item = currentItem();
+        if (!item) return;
+
+        const reviews = loadObject(REVIEW_KEY);
+        reviews[String(item.id)] = {
+          id: String(item.id),
+          source: item.s || "",
+          effect: resolveAnswerId(item),
+          effectLabel: LABELS[resolveAnswerId(item)] || resolveAnswerId(item),
+          status,
+          note: $("presetReviewNote")?.value.trim() || "",
+          updatedAt: new Date().toISOString()
+        };
+        saveObject(REVIEW_KEY, reviews);
+
+        renderReviewBar();
+        if (advance && currentIndex < workingItems.length - 1) {
+          loadPresetAt(currentIndex + 1);
+        }
+      }
+
+      function renderReviewBar() {
+        const item = currentItem();
+        if (!item) return;
+
+        const reviews = loadObject(REVIEW_KEY);
+        const edits = loadObject(EDIT_KEY);
+        const review = reviews[String(item.id)] || null;
+        const answer = resolveAnswerId(item);
+        const effectLabel = LABELS[answer] || answer;
+
+        $("presetReviewId").textContent = `Preset ${item.id}`;
+        $("presetReviewMeta").textContent =
+          `${item.s} — ${effectLabel} — ${currentIndex + 1}/${workingItems.length}${edits[String(item.id)] ? " — EDITED" : ""}`;
+
+        const statusEl = $("presetReviewStatus");
+        statusEl.textContent = statusLabel(review?.status);
+        statusEl.dataset.status = review?.status || "";
+
+        if (document.activeElement !== $("presetReviewNote")) {
+          $("presetReviewNote").value = review?.note || "";
+        }
+
+        $("presetPrevBtn").disabled = currentIndex <= 0;
+        $("presetNextBtn").disabled = currentIndex >= workingItems.length - 1;
+
+        const rs = Object.values(reviews);
+        const count = s => rs.filter(x => x.status === s).length;
+        const reviewed = new Set(rs.map(x => String(x.id)));
+        const unreviewed = workingItems.filter(x => !reviewed.has(String(x.id))).length;
+
+        $("presetReviewCounts").textContent =
+          `Good ${count("good")} • Subtle ${count("too-subtle")} • Bad ${count("bad")} • Remove ${count("remove")} • Edited ${Object.keys(edits).length} • Unreviewed ${unreviewed}`;
+      }
+
+      function jumpToId(raw) {
+        const normalized = String(Number(raw));
+        const index = workingItems.findIndex(x => String(Number(x.id)) === normalized);
+        if (index < 0) {
+          alert(`Preset ${raw || "?"} not found.`);
+          return;
+        }
+        saveCurrentNoteIfMarked();
+        loadPresetAt(index);
+      }
+
+      function exportInstructions() {
+        saveCurrentNoteIfMarked();
+
+        const reviews = loadObject(REVIEW_KEY);
+        const edits = loadObject(EDIT_KEY);
+
+        const instructions = workingItems.map(item => {
+          const id = String(item.id);
+          const review = reviews[id] || null;
+          const edit = edits[id] || null;
+          if (!review && !edit) return null;
+
+          const original = originalItemById(id);
+          const action =
+            review?.status === "remove" ? "remove" :
+            edit ? "apply-parameter-edit" :
+            review?.status === "too-subtle" ? "make-more-obvious" :
+            review?.status === "bad" ? "rework" :
+            review?.status === "good" ? "keep" :
+            review?.status === "skipped" ? "skip" : "review";
+
+          return {
+            id,
+            source: item.s || "",
+            effect: resolveAnswerId(item),
+            effectLabel: LABELS[resolveAnswerId(item)] || resolveAnswerId(item),
+            action,
+            status: review?.status || "edited",
+            note: review?.note || "",
+            original: original ? { p: original.p || {}, o: original.o } : null,
+            edited: edit ? { p: edit.p || {}, o: edit.o } : null
+          };
+        }).filter(Boolean);
+
+        const payload = {
+          format: "Audio FX Workshop Preset Review Instructions",
+          version: 1,
+          exportedAt: new Date().toISOString(),
+          bankTitle: originalBank?.quizTitle || "",
+          bankVersion: originalBank?.version ?? null,
+          totalPresets: workingItems.length,
+          instructionsForChatGPT: [
+            "Use preset ID as the authoritative reference.",
+            "For action=remove, delete that preset completely from the quiz bank.",
+            "For action=apply-parameter-edit, use edited p and o exactly unless the note explicitly requests additional changes.",
+            "For action=make-more-obvious, preserve the source/effect pairing but make the effect pedagogically more obvious.",
+            "For action=rework, reassess the preset using the note and source analysis.",
+            "For action=keep, do not change the preset.",
+            "Preserve unaffected presets and IDs whenever possible."
+          ],
+          instructions
+        };
+
+        const blob = new Blob([JSON.stringify(payload, null, 2)], { type:"application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `audio-fx-preset-review-${new Date().toISOString().slice(0,10)}.json`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      }
+
+      function importInstructions(file) {
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+          try {
+            const data = JSON.parse(String(reader.result || "{}"));
+            const reviews = loadObject(REVIEW_KEY);
+            const edits = loadObject(EDIT_KEY);
+
+            (data.instructions || []).forEach(x => {
+              if (!x || x.id == null) return;
+              const id = String(x.id);
+
+              if (x.status && x.status !== "edited") {
+                reviews[id] = {
+                  id,
+                  source: x.source || "",
+                  effect: x.effect || "",
+                  effectLabel: x.effectLabel || "",
+                  status: x.status,
+                  note: x.note || "",
+                  updatedAt: new Date().toISOString()
+                };
+              }
+
+              if (x.edited) {
+                edits[id] = {
+                  id,
+                  p: x.edited.p || {},
+                  o: x.edited.o,
+                  updatedAt: new Date().toISOString()
+                };
+              }
+            });
+
+            saveObject(REVIEW_KEY, reviews);
+            saveObject(EDIT_KEY, edits);
+            refreshWorkingItems();
+
+            const currentId = currentItem()?.id || workingItems[0]?.id;
+            currentIndex = Math.max(0, workingItems.findIndex(x => String(x.id) === String(currentId)));
+            loadPresetAt(currentIndex);
+          } catch (error) {
+            alert("That file is not a valid preset review export.");
+          }
+        };
+        reader.readAsText(file);
+      }
+
+      function wire() {
+        $("presetPrevBtn").addEventListener("click", () => {
+          saveCurrentNoteIfMarked();
+          if (currentIndex > 0) loadPresetAt(currentIndex - 1);
+        });
+
+        $("presetNextBtn").addEventListener("click", () => {
+          saveCurrentNoteIfMarked();
+          if (currentIndex < workingItems.length - 1) loadPresetAt(currentIndex + 1);
+        });
+
+        $("presetJumpBtn").addEventListener("click", () => jumpToId($("presetJumpInput").value.trim()));
+        $("presetJumpInput").addEventListener("keydown", e => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            jumpToId($("presetJumpInput").value.trim());
+          }
+        });
+
+        $("presetApplyBtn").addEventListener("click", applyCurrentEdit);
+        $("presetRevertBtn").addEventListener("click", revertCurrentEdit);
+
+        $("presetGoodBtn").addEventListener("click", () => markCurrent("good"));
+        $("presetSubtleBtn").addEventListener("click", () => markCurrent("too-subtle"));
+        $("presetBadBtn").addEventListener("click", () => markCurrent("bad"));
+        $("presetRemoveBtn").addEventListener("click", () => markCurrent("remove"));
+        $("presetSkipBtn").addEventListener("click", () => markCurrent("skipped"));
+
+        $("presetReviewNote").addEventListener("change", saveCurrentNoteIfMarked);
+
+        $("presetExportBtn").addEventListener("click", exportInstructions);
+        $("presetImportBtn").addEventListener("click", () => $("presetReviewImportInput").click());
+        $("presetReviewImportInput").addEventListener("change", e => {
+          importInstructions(e.target.files?.[0]);
+          e.target.value = "";
+        });
+      }
+
+      async function init() {
+        wire();
+
+        try {
+          const response = await fetch(BANK_URL, { cache:"no-store" });
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          originalBank = await response.json();
+          refreshWorkingItems();
+
+          if (!workingItems.length) throw new Error("Preset bank has no items.");
+
+          const requested = new URLSearchParams(location.search).get("preset")
+            || localStorage.getItem(LAST_KEY)
+            || workingItems[0].id;
+
+          currentIndex = workingItems.findIndex(x => String(x.id) === String(requested));
+          if (currentIndex < 0) currentIndex = 0;
+
+          // Give the Workshop modules/library a moment to render, then load exact preset.
+          setTimeout(() => loadPresetAt(currentIndex), 250);
+        } catch (error) {
+          console.error(error);
+          $("presetReviewMeta").textContent = `Could not load ${BANK_URL}`;
+          $("presetReviewStatus").textContent = "ERROR";
+        }
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", init);
+      } else {
+        init();
+      }
+    })();
+  </script>
+
+</body>
+</html>
